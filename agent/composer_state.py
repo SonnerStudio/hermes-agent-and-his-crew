@@ -182,15 +182,30 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     # voice_comms / double_mode gates are intentionally no-ops on the call
     # list here (planning / sync layers live in their own stages, C / D).
 
-    # --- Stage C (always-on, display-only): Secretary planning (Button 2) ---
-    # Runs BEFORE the fast path so the plan is produced even when Button 1/3
-    # are off (plan is then purely for display). Never mutates tool_calls.
+    # --- Stage C (always-on, display-only): Secretary planning (Button 2) ---\n    # Runs BEFORE the fast path so the plan is produced even when Button 1/3\n    # are off (plan is then purely for display). Never mutates tool_calls.
     try:
         from agent.composer_plan import plan_delegation
 
         _plan = plan_delegation(agent, tool_calls)
         if _plan is not None:
             agent._secretary_plan = _plan
+            # Phase E (Option B): the Planner (Stage C) learns from its own
+            # planning decision (self-improving like Hermes). Shared crew
+            # memory, tagged stage="planner" so the graph can separate it.
+            if getattr(agent, "_voice_comms", False):
+                try:
+                    composer_learn(
+                        agent,
+                        "planner",
+                        {
+                            "topology": _plan.topology,
+                            "clone_factor": getattr(agent, "_clone_factor", 2),
+                            "units": len(_plan.units),
+                            "success": True,  # decision recorded; refined post-run
+                        },
+                    )
+                except Exception:
+                    pass
     except Exception:
         pass
 
@@ -226,6 +241,21 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
                 ]
                 keep.append(_wrap_as_tool_call(synthetic))
                 agent._proactive_dispatch_count = getattr(agent, "_proactive_dispatch_count", 0) + 1
+                # Phase E (Option B): Sub-Agents learn from this dispatch
+                # decision (self-improving like Hermes). Shared crew memory.
+                try:
+                    composer_learn(
+                        agent,
+                        "subagent",
+                        {
+                            "topology": "peer",
+                            "clone_factor": 1,
+                            "units": len(decision.unit_indices),
+                            "success": True,  # decision recorded; refined post-run
+                        },
+                    )
+                except Exception:
+                    pass
                 return keep
             except Exception:
                 pass
@@ -292,19 +322,27 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     return tool_calls
 
 
-def secretary_learn(agent, outcome: dict) -> None:
-    """Phase E (Option B): the Secretary records a delegation outcome into her
-    own learning memory. Called by conversation_loop AFTER a delegation batch
-    resolves, so she improves over time (like Hermes' MemoryManager.sync_turn).
+def composer_learn(agent, stage: str, outcome: dict) -> None:
+    """Phase E (Option B): record a composer-stage outcome into the shared
+    Secretary learning memory, so the Sub-Agents (Button 1 / dispatch), the
+    Planner (Button 2 / plan), and the Secretary (Button 2 / voice) ALL learn
+    and self-improve — like Hermes' own MemoryManager.sync_turn, but in the
+    Secretary's private scope (~/.hermes/secretary/*).
 
-    Non-blocking: any failure is swallowed by the caller's try/except. With
-    Button 2 off this is a no-op (the store is never even opened).
+    This is what makes the whole crew self-learning, not just the Secretary:
+    every stage writes its decision into the same memory, so the learned
+    routing (topology / clone_factor / dispatch threshold) improves over time.
 
-    Args:
-        agent: the AIAgent (reads ``_voice_comms`` + ``_secretary_plan``).
-        outcome: dict with topology / clone_factor / units / success / latency_s.
+    Non-blocking: any failure is swallowed (Invariante 3 — learning never
+    breaks the delegation). No-op when no composer flag is active (so 0000
+    never touches the store).
     """
-    if not getattr(agent, "_voice_comms", False):
+    # Only learn when at least one crew flag is on.
+    if not (
+        getattr(agent, "_voice_comms", False)
+        or getattr(agent, "_subagent_orchestration", False)
+        or getattr(agent, "_orchestration_mode", False)
+    ):
         return
     try:
         from agent.secretary_memory import SecretaryMemory
@@ -314,10 +352,19 @@ def secretary_learn(agent, outcome: dict) -> None:
         if store is None:
             store = SecretaryMemory()
             agent._secretary_memory = store
-        store.sync_turn(outcome)
+        rec = dict(outcome)
+        rec["stage"] = stage  # tag which crew member learned this
+        store.sync_turn(rec)
     except Exception:
         # Invariante 3: learning never breaks the delegation.
         pass
+
+
+# Back-compat alias: the Secretary's learning is now part of the shared crew
+# memory (Sub-Agents + Planner + Secretary all learn together).
+def secretary_learn(agent, outcome: dict) -> None:
+    """Deprecated alias — use composer_learn(agent, 'secretary', outcome)."""
+    composer_learn(agent, "secretary", outcome)
 
 
 def _wrap_as_tool_call(synthetic: dict):
