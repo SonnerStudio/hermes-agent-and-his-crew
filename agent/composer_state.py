@@ -264,6 +264,34 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     return tool_calls
 
 
+def secretary_learn(agent, outcome: dict) -> None:
+    """Phase E (Option B): the Secretary records a delegation outcome into her
+    own learning memory. Called by conversation_loop AFTER a delegation batch
+    resolves, so she improves over time (like Hermes' MemoryManager.sync_turn).
+
+    Non-blocking: any failure is swallowed by the caller's try/except. With
+    Button 2 off this is a no-op (the store is never even opened).
+
+    Args:
+        agent: the AIAgent (reads ``_voice_comms`` + ``_secretary_plan``).
+        outcome: dict with topology / clone_factor / units / success / latency_s.
+    """
+    if not getattr(agent, "_voice_comms", False):
+        return
+    try:
+        from agent.secretary_memory import SecretaryMemory
+
+        # Reuse one store per agent (lazy) — own scope, never Core memory.
+        store = getattr(agent, "_secretary_memory", None)
+        if store is None:
+            store = SecretaryMemory()
+            agent._secretary_memory = store
+        store.sync_turn(outcome)
+    except Exception:
+        # Invariante 3: learning never breaks the delegation.
+        pass
+
+
 def _wrap_as_tool_call(synthetic: dict):
     """Wrap a synthetic dict into an object with ``.function`` + ``._is_clone``
     compatible shape, matching what conversation_loop expects downstream.
