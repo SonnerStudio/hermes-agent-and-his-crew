@@ -170,6 +170,12 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
 
     # Snapshot flags (already loaded per-turn by run_conversation).
     _subagent = bool(getattr(agent, "_subagent_orchestration", False))
+    # The Secretary (Button 2 / voice_comms) is the Managerin — when she is
+    # on, her crew (sub-agents + planner) is implicitly available, mirroring
+    # the proxy auto-arming Button 1 on Secretary activation. So Button 2
+    # implies Button 1 for dispatch purposes.
+    if getattr(agent, "_voice_comms", False):
+        _subagent = True
     # Cloning (Button 3) only makes sense when sub-agent orchestration
     # (Button 1) is armed — you cannot clone agents that are not spawned.
     _clone = bool(getattr(agent, "_orchestration_mode", False)) and _subagent
