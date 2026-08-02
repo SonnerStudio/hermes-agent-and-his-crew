@@ -58,7 +58,12 @@
 
 Tento fork pridáva:
 
-- **Composer Control Buttons** — štyri prepínacie tlačidlá v desktopovom composere (orchestrácia sub-agentov, hlasová komunikácia, režim orchestrácie, dvojitý režim) so živými stavovými farbami (červená = neaktívne, žltá = zriaďovanie, zelená = aktívne).
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestration HUD** — štyri modro orámované živé panely pod vstupom composere: *Tím sub-agentov*, *Hermes Sekretárka (audiokomunikácia)*, *Klonovaní agenti* a *Harmonizácia a záťaž agentov*. Panely sa zobrazia len vtedy, keď beží skutočná úloha — žiadne demoverstné placeholdery.
 - **Hermes Sekretárka** — hlasová vrstva, ktorá vám umožňuje rozprávať sa s agentom. Nemecké TTS cez **Kokoro** (`df_eva`, ženský hlas, filmová rýchlosť 0.9), STT cez Whisper a bezokienkový monitor hladiny mikrofónu (bez viditeľného vyskakovacieho okna terminálu). Agent môže delegovať sub-agentov na vykonanie hlasom zadaných požiadaviek.
 - **MLX Runtime Proxy** — lokálny lenivý proxy server (`:1240`), ktorý poskytuje Kokoro TTS, Whisper STT a MLX chat modely vždy len jeden naraz, aby Mac mini s 16 GB RAM zostal v rámci limitov pamäte.

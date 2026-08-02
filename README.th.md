@@ -58,7 +58,12 @@
 
 Fork นี้เพิ่มฟีเจอร์ดังนี้:
 
-- **Composer Control Buttons** — ปุ่มสลับสี่ปุ่มใน Composer ของเดสก์ท็อป (ประสานงานซับเอเจนต์, การสื่อสารเสียง, โหมดประสานงาน, โหมดคู่) พร้อมสีแสดงสถานะแบบสด (สีแดง = ไม่ได้ใช้งาน, สีเหลือง = กำลังเตรียมการ, สีเขียว = ใช้งานอยู่)
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestration HUD** — แผงสดสี่แผงที่มีขอบสีน้ำเงินอยู่ใต้ช่องป้อนข้อมูล Composer: *ทีมสายตัวแทน*, *Hermes เลขานุการ (การสื่อสารเสียง)*, *ตัวแทนที่โคลนแล้ว*, และ *ความกลมกลืนและภาระตัวแทน* แผงจะปรากฏก็ต่อเมื่อมีงานจริงกำลังทำงานเท่านั้น — ไม่มีตัวแทนจำลอง
 - **Hermes เลขานุการ** — เลเยอร์เสียงที่ให้คุณพูดคุยกับตัวแทนได้ TTS ภาษาเยอรมันผ่าน **Kokoro** (`df_eva`, เสียงหญิง, ความเร็วระดับภาพยนตร์ 0.9), STT ผ่าน Whisper และตัวตรวจสอบระดับไมโครโฟนแบบ headless (ไม่มีหน้าต่างเทอร์มินัลแสดงขึ้น) ตัวแทนสามารถมอบหมายซับเอเจนต์เพื่อดำเนินคำขอที่พูดออกไปให้เสร็จสิ้นได้
 - **MLX Runtime Proxy** — พร็อกซีแบบ lazy ภายในเครื่อง (`:1240`) ที่ให้บริการ Kokoro TTS, Whisper STT และโมเดลแชท MLX ทีละตัว ทำให้ Mac mini 16 GB คงอยู่ในขอบจำกัด RAM

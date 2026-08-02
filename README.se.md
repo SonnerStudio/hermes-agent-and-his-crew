@@ -58,7 +58,12 @@
 
 Denna fork lägger till:
 
-- **Composer Control Buttons** — fyra växelknappar i desktop-kompositören (underagents-orkestrering, röstkommunikation, orkestreringsläge, dubbelläge) med live-statusfärger (röd = inaktiv, gul = provisionering, grön = aktiv).
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestration HUD** — fyra blåkantade live-paneler under kompositörsingången: *Underagentsteam*, *Hermes Sekreterare (ljudkommunikation)*, *Klonade agenter*, och *Harmonisering och agentbelastning*. Panelerna visas endast när en verklig uppgift körs — inga demo-platshållare.
 - **Hermes Sekreterare** — ett röstlager som låter dig prata med agenten. Tysk TTS via **Kokoro** (`df_eva`, kvinnlig, filmreif hastighet 0.9), STT via Whisper, och en headless mikrofonnivå-övervakare (ingen synlig terminal-popup). Agenten kan delegera underagenter för att utföra talade förfrågningar.
 - **MLX Runtime Proxy** — en lokal lat proxy (`:1240`) som betjänar Kokoro TTS, Whisper STT och MLX-chattmodellerna en i taget, så att Mac mini med 16 GB håller sig inom RAM-gränserna.

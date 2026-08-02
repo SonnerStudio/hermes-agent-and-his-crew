@@ -58,7 +58,12 @@
 
 Ez a fork az alábbiakat adja hozzá:
 
-- **Composer Control Buttons** — négy kapcsológomb az asztali zeneszerzőben (al-ügynök-orchestráció, hangkommunikáció, orchestrációs mód, dupla mód) élő állapotjelző színekkel (piros = inaktív, sárga = kiépítés, zöld = aktív).
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestration HUD** — négy kék keretű élő panel a zeneszerző beviteli mezője alatt: *Al-agent csapat*, *Hermes Titkárnő (Hangkommunikáció)*, *Klónozott ügynökök* és *Harmonizálás és ügynökterhelés*. A panelek csak akkor jelennek meg, ha valódi feladat fut — nincsenek demó-helykitöltők.
 - **Hermes Titkárnő** — egy hangréteg, amely lehetővé teszi, hogy beszélj az ügynökhöz. Német TTS a **Kokoro**-n keresztül (`df_eva`, női, filmes sebesség 0.9), STT Whisper segítségével, és egy headless mikrofon-szintfigyelő (nincs látható terminálablak). Az ügynök al-ügynököket bízhat meg a kimondott kérések végrehajtására.
 - **MLX Runtime Proxy** — egy helyi lusta (lazy) proxy (`:1240`), amely a Kokoro TTS-t, a Whisper STT-t és az MLX csevegőmodelleket egyszerre egyetlen példányban szolgálja ki, így a 16 GB-os Mac mini a RAM-korlátokon belül marad.

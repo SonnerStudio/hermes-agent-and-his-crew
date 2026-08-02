@@ -58,7 +58,11 @@
 
 Ce fork ajoute :
 
-- **Composer Control Buttons** — quatre boutons bascule dans le composeur de bureau (orchestration de sous-agents, communication vocale, mode d'orchestration, mode double) avec couleurs d'état en direct (rouge = inactif, jaune = provisioning, vert = actif).
+- **Composer Control Buttons** — quatre boutons bascule dans le composeur de bureau avec couleurs d'état en direct (rouge = inactif, jaune = provisioning, vert = actif):
+  1. **Sub-Agenten aktivieren** — active les sous-agents IA spécialisés qui prennent autonomement des sous-tâches, chacun avec ses propres compétences spécialisées, et apprennent continuellement des tâches et avec le temps.
+  2. **Secretary / Sekretärin** — la gestionnaire des agents : planifie et attribue les tâches, et en tant que communicatrice fournit un mode vocal (entrée/sortie vocale) avec un audio de qualité cinématographique (Kokoro `df_eva`, vitesse 0.9).
+  3. **Temporäres Klonen** — permet aux agents de se multiplier temporairement pour la durée d'une tâche afin de traiter des tâches similaires simultanément.
+  4. **Harmonisierung & Orchestrierung** — harmonise/synchronise soit les agents au sein des tâches (sans la Secretary), soit, lorsque la Secretary est active, les agents sont pilotés par elle et harmonisés/synchronisés ensemble avec elle.
 - **Orchestration HUD** — quatre panneaux live bordés de bleu sous la saisie du composeur : *Équipe sous-agents*, *Hermes Secrétaire (Audio-Kommunikation)*, *Agents clonés*, et *Harmonisation & charge*. Les panneaux n'apparaissent que lorsqu'une tâche réelle est en cours — aucun placeholder de démonstration.
 - **Hermes Secrétaire** — une couche vocale qui vous permet de parler à l'agent. TTS allemand via **Kokoro** (`df_eva`, féminin, vitesse cinématographique 0.9), STT via Whisper, et un moniteur de niveau micro sans affichage (aucune fenêtre de terminal visible). L'agent peut déléguer des sous-agents pour exécuter les requêtes parlées.
 - **MLX Runtime Proxy** — un proxy local paresseux (`:1240`) qui sert le TTS Kokoro, le STT Whisper et les modèles de chat MLX un à la fois, afin que le Mac mini 16 GB reste dans les limites de RAM.

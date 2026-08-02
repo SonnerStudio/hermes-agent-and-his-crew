@@ -58,7 +58,12 @@
 
 इस फोर्क में जोड़ा गया:
 
-- **Composer Control Buttons** — डेस्कटॉप कंपोज़र में चार टॉगल बटन (उप-एजेंट ऑर्केस्ट्रेशन, आवाज़ संचार, ऑर्केस्ट्रेशन मोड, डबल मोड) जिनके सजीव स्थिति रंग हैं (लाल = निष्क्रिय, पीला = प्रावधान निर्माण, हरा = सक्रिय)।
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestration HUD** — कंपोज़र इनपुट के नीचे चार नीले-किनारे वाले सजीव पैनल: *उप-एजेंट टीम*, *Hermes सचिव (ऑडियो-संचार)*, *क्लोन किए गए एजेंट*, और *सामंजस्य और एजेंट लोड*। पैनल केवल तभी दिखते हैं जब कोई वास्तविक कार्य चल रहा हो — कोई डेमो प्लेसहोल्डर नहीं।
 - **Hermes सचिव** — एक आवाज़ परत जो आपको एजेंट से बात करने देती है। **Kokoro** के माध्यम से जर्मन TTS (`df_eva`, महिला, फिल्मी गति 0.9), Whisper के माध्यम से STT, और एक हेडलेस माइक्रोफोन-स्तर मॉनिटर (कोई दृश्य टर्मिनल पॉपअप नहीं)। एजेंट बोले गए अनुरोधों को पूरा करने के लिए उप-एजेंटों को प्रतिनियुक्त कर सकता है।
 - **MLX Runtime Proxy** — एक स्थानीय आलसी प्रॉक्सी (`:1240`) जो Kokoro TTS, Whisper STT, और MLX चैट मॉडल को एक समय में एक सेवा देता है, ताकि 16 GB Mac mini RAM सीमा के भीतर रहे।

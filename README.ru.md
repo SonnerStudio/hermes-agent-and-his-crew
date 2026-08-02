@@ -58,7 +58,12 @@
 
 В этот форк добавлено:
 
-- **Composer Control Buttons** — четыре переключаемые кнопки в композере настольного приложения (оркестрация суб-агентов, голосовая связь, режим оркестрации, двойной режим) с живыми цветами состояния (красный = неактивно, жёлтый = подготовка, зелёный = активно).
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestration HUD** — четыре живые панели с синей рамкой под полем ввода композера: *Команда суб-агентов*, *Hermes Секретарь (аудио-коммуникация)*, *Клонированные агенты*, и *Гармонизация и нагрузка агентов*. Панели появляются только при выполнении реальной задачи — без демонстрационных заглушек.
 - **Hermes Секретарь** — голосовой слой, позволяющий говорить с агентом. Немецкий TTS через **Kokoro** (`df_eva`, женский, кинематографичная скорость 0.9), STT через Whisper и фоновый монитор уровня микрофона (без видимого окна терминала). Агент может делегировать суб-агентам выполнение произнесённых запросов.
 - **MLX Runtime Proxy** — локальный ленивый прокси (`:1240`), обслуживающий Kokoro TTS, Whisper STT и MLX-модели чата по одной за раз, чтобы Mac mini с 16 ГБ оставался в пределах лимита оперативной памяти.

@@ -58,7 +58,12 @@
 
 Tento fork přidává:
 
-- **Composer Control Buttons** — čtyři přepínací tlačítka v desktopovém composeru (orchestrace sub-agentů, hlasová komunikace, režim orchestrace, dvojitý režim) s živými barevnými stavy (červená = neaktivní, žlutá = zřizování, zelená = aktivní).
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
+
 - **Orchestrace HUD** — čtyři modře orámované živé panely pod vstupem composeru: *Tým sub-agentů*, *Hermes Sekretářka (Audio-Kommunikation)*, *Klonovaní agenti (Cloned Agents)* a *Harmonizace a zátěž agentů*. Panely se zobrazí pouze tehdy, když běží skutečný úkol — žádná demo zástupná pole.
 - **Hermes Sekretářka** — hlasová vrstva, která vám umožňuje mluvit s agentem. Německé TTS přes **Kokoro** (`df_eva`, ženský hlas, filmová rychlost 0.9), STT přes Whisper a bezokenní monitor hladiny mikrofonu (žádné viditelné vyskakovací okno terminálu). Agent může delegovat sub-agenty k provedení mluvených požadavků.
 - **MLX Runtime Proxy** — lokální líný proxy server (`:1240`), který servíruje Kokoro TTS, Whisper STT a MLX chat modely vždy po jednom, aby Mac mini s 16 GB RAM zůstal v mezích paměti.

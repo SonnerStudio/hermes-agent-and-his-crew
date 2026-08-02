@@ -58,7 +58,11 @@
 
 Dieser Fork fügt hinzu:
 
-- **Composer Control Buttons** — vier Umschalt-Buttons im Desktop-Composer (Sub-Agent-Orchestrierung, Sprachkommunikation, Orchestrierungsmodus, Double-Mode) mit Live-Statusfarben (rot = inaktiv, gelb = Bereitstellung, grün = aktiv).
+- **Composer Control Buttons** — vier Umschalt-Buttons im Desktop-Composer mit Live-Statusfarben (rot = inaktiv, gelb = Bereitstellung, grün = aktiv):
+  1. **Sub-Agenten aktivieren** — aktiviert die spezialisierten KI-Sub-Agenten, die sich eigenständig Teilaufgaben vornehmen, jeweils mit eigenen Spezialfähigkeiten, und kontinuierlich aus Aufgaben und über die Zeit lernen.
+  2. **Secretary / Sekretärin** — die Managerin der Agenten: plant und teilt Aufgaben zu und stellt als Kommunikatorin einen Sprachmodus (Spracheingabe/-ausgabe) mit Audio in Filmqualität bereit (Kokoro `df_eva`, speed 0.9).
+  3. **Temporäres Klonen** — lässt Agenten sich für die Dauer einer Aufgabe temporär vervielfältigen, um gleichartige Aufgaben gleichzeitig zu bearbeiten.
+  4. **Harmonisierung & Orchestrierung** — harmonisiert/synchronisiert entweder die Agenten innerhalb der Aufgaben (ohne Sekretärin), oder, wenn die Sekretärin an ist, werden die Agenten von ihr gesteuert und mit ihr gemeinsam harmonisiert/synchronisiert.
 - **Orchestration HUD** — vier blau umrandete Live-Felder unter dem Composer-Eingabefeld: *Sub-Agenten-Team*, *Hermes-Sekretärin (Audio-Kommunikation)*, *Kopierte Agenten (Cloned Agents)* und *Harmonisierung & Agentenauslastung*. Felder erscheinen nur, wenn eine echte Aufgabe läuft — keine Demo-Platzhalter.
 - **Hermes-Sekretärin** — eine Sprachebene, mit der du mit dem Agenten sprechen kannst. Deutsche TTS über **Kokoro** (`df_eva`, weiblich, filmreif speed 0.9), STT über Whisper und ein headless Mikrofon-Pegel-Monitor (kein sichtbares Terminal-Fenster). Der Agent kann Sub-Agenten delegieren, um gesprochene Anfragen auszuführen.
 - **MLX Runtime Proxy** — ein lokaler Lazy-Proxy (`:1240`), der Kokoro TTS, Whisper STT und MLX-Chat-Modelle nacheinander bereitstellt, damit der 16-GB-Mac-mini innerhalb der RAM-Grenzen bleibt.
