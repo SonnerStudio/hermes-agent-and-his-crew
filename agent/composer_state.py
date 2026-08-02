@@ -261,6 +261,28 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
 
     tool_calls = _safe("sync", lambda a, c: harmonize(a, c, plan), tool_calls)
 
+    # Phase E (Option B): the Secretary records her own planning decision into
+    # her learning memory (self-improving like Hermes). This is a pre-outcome
+    # signal (her decision), not the post-result — non-blocking, own scope.
+    # Called here so no extra conversation_loop edit is needed; the real
+    # post-result learning can be added later by calling secretary_learn()
+    # again from the loop once delegate_task results return.
+    try:
+        if getattr(agent, "_voice_comms", False) and plan is not None:
+            deleg_n = sum(1 for tc in tool_calls if _fn_name(tc) == "delegate_task")
+            if deleg_n > 0:
+                secretary_learn(
+                    agent,
+                    {
+                        "topology": getattr(plan, "topology", "peer"),
+                        "clone_factor": getattr(agent, "_clone_factor", 2),
+                        "units": deleg_n,
+                        "success": True,  # decision recorded; outcome refined post-run
+                    },
+                )
+    except Exception:
+        pass
+
     return tool_calls
 
 
