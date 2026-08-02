@@ -60,6 +60,10 @@ const DE: Dict = {
   "btn.double": "Doppel-Modus",
   "mic.unavailable": "Mikrofon nicht erreichbar",
   "mic.available": "Mikrofon aktiv",
+  "secretary.learned": "Gelernt",
+  "secretary.routing": "Routing-Präferenzen",
+  "secretary.skills": "Planungs-Skills",
+  "secretary.graph": "Lern-Graph",
 };
 
 const EN: Dict = {
@@ -74,6 +78,10 @@ const EN: Dict = {
   "btn.double": "Double Mode",
   "mic.unavailable": "Microphone unavailable",
   "mic.available": "Microphone active",
+  "secretary.learned": "Learned",
+  "secretary.routing": "Routing Preferences",
+  "secretary.skills": "Planning Skills",
+  "secretary.graph": "Learning Graph",
 };
 
 const FR: Dict = {
