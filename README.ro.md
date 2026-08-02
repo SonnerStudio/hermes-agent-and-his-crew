@@ -58,7 +58,11 @@
 
 Acest fork adaugă:
 
-- **Butoane de control ale compozitorului (Composer Control Buttons)** — patru butoane comutabile în compozitorul desktop (orchestrarea sub-ageneților, comunicarea vocală, modul de orchestrare, modul dublu) cu culori de stare live (roșu = inactiv, galben = în provizionare, verde = activ).
+- **Composer Control Buttons** — patru butoane de comutare în compozitorul desktop cu culori de stare în timp real (roșu = inactiv, galben = provisioning, verde = activ) :
+  1. **Activează sub-agentții** — activează sub-agentții AI specializați care preiau autonom sub-sarcini, fiecare cu propriile capacități specializate, și învață continuu din sarcini și în timp.
+  2. **Secretară** — managerul agenților: planifică și atribuie sarcini, și ca comunicatoare oferă un mod vocal (intrare/ieșire vocală) cu audio de calitate cinematografică (Kokoro `df_eva`, viteză 0.9).
+  3. **Clonare temporară** — permite agenților să se înmulțească temporar pe durata unei sarcini pentru a procesa sarcini similare simultan.
+  4. **Armonizare & orchestrare** — armonizează/sincronizează fie agenții în interiorul sarcinilor (fără Secretară), fie, când Secretara este activă, agenții sunt conduși de ea și armonizați/sincronizați împreună cu ea.
 - **Orchestration HUD** — patru panouri live cu margine albastră sub câmpul de intrare al compozitorului: *Echipa de sub-ageneți*, *Hermes Secretară (Comunicare audio)*, *Agenți clonați* și *Armonizare și încărcarea agenților*. Panourile apar doar când o sarcină reală rulează — fără placeholdere demo.
 - **Hermes Secretară** — un strat vocal care îți permite să vorbești cu agentul. TTS german prin **Kokoro** (`df_eva`, feminin, viteză filmreif 0.9), STT prin Whisper și un monitor de nivel microfon fără interfață (fără fereastră de terminal vizibilă). Agentul poate delega sub-ageneți pentru a executa cererile vorbite.
 - **MLX Runtime Proxy** — un proxy local leneș (`:1240`) care servește modelele Kokoro TTS, Whisper STT și MLX chat pe rând, astfel încât Mac mini de 16 GB să rămână în limitele RAM-ului.
