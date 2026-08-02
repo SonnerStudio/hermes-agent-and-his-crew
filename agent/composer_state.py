@@ -152,19 +152,10 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     is active, ``tool_calls`` is returned unchanged. Each button only *adds*
     behaviour, never removes existing capability.
 
-    Gates:
-    - **Button 1 (subagent_orchestration):** arms ``delegate_task`` — when the
-      flag is on, delegation is permitted (the model may spawn sub-agents); when
-      off, any ``delegate_task`` call is stripped (kept inert) so the agent runs
-      single-threaded as before.
-    - **Button 2 (voice_comms / Secretary):** planning layer only — no tool-call
-      mutation here (the Secretary plans *which* sub-agents get *what*, done
-      elsewhere in the Core). This gate is a no-op on the call list.
-    - **Button 3 (orchestration_mode / cloning):** clones — when on, duplicate
-      ``delegate_task`` calls with the same goal signature are *allowed*
-      (normally de-duplicated); we mark them so the broker can fan them out.
-    - **Button 4 (double_mode / harmonization):** sync layer — no tool-call
-      mutation; the orchestration topology is harmonized via the HUD/relay.
+    Pipeline (Phase 2b): the gates run as an ordered, isolated sequence
+    ``dispatch (A) -> clones (B) -> plan (C) -> sync (D)``. Every stage is
+    wrapped in its own ``try/except`` (Invariante 3): a failing stage passes
+    the batch through unchanged instead of breaking the others.
 
     Args:
         agent: the AIAgent instance (read-only access to ``_subagent_orchestration``
@@ -182,37 +173,72 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     # Cloning (Button 3) only makes sense when sub-agent orchestration
     # (Button 1) is armed — you cannot clone agents that are not spawned.
     _clone = bool(getattr(agent, "_orchestration_mode", False)) and _subagent
-    # voice_comms / double_mode have no tool-call mutation here (planning/sync
-    # layers live elsewhere), so they are intentionally unused in this gate.
+    # voice_comms / double_mode gates are intentionally no-ops on the call
+    # list here (planning / sync layers live in their own stages, C / D).
 
-    # Non-breaking default: if neither relevant button is active, the batch is
-    # returned unchanged (delegate_task remains freely callable, as in the
-    # unmodified Core — Button 1 does not *block* delegation, it *arms* the
-    # agent's own proactive sub-agent dispatch, which happens elsewhere).
+    # Non-breaking fast path: if no relevant button is active, return as-is.
     if not _subagent and not _clone:
         return tool_calls
 
-    filtered = []
-    seen_signatures = set()
-    for tc in tool_calls:
-        fn_name = _fn_name(tc)
-        if fn_name != "delegate_task":
-            filtered.append(tc)
-            continue
-        args = _fn_args(tc)
-        if _clone:
-            # Button 3 ON -> allow clones: skip de-duplication of identical
-            # delegate_task goals so the broker can fan them out in parallel.
-            sig = f"delegate_task:{args}"
-            if sig in seen_signatures:
-                try:
-                    tc._is_clone = True  # type: ignore[attr-defined]
-                except Exception:
-                    pass
-            seen_signatures.add(sig)
-        filtered.append(tc)
+    # Stage pipeline. Each stage is isolated; a failure passes through.
+    def _safe(stage_name, stage_fn, calls):
+        try:
+            return stage_fn(agent, calls)
+        except Exception:
+            # Invariante 3: one bad stage never breaks the others.
+            return calls
 
-    return filtered
+    # --- Stage A: proactive sub-agent dispatch (Button 1) ---
+    if _subagent:
+        from agent.composer_dispatch import (
+            should_dispatch,
+            build_delegation_call,
+            DispatchDecision,
+        )
+
+        decision = should_dispatch(agent, tool_calls)
+        if isinstance(decision, DispatchDecision) and decision.dispatch:
+            try:
+                synthetic = build_delegation_call(decision, tool_calls)
+                # Replace the coherent unit with the single batch call.
+                keep = [
+                    tc
+                    for i, tc in enumerate(tool_calls)
+                    if i not in decision.unit_indices
+                ]
+                keep.append(_wrap_as_tool_call(synthetic))
+                agent._proactive_dispatch_count = getattr(agent, "_proactive_dispatch_count", 0) + 1
+                return keep
+            except Exception:
+                pass
+
+    # --- Stage B: clone fan-out (Button 3) --- (stub, filled in Phase B)
+    # --- Stage C: secretary planning (Button 2) --- (stub, filled in Phase C)
+    # --- Stage D: harmonization sync (Button 4) — (stub, filled in Phase D)
+    # Stages B-D are no-ops until their phases land; the pipeline is ready.
+
+    return tool_calls
+
+
+def _wrap_as_tool_call(synthetic: dict):
+    """Wrap a synthetic dict into an object with ``.function`` + ``._is_clone``
+    compatible shape, matching what conversation_loop expects downstream.
+
+    The OpenAI-style tool_call objects in the loop expose ``function.name`` /
+    ``function.arguments`` / ``id``. ``types.SimpleNamespace`` gives us a
+    lightweight, attribute-friendly object without a fragile custom class.
+    """
+    from types import SimpleNamespace
+
+    fn = SimpleNamespace(
+        name=synthetic["function"]["name"],
+        arguments=synthetic["function"]["arguments"],
+    )
+    return SimpleNamespace(
+        id=synthetic.get("id"),
+        function=fn,
+        _is_clone=False,
+    )
 
 
 if __name__ == "__main__":
