@@ -35,20 +35,28 @@ def read_level() -> tuple[float, bool]:
                  "-i", dev, "-af", "aresample=16000,aformat=fltp,volumedetect", "-f", "null", "-"],
                 stderr=subprocess.PIPE, text=True, timeout=3,
             )
+            # No audio devices -> avfoundation errors out opening input.
             if "does not support" in proc.stderr or "Error opening" in proc.stderr:
                 last_err = proc.stderr.strip()
-                continue
+                continue  # try next device candidate
             for line in proc.stderr.splitlines():
                 if "mean_volume" in line:
-                    try:
-                        db = float(line.split(":")[-1].split("dB")[0].strip())
-                        return max(0.0, min(1.0, (db + 50.0) / 50.0)) * 100, True
-                    except ValueError:
-                        pass
-            return 0.0, True
+                    # Real ffmpeg volumedetect prints e.g.
+                    #   [Parsed_volumedetect_1 @ 0x...] mean_volume = -12.34 dB
+                    # Extract just the numeric value (the prefix contains ':' too).
+                    import re
+                    m = re.search(r"mean_volume\s*=\s*([-0-9.]+)", line)
+                    if m:
+                        try:
+                            db = float(m.group(1))
+                            return max(0.0, min(1.0, (db + 50.0) / 50.0)) * 100, True
+                        except ValueError:
+                            pass
+            return 0.0, True  # device ok but silent
         except Exception as e:
             last_err = str(e)
             continue
+    # All candidates failed -> no usable mic device
     if last_err:
         print(f"mic-level: all devices failed ({last_err[:80]})", file=sys.stderr)
     return 0.0, False
