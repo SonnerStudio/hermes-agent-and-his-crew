@@ -22,6 +22,27 @@ from typing import Any, Dict, List, Optional
 
 from hermes_constants import get_hermes_home
 
+# Module-level singleton: the HUD polls build_secretary_graph() every ~2s.
+# Reusing one SecretaryMemory instance (which has an mtime-based stale check)
+# avoids re-parsing the JSON store on every poll — the single biggest runtime
+# win for the E4 HUD hot path. We re-resolve the store path on each call so a
+# HERMES_HOME switch (e.g. in tests) picks up the new scope instead of a stale
+# cached instance pointing at an old temp dir.
+_SHARED_MEM: Any = None
+_SHARED_MEM_PATH: Any = None
+
+
+def _get_memory() -> Any:
+    global _SHARED_MEM, _SHARED_MEM_PATH
+    from agent.secretary_memory import SecretaryMemory, _store_path
+
+    expected = _store_path()
+    if _SHARED_MEM is not None and _SHARED_MEM_PATH == expected:
+        return _SHARED_MEM
+    _SHARED_MEM = SecretaryMemory()
+    _SHARED_MEM_PATH = expected
+    return _SHARED_MEM
+
 
 @dataclass
 class SecretaryNode:
@@ -77,9 +98,7 @@ def build_secretary_graph() -> Dict[str, Any]:
 
     # --- Routing-preference nodes (from secretary_memory) ---
     try:
-        from agent.secretary_memory import SecretaryMemory
-
-        mem = SecretaryMemory()
+        mem = _get_memory()
         learned = mem.prefetch().get("learned", {})
     except Exception:
         learned = {}
@@ -105,9 +124,8 @@ def build_secretary_graph() -> Dict[str, Any]:
     # This is the visible proof that the whole crew is self-improving, not just
     # the Secretary. ---
     try:
-        from agent.secretary_memory import SecretaryMemory
-
-        _mem = SecretaryMemory()
+        _mem = _get_memory()
+        _mem._load_if_stale()
         _outcomes = _mem._data.get("outcomes", [])
         _stage_counts: Dict[str, int] = {}
         for _o in _outcomes:
