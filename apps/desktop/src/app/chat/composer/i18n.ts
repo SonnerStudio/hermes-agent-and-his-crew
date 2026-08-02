@@ -6,7 +6,7 @@ export type Lang =
   | "au" | "ca" | "cn" | "cz" | "de" | "dk" | "en" | "es" | "fi"
   | "fr" | "gb" | "hu" | "il" | "in" | "it" | "jp" | "nl"
   | "no" | "pl" | "ru" | "sa" | "se" | "sk" | "tw" | "us"
-  | "vn" | "za" | "pt" | "ro" | "tr" | "el" | "ko" | "th" | "ua";
+  | "vn" | "za" | "pt" | "ro" | "tr" | "el" | "ko" | "th" | "ua" | "run";
 
 export const LANGS: { code: Lang; label: string; flag: string }[] = [
   { code: "de", label: "Deutsch", flag: "🇩🇪" },
@@ -43,6 +43,7 @@ export const LANGS: { code: Lang; label: string; flag: string }[] = [
   { code: "gb", label: "English (UK)", flag: "🇬🇧" },
   { code: "us", label: "English (US)", flag: "🇺🇸" },
   { code: "za", label: "English (ZA)", flag: "🇿🇦" },
+  { code: "run", label: "RUN", flag: "🌐" },
 ];
 
 type Dict = Record<string, string>;
@@ -173,13 +174,50 @@ const JA: Dict = {
   "mic.available": "マイクアクティブ",
 };
 
+// Elder Futhark transliteration for the RUN language option.
+const RUNE_MAP: Record<string, string> = {
+  a: "ᚨ", b: "ᛒ", c: "ᚲ", d: "ᛞ", e: "ᛖ", f: "ᚠ", g: "ᚷ", h: "ᚺ",
+  i: "ᛁ", j: "ᛃ", k: "ᚲ", l: "ᛚ", m: "ᛗ", n: "ᚾ", o: "ᛟ", p: "ᛈ",
+  q: "ᚲ", r: "ᚱ", s: "ᛋ", t: "ᛏ", u: "ᚢ", v: "ᚢ", w: "ᚹ", x: "ᚲ",
+  y: "ᛁ", z: "ᛋ",
+};
+
+function toRunic(text: string): string {
+  return text
+    .split("")
+    .map((ch) => {
+      const lower = ch.toLowerCase();
+
+      if (RUNE_MAP[lower]) {return RUNE_MAP[lower];}
+
+      // keep spaces, punctuation, digits as-is
+      return ch;
+    })
+    .join("");
+}
+
+// Runic: same meaning as English, but rendered in Elder Futhark runes.
+const RUN: Dict = {
+  "secretary.title": toRunic("Hermes Secretary"),
+  "secretary.sub": toRunic("Audio Communication"),
+  "panel.subagents": toRunic("Sub-Agent Team"),
+  "panel.clones": toRunic("Cloned Agents"),
+  "panel.harmony": toRunic("Harmonization and Agent Load"),
+  "btn.subagent": toRunic("Sub-Agent Orchestration"),
+  "btn.voice": toRunic("Voice Communication"),
+  "btn.orchestration": toRunic("Orchestration"),
+  "btn.double": toRunic("Double Mode"),
+  "mic.unavailable": toRunic("Microphone unavailable"),
+  "mic.available": toRunic("Microphone active"),
+};
+
 // Languages without a dedicated dictionary fall back to English via t().
 const TABLE: Record<Lang, Dict> = {
   de: DE, en: EN, fr: FR, es: ES, nl: NL, it: IT, pl: PL, cn: ZH, jp: JA,
   // The remaining 23 codes resolve to EN through t()'s fallback chain.
   au: EN, ca: EN, cz: EN, dk: EN, fi: EN, gb: EN, hu: EN, il: EN, in: EN,
   ko: EN, no: EN, pt: EN, ro: EN, ru: EN, sa: EN, se: EN, sk: EN, th: EN,
-  tr: EN, tw: EN, ua: EN, us: EN, vn: EN, za: EN, el: EN,
+  tr: EN, tw: EN, ua: EN, us: EN, vn: EN, za: EN, el: EN, run: RUN,
 };
 
 export function t(key: string, lang: Lang): string {
