@@ -1142,6 +1142,28 @@ def run_conversation(
     agent._last_compression_attempt_recorded = False
     agent._last_compression_attempt_in_place = None
 
+    # --- Composer button-state flags (SonnerStudio extension) ---
+    # Load the four desktop Composer buttons (sub-agent orchestration, voice
+    # comms / Secretary, orchestration mode, double mode) from
+    # ~/.hermes/composer-flags.json. Each flag is refreshed per turn and is
+    # isolated: a failure reading one flag must never break the conversation.
+    # No prompt-cache impact — flags are runtime-only, never written into the
+    # system message. See agent/composer_state.py + IMPLEMENTATION_PLAN_BUTTONS.md §9.
+    try:
+        from agent.composer_state import get_composer_flags
+
+        _flags = get_composer_flags()
+        agent._subagent_orchestration = bool(_flags.get("subagent_orchestration", False))
+        agent._voice_comms = bool(_flags.get("voice_comms", False))
+        agent._orchestration_mode = bool(_flags.get("orchestration_mode", False))
+        agent._double_mode = bool(_flags.get("double_mode", False))
+    except Exception:
+        # Safe default: all buttons off. Never let a flag read break a turn.
+        agent._subagent_orchestration = False
+        agent._voice_comms = False
+        agent._orchestration_mode = False
+        agent._double_mode = False
+
     # ── Per-turn setup (the prologue) ──
     # All once-per-turn setup — stdio guarding, retry-counter resets, user
     # message sanitization, todo/nudge hydration, system-prompt restore-or-
@@ -5928,6 +5950,20 @@ def run_conversation(
                 assistant_message.tool_calls = agent._deduplicate_tool_calls(
                     assistant_message.tool_calls
                 )
+                # ── Composer button gates (SonnerStudio extension) ──
+                # Apply the four desktop Composer button behaviours (sub-agent
+                # orchestration arm, cloning, etc.) to the tool-call batch.
+                # Non-breaking: with no button active the batch is unchanged.
+                # See agent/composer_state.py + IMPLEMENTATION_PLAN_BUTTONS.md §9.
+                try:
+                    from agent.composer_state import apply_composer_gates
+
+                    assistant_message.tool_calls = apply_composer_gates(
+                        agent, assistant_message.tool_calls
+                    )
+                except Exception:
+                    # Never let a gate failure break a turn.
+                    pass
 
                 # Mixed-batch invalid-name handling: collect the invalid
                 # calls now so the assistant message (built below) keeps

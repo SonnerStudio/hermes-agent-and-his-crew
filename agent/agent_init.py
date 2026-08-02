@@ -598,6 +598,14 @@ def init_agent(
     agent.skip_context_files = skip_context_files
     agent.load_soul_identity = load_soul_identity
     agent.pass_session_id = pass_session_id
+    # Composer button-state flags (SonnerStudio extension). These are loaded
+    # lazily from ~/.hermes/composer-flags.json by the conversation loop; they
+    # default to False here and are refreshed per turn. See agent/composer_state.py
+    # and IMPLEMENTATION_PLAN_BUTTONS.md §9. No prompt-cache impact (runtime only).
+    agent._subagent_orchestration = False
+    agent._voice_comms = False
+    agent._orchestration_mode = False
+    agent._double_mode = False
     agent.log_prefix_chars = log_prefix_chars
     agent.log_prefix = f"{log_prefix} " if log_prefix else ""
     # Store effective base URL for feature detection (prompt caching, reasoning, etc.)
