@@ -56,6 +56,7 @@ import { useSlashCompletions } from './hooks/use-slash-completions'
 import { useSessionStatusPresence } from './hooks/use-status-presence'
 import { ActionBadges } from './micro-actions'
 import { OrchestrationStatus } from './orchestration-status'
+import { LanguagePicker } from './LanguagePicker'
 import { chipTypedPathOnSpace, pathifyRefs } from './path-refs'
 import { QueuePanel } from './queue-panel'
 import {
@@ -1268,6 +1269,7 @@ export function ChatBar({
               the pop-out drag region. Same px as the strip above, so the two
               bracket the composer on one vertical line. */}
           <div className={cn(composerFloatingStrip, 'px-[5px] pt-1.5 empty:hidden')}>
+            <LanguagePicker />
             <OrchestrationStatus />
             <ContribSlot area={COMPOSER_AREAS.underside} />
           </div>

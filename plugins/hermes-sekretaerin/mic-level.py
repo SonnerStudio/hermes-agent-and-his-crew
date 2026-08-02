@@ -18,33 +18,39 @@ import time
 
 FF = "/Users/m4janfriske/.local/bin/ffmpeg"
 OUT = os.path.expanduser("~/.hermes/mic-level.json")
-# macOS CoreAudio via avfoundation: ":0" = first audio input device (here the
-# Sony 3-D Pulse headset "Externes Mikrofon"). ":default" can fail to resolve
-# after a device hot-plug, so we pin the index.
-DEV = ":0"
+# macOS CoreAudio via avfoundation. After a headset hot-plug the device index
+# (":0") can fail with I/O error until TCC permission is granted, and ":default"
+# may not resolve. We probe several device specs and use the first that opens.
+# Named devices need a trailing colon (avfoundation syntax: "Name:").
+DEV_CANDIDATES = ["Externes Mikrofon:", ":0", ":default", "Default:"]
 
 
 def read_level() -> tuple[float, bool]:
     """Sample 150ms of mic input, return (0-100 level, device_ok)."""
-    try:
-        proc = subprocess.run(
-            [FF, "-hide_banner", "-loglevel", "error", "-t", "0.15", "-f", "avfoundation",
-             "-i", DEV, "-af", "aresample=16000,aformat=fltp,volumedetect", "-f", "null", "-"],
-            stderr=subprocess.PIPE, text=True, timeout=3,
-        )
-        # No audio devices -> avfoundation errors out opening input.
-        if "does not support" in proc.stderr or "Error opening" in proc.stderr:
-            return 0.0, False
-        for line in proc.stderr.splitlines():
-            if "mean_volume" in line:
-                try:
-                    db = float(line.split(":")[-1].split("dB")[0].strip())
-                    return max(0.0, min(1.0, (db + 50.0) / 50.0)) * 100, True
-                except ValueError:
-                    pass
-        return 0.0, True  # device ok but silent
-    except Exception:
-        pass
+    last_err = ""
+    for dev in DEV_CANDIDATES:
+        try:
+            proc = subprocess.run(
+                [FF, "-hide_banner", "-loglevel", "error", "-t", "0.15", "-f", "avfoundation",
+                 "-i", dev, "-af", "aresample=16000,aformat=fltp,volumedetect", "-f", "null", "-"],
+                stderr=subprocess.PIPE, text=True, timeout=3,
+            )
+            if "does not support" in proc.stderr or "Error opening" in proc.stderr:
+                last_err = proc.stderr.strip()
+                continue
+            for line in proc.stderr.splitlines():
+                if "mean_volume" in line:
+                    try:
+                        db = float(line.split(":")[-1].split("dB")[0].strip())
+                        return max(0.0, min(1.0, (db + 50.0) / 50.0)) * 100, True
+                    except ValueError:
+                        pass
+            return 0.0, True
+        except Exception as e:
+            last_err = str(e)
+            continue
+    if last_err:
+        print(f"mic-level: all devices failed ({last_err[:80]})", file=sys.stderr)
     return 0.0, False
 
 

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { cn } from '@/lib/utils'
+import { t, getLang, type Lang } from './i18n'
 
 // Live task HUD rendered BELOW the composer text field (underside strip).
 // One bordered box per active composer button, each showing that button's real
@@ -106,6 +107,13 @@ export const OrchestrationStatus = () => {
   const [audio, setAudio] = useState<{ mic: number; speaker: number; mic_available: boolean }>({ mic: 0, speaker: 0, mic_available: false })
   const [modelLoaded, setModelLoaded] = useState(false)
   const [currentModel, setCurrentModel] = useState<string | null>(null)
+  const [lang, setLangState] = useState<Lang>(getLang())
+
+  useEffect(() => {
+    const onLang = (e: Event) => setLangState((e as CustomEvent<Lang>).detail)
+    window.addEventListener('sonnerstudio:lang', onLang as EventListener)
+    return () => window.removeEventListener('sonnerstudio:lang', onLang as EventListener)
+  }, [])
 
   useEffect(() => {
     let alive = true
@@ -191,7 +199,7 @@ export const OrchestrationStatus = () => {
       role="status"
     >
       {showTeam && (
-        <Box title="Sub-Agenten-Team">
+        <Box title={t('panel.subagents', lang)}>
           <div className="flex flex-col gap-1">
             {runningAgents.map(a => (
               <MiniBar key={a.id} label={a.purpose} pct={clampPct(Number(a.progress) || 0)} />
@@ -201,28 +209,28 @@ export const OrchestrationStatus = () => {
       )}
 
       {showVoice && (
-        <Box title="Audio-Kommunikation">
+        <Box title={t('secretary.sub', lang)}>
           <div className="flex items-center gap-2">
             <span aria-hidden className="grid h-6 w-6 place-items-center rounded-full bg-sky-500/20 text-[0.7rem]">
               🔊
             </span>
             <div className="flex flex-col">
-              <span className="text-[0.65rem] font-medium text-foreground">Hermes-Sekretärin</span>
+              <span className="text-[0.65rem] font-medium text-foreground">{t('secretary.title', lang)}</span>
               <span className="text-[0.55rem] text-muted-foreground">{voiceState}</span>
             </div>
           </div>
           <div className="mt-1 flex flex-col gap-1 border-t border-muted/20 pt-1">
-            <AudioBar label="Lautsprecher" pct={audio.speaker} tone="green" />
+            <AudioBar label={t('panel.subagents', lang)} pct={audio.speaker} tone="green" />
             <AudioBar label="Mikrofon" pct={audio.mic} tone="blue" />
             {!audio.mic_available && (
-              <span className="text-[0.5rem] text-amber-500/80">Kein Mikrofon verfügbar (kein Device/Permission)</span>
+              <span className="text-[0.5rem] text-amber-500/80">{t('mic.unavailable', lang)}</span>
             )}
           </div>
         </Box>
       )}
 
       {showClones && (
-        <Box title="Kopierte Agenten">
+        <Box title={t('panel.clones', lang)}>
           <div className="flex flex-col gap-0.5">
             {Object.entries(clones)
               .filter(([, n]) => n > 1)
@@ -237,10 +245,10 @@ export const OrchestrationStatus = () => {
       )}
 
       {showHarmony && (
-        <Box title="Harmonisierung &amp; Auslastung">
+        <Box title={t('panel.harmony', lang)}>
           <BigBar hint={modelLoaded ? `Modell: ${currentModel}` : 'kein Modell geladen'} pct={harmony} />
           <div className="mt-1 flex items-center justify-between border-t border-muted/20 pt-1">
-            <span className="text-[0.6rem] text-muted-foreground">Agenten-Auslastung</span>
+            <span className="text-[0.6rem] text-muted-foreground">{t('panel.harmony', lang)}</span>
             <span className="font-mono text-[0.65rem] tabular-nums text-muted-foreground">
               {runningAgents.length}/{MAX_AGENTS} · {utilization}%
             </span>
