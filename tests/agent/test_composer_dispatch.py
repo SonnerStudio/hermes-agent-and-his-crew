@@ -173,3 +173,85 @@ def test_gate_no_system_message_mutation():
     calls = [_tc("web_search", '{"q": str(i)}') for i in range(3)]
     composer_state.apply_composer_gates(a, calls)
     assert a.system_message == "STABLE_PROMPT_HASH_MARKER"
+
+
+# --- Phase B: clone fan-out (Button 3) ----------------------------------------
+
+
+def _dt(goal="solve it", context="", role="leaf", is_clone=False):
+    """Build a delegate_task tool call with a single goal (clone-eligible)."""
+    args = json.dumps({"goal": goal, "context": context, "role": role})
+    tc = _tc("delegate_task", args)
+    tc._is_clone = is_clone
+    return tc
+
+
+def test_clone_factor_1_is_noop():
+    a = _agent(button1=True)
+    a._orchestration_mode = True
+    a._clone_factor = 1
+    calls = [_dt()]
+    out = composer_dispatch.expand_clones(a, calls)
+    assert len(out) == 1
+    # Single call preserved, not rewritten into a batch.
+    assert json.loads(out[0].function.arguments).get("goal") == "solve it"
+
+
+def test_clone_factor_3_makes_3_tasks():
+    a = _agent(button1=True)
+    a._orchestration_mode = True
+    a._clone_factor = 3
+    calls = [_dt(goal="G", context="ctx")]
+    out = composer_dispatch.expand_clones(a, calls)
+    assert len(out) == 1
+    payload = json.loads(out[0].function.arguments)
+    assert "tasks" in payload
+    assert len(payload["tasks"]) == 3
+    # Each clone carries the independent-solution-path marker.
+    assert all("[clone 1/3" in payload["tasks"][0]["context"] for _ in [0])
+    assert "independent solution path" in payload["tasks"][0]["context"]
+    assert "independent solution path" in payload["tasks"][2]["context"]
+
+
+def test_clone_cap_at_4():
+    a = _agent(button1=True)
+    a._orchestration_mode = True
+    a._clone_factor = 99  # exceeds hard deckel
+    calls = [_dt()]
+    out = composer_dispatch.expand_clones(a, calls)
+    payload = json.loads(out[0].function.arguments)
+    assert len(payload["tasks"]) == 4  # capped
+
+
+def test_clone_requires_button1_armed():
+    # Button 3 on, Button 1 off -> no effect.
+    a = _agent(button1=False)
+    a._orchestration_mode = True
+    a._clone_factor = 3
+    calls = [_dt()]
+    out = composer_dispatch.expand_clones(a, calls)
+    assert len(out) == 1
+    assert "tasks" not in json.loads(out[0].function.arguments)
+
+
+def test_clone_button3_off_is_noop():
+    # Button 1 on, Button 3 off -> no clone fan-out.
+    a = _agent(button1=True)
+    a._orchestration_mode = False
+    a._clone_factor = 3
+    calls = [_dt()]
+    out = composer_dispatch.expand_clones(a, calls)
+    assert len(out) == 1
+    assert "tasks" not in json.loads(out[0].function.arguments)
+
+
+def test_clone_gate_integration_fans_out():
+    a = _agent(button1=True)
+    a._orchestration_mode = True
+    a._clone_factor = 2
+    calls = [_dt(goal="write code")]
+    out = composer_state.apply_composer_gates(a, calls)
+    assert len(out) == 1
+    payload = json.loads(out[0].function.arguments)
+    assert len(payload["tasks"]) == 2
+    assert "independent solution path" in payload["tasks"][0]["context"]
