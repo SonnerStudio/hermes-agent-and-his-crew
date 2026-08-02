@@ -45,6 +45,7 @@ class SecretaryPlan:
 
     units: List[PlanUnit] = field(default_factory=list)
     topology: str = "peer"  # "peer" | "managed"
+    directive: str = ""  # the Secretary's direct instruction to Hermes Agent
 
     def summary(self) -> str:
         """One-line HUD-friendly summary."""
@@ -65,6 +66,7 @@ class SecretaryPlan:
                     for u in self.units
                 ],
                 "topology": self.topology,
+                "directive": self.directive,
             },
             ensure_ascii=False,
         )
@@ -205,4 +207,20 @@ def plan_delegation(agent, tool_calls: List[Any]) -> Optional[SecretaryPlan]:
         return None
 
     topology = "managed" if managed else "peer"
-    return SecretaryPlan(units=units, topology=topology)
+    # The Secretary's direct instruction to Hermes Agent: tells the agent how
+    # it is orchestrating — this is the Secretary *acting*, not just planning.
+    # It is consumed by the loop as a tool-result prefix (never system_message),
+    # so it is a direct communication channel from the Secretary to Hermes Agent.
+    orch_n = sum(1 for u in units if u.role == "orchestrator")
+    if managed:
+        directive = (
+            f"Secretary (Managerin von Hermes Agent): {len(units)} Einheit(en) "
+            f"geplant, {orch_n} als Orchestrator. Ich koordiniere die Agenten — "
+            f"führe zuerst die priorisierten Einheiten aus, dann den Rest."
+        )
+    else:
+        directive = (
+            f"Secretary: {len(units)} Einheit(en) zur Peer-Synchronisation "
+            f"vorgemerkt. Kein aktives Eingreifen (Button 2 aus)."
+        )
+    return SecretaryPlan(units=units, topology=topology, directive=directive)
