@@ -233,23 +233,33 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     tool_calls = _safe("clones", expand_clones, tool_calls)
 
     # --- Stage C: secretary planning (Button 2) ---
-    # Produces a structured plan (agent._secretary_plan) without mutating the
-    # call list. The plan is for display + downstream Stages (D). It only
-    # attaches context, never writes system_message (Invariante 2).
-    from agent.composer_plan import plan_delegation
+    # Produces a structured plan (agent._secretary_plan + agent._secretary_directive)
+    # without mutating the call list. The plan is for display + downstream Stage D.
+    # The directive is the Secretary *acting* (direct comms to Hermes Agent),
+    # consumed as a tool-result prefix — never system_message (Invariante 2).
+    from agent.composer_plan import plan_delegation, SecretaryPlan
 
-    plan = _safe("plan", lambda a, c: plan_delegation(a, tool_calls), tool_calls)
-    if plan is not None:
+    try:
+        plan = plan_delegation(agent, tool_calls)
+    except Exception:
+        plan = None
+    if isinstance(plan, SecretaryPlan) and plan is not None:
         try:
             agent._secretary_plan = plan
+            agent._secretary_directive = plan.directive
         except Exception:
             pass
     # Note: Stage C intentionally does NOT rewrite tool_calls here (plan C:
     # without Button 1 there is nothing to delegate, so the plan is display-only;
     # with Button 1 the plan context is already mirrored into units in D).
 
-    # --- Stage D: harmonization sync (Button 4) — (stub, filled in Phase D)
-    # Stage D is a no-op until it lands; the pipeline is ready.
+    # --- Stage D: harmonization sync (Button 4) ---
+    # Decides the reconciliation topology (peer vs managed) from flags only,
+    # never from model text. peer => shared sync_context; managed => priority
+    # ordered two-batch split. Hard cap TOTAL_CHILDREN_CAP=8 (plan R2).
+    from agent.composer_sync import harmonize
+
+    tool_calls = _safe("sync", lambda a, c: harmonize(a, c, plan), tool_calls)
 
     return tool_calls
 
