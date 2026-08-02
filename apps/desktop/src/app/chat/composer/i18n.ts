@@ -95,8 +95,10 @@ const STORAGE_KEY = "sonnerstudio.lang";
 export function getLang(): Lang {
   if (typeof localStorage !== "undefined") {
     const v = localStorage.getItem(STORAGE_KEY) as Lang | null;
-    if (v && v in TABLE) return v;
+
+    if (v && v in TABLE) {return v;}
   }
+
   return "en";
 }
 

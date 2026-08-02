@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { cn } from '@/lib/utils'
-import { t, getLang, type Lang } from './i18n'
+
+import { getLang, type Lang, t } from './i18n'
 
 // Live task HUD rendered BELOW the composer text field (underside strip).
 // One bordered box per active composer button, each showing that button's real
@@ -112,6 +113,7 @@ export const OrchestrationStatus = () => {
   useEffect(() => {
     const onLang = (e: Event) => setLangState((e as CustomEvent<Lang>).detail)
     window.addEventListener('sonnerstudio:lang', onLang as EventListener)
+
     return () => window.removeEventListener('sonnerstudio:lang', onLang as EventListener)
   }, [])
 

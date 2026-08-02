@@ -1,7 +1,8 @@
 // Language picker for the SonnerStudio Hermes fork. Stores the choice in
 // localStorage; the OrchestrationStatus HUD reads it via getLang()/t().
 import { useState } from 'react'
-import { LANGS, getLang, setLang, type Lang } from './i18n'
+
+import { getLang, type Lang, LANGS, setLang } from './i18n'
 
 export function LanguagePicker() {
   const [lang, setLocal] = useState<Lang>(getLang())
@@ -18,12 +19,12 @@ export function LanguagePicker() {
       <span className="text-[0.6rem] text-muted-foreground">🌐</span>
       <select
         aria-label="Language"
-        value={lang}
-        onChange={(e) => choose(e.target.value as Lang)}
         className="bg-transparent text-[0.65rem] text-foreground outline-none"
+        onChange={(e) => choose(e.target.value as Lang)}
+        value={lang}
       >
         {LANGS.map((l) => (
-          <option key={l.code} value={l.code} className="bg-background text-foreground">
+          <option className="bg-background text-foreground" key={l.code} value={l.code}>
             {l.label}
           </option>
         ))}
