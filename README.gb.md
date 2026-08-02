@@ -15,49 +15,19 @@
 
 <p align="center">
   <a href="README.de.md"><img src="https://img.shields.io/badge/Lang-Deutsch-red?style=for-the-badge" alt="Deutsch"></a>
-  <a href="README.en.md"><img src="https://img.shields.io/badge/Lang-English-lightgrey?style=for-the-badge" alt="English"></a>
   <a href="README.fr.md"><img src="https://img.shields.io/badge/Lang-Fran%C3%A7ais-blue?style=for-the-badge" alt="Français"></a>
   <a href="README.es.md"><img src="https://img.shields.io/badge/Lang-Espa%C3%B1ol-orange?style=for-the-badge" alt="Español"></a>
-  <a href="README.it.md"><img src="https://img.shields.io/badge/Lang-Italiano-yellow?style=for-the-badge" alt="Italiano"></a>
   <a href="README.nl.md"><img src="https://img.shields.io/badge/Lang-Nederlands-green?style=for-the-badge" alt="Nederlands"></a>
-  <a href="README.pl.md"><img src="https://img.shields.io/badge/Lang-Polski-purple?style=for-the-badge" alt="Polski"></a>
-  <a href="README.pt.md"><img src="https://img.shields.io/badge/Lang-Portugu%C3%AAs-green?style=for-the-badge" alt="Português"></a>
-  <a href="README.ru.md"><img src="https://img.shields.io/badge/Lang-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-lightgrey?style=for-the-badge" alt="Русский"></a>
-  <a href="README.tr.md"><img src="https://img.shields.io/badge/Lang-T%C3%BCrk%C3%A7e-blue?style=for-the-badge" alt="Türkçe"></a>
-  <a href="README.el.md"><img src="https://img.shields.io/badge/Lang-%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC-orange?style=for-the-badge" alt="Ελληνικά"></a>
-  <a href="README.ko.md"><img src="https://img.shields.io/badge/Lang-%ED%95%9C%EA%B5%AD%EC%96%B4-red?style=for-the-badge" alt="한국어"></a>
-  <a href="README.ja.md"><img src="https://img.shields.io/badge/Lang-%E6%97%A5%E6%9C%AC%E8%AA%9E-blue?style=for-the-badge" alt="日本語"></a>
-  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/Lang-%E4%B8%AD%E6%96%87-red?style=for-the-badge" alt="中文"></a>
-  <a href="README.tw.md"><img src="https://img.shields.io/badge/Lang-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-blue?style=for-the-badge" alt="繁體中文"></a>
-  <a href="README.th.md"><img src="https://img.shields.io/badge/Lang-%E0%B9%84%E0%B8%97%E0%B8%A2-green?style=for-the-badge" alt="ไทย"></a>
-  <a href="README.vn.md"><img src="https://img.shields.io/badge/Lang-Ti%E1%BA%BFng%20Vi%E1%BB%87t-red?style=for-the-badge" alt="Tiếng Việt"></a>
-  <a href="README.cz.md"><img src="https://img.shields.io/badge/Lang-%C4%8Ce%C5%A1tina-blue?style=for-the-badge" alt="Čeština"></a>
-  <a href="README.sk.md"><img src="https://img.shields.io/badge/Lang-Sloven%C4%8Dina-purple?style=for-the-badge" alt="Slovenčina"></a>
-  <a href="README.hu.md"><img src="https://img.shields.io/badge/Lang-Magyar-orange?style=for-the-badge" alt="Magyar"></a>
-  <a href="README.ro.md"><img src="https://img.shields.io/badge/Lang-Rom%C3%A2n%C4%83-blue?style=for-the-badge" alt="Română"></a>
-  <a href="README.fi.md"><img src="https://img.shields.io/badge/Lang-Suomi-green?style=for-the-badge" alt="Suomi"></a>
-  <a href="README.dk.md"><img src="https://img.shields.io/badge/Lang-Dansk-red?style=for-the-badge" alt="Dansk"></a>
-  <a href="README.no.md"><img src="https://img.shields.io/badge/Lang-Norsk-blue?style=for-the-badge" alt="Norsk"></a>
-  <a href="README.se.md"><img src="https://img.shields.io/badge/Lang-Svenska-yellow?style=for-the-badge" alt="Svenska"></a>
-  <a href="README.il.md"><img src="https://img.shields.io/badge/Lang-%D7%A2%D7%91%D7%A8%D7%99%D7%AA-blue?style=for-the-badge" alt="עברית"></a>
-  <a href="README.in.md"><img src="https://img.shields.io/badge/Lang-%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80-orange?style=for-the-badge" alt="हिन्दी"></a>
-  <a href="README.sa.md"><img src="https://img.shields.io/badge/Lang-%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-green?style=for-the-badge" alt="العربية"></a>
-  <a href="README.ua.md"><img src="https://img.shields.io/badge/Lang-%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0-yellow?style=for-the-badge" alt="Українська"></a>
-  <a href="README.au.md"><img src="https://img.shields.io/badge/Lang-English%20%28AU%29-lightgrey?style=for-the-badge" alt="English (AU)"></a>
-  <a href="README.ca.md"><img src="https://img.shields.io/badge/Lang-English%20%28CA%29-lightgrey?style=for-the-badge" alt="English (CA)"></a>
-  <a href="README.gb.md"><img src="https://img.shields.io/badge/Lang-English%20%28UK%29-lightgrey?style=for-the-badge" alt="English (UK)"></a>
-  <a href="README.us.md"><img src="https://img.shields.io/badge/Lang-English%20%28US%29-lightgrey?style=for-the-badge" alt="English (US)"></a>
-  <a href="README.za.md"><img src="https://img.shields.io/badge/Lang-English%20%28ZA%29-lightgrey?style=for-the-badge" alt="English (ZA)"></a>
-  <a href="README.ur-pk.md"><img src="https://img.shields.io/badge/Lang-%D8%A7%D8%B1%D8%AF%D9%88-purple?style=for-the-badge" alt="اردو"></a>
+  <a href="README.md"><img src="https://img.shields.io/badge/Lang-English-lightgrey?style=for-the-badge" alt="English"></a>
 </p>
 
-> **Languages:** This README is available in 32 languages — [Deutsch](README.de.md), [English](README.en.md), [Français](README.fr.md), [Español](README.es.md), [Italiano](README.it.md), [Nederlands](README.nl.md), [Polski](README.pl.md), [Português](README.pt.md), [Русский](README.ru.md), [Türkçe](README.tr.md), [Ελληνικά](README.el.md), [한국어](README.ko.md), [日本語](README.ja.md), [中文](README.zh-CN.md), [繁體中文](README.tw.md), [ไทย](README.th.md), [Tiếng Việt](README.vn.md), [Čeština](README.cz.md), [Slovenčina](README.sk.md), [Magyar](README.hu.md), [Română](README.ro.md), [Suomi](README.fi.md), [Dansk](README.dk.md), [Norsk](README.no.md), [Svenska](README.se.md), [עברית](README.il.md), [हिन्दी](README.in.md), [العربية](README.sa.md), [Українська](README.ua.md), plus English variants AU/CA/UK/US/ZA and [اردو](README.ur-pk.md). The desktop app has a built-in language picker (🌐) with all of these.
+> **Languages:** This README is available in [Deutsch](README.de.md), [Français](README.fr.md), [Español](README.es.md), [Nederlands](README.nl.md). The desktop app has a built-in language picker (🌐) with these and more.
 
 **A SonnerStudio fork of [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research** — the self-improving AI agent, extended with a voice-driven **Hermes Secretary** and a visual **Composer-Control-HUD** for orchestrating sub-agents.
 
 This fork adds:
 
-- **Composer Control Buttons** — four toggle buttons in the desktop composer (sub-agent orchestration, voice communication, orchestration mode, double mode) with live state colors (red = inactive, yellow = provisioning, green = active).
+- **Composer Control Buttons** — four toggle buttons in the desktop composer (sub-agent orchestration, voice communication, orchestration mode, double mode) with live state colours (red = inactive, yellow = provisioning, green = active).
 - **Orchestration HUD** — four blue-bordered live panels under the composer input: *Sub-Agent Team*, *Hermes Secretary (Audio-Kommunikation)*, *Kopierte Agenten (Cloned Agents)*, and *Harmonisierung & Agentenauslastung*. Panels only appear when a real task is running — no demo placeholders.
 - **Hermes Secretary** — a voice layer that lets you talk to the agent. German TTS via **Kokoro** (`df_eva`, female, filmreif speed 0.9), STT via Whisper, and a headless microphone-level monitor (no visible terminal popup). The agent can delegate sub-agents to carry out spoken requests.
 - **MLX Runtime Proxy** — a local lazy proxy (`:1240`) that serves the Kokoro TTS, Whisper STT, and MLX chat models one at a time, so the 16 GB Mac mini stays within RAM limits.
@@ -217,7 +187,7 @@ For the full command lists, see the [CLI guide](https://hermes-agent.nousresearc
 
 ## Documentation
 
-All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
+All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs)**:
 
 | Section                                                                                             | What's Covered                                             |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
@@ -285,8 +255,8 @@ uv pip install -e ".[all,dev]"
 scripts/run_tests.sh
 ```
 
-Manual clone fallback (for throwaway clones/CI where you intentionally do not
-want the managed install layout):
+Manual clone fallback (for throwaway clones/CI where you intentionally do
+not want the managed install layout):
 
 Create the venv outside the cloned source tree — a venv inside the directory
 the agent operates from can be wiped by a relative-path command the agent runs

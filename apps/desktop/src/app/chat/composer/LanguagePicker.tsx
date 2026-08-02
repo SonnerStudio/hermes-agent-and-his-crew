@@ -1,5 +1,6 @@
 // Language picker for the SonnerStudio Hermes fork. Stores the choice in
 // localStorage; the OrchestrationStatus HUD reads it via getLang()/t().
+// Mirrors sonnerstudio.net's language picker — shows each language's flag.
 import { useState } from 'react'
 
 import { getLang, type Lang, LANGS, setLang } from './i18n'
@@ -16,7 +17,7 @@ export function LanguagePicker() {
 
   return (
     <div className="flex items-center gap-1 rounded-md border border-sky-500/40 bg-(--composer-fill) px-1.5 py-0.5">
-      <span className="text-[0.6rem] text-muted-foreground">🌐</span>
+      <span aria-hidden className="text-[0.6rem]">🌐</span>
       <select
         aria-label="Language"
         className="bg-transparent text-[0.65rem] text-foreground outline-none"
@@ -25,7 +26,7 @@ export function LanguagePicker() {
       >
         {LANGS.map((l) => (
           <option className="bg-background text-foreground" key={l.code} value={l.code}>
-            {l.label}
+            {l.flag} {l.label}
           </option>
         ))}
       </select>
