@@ -58,7 +58,11 @@
 
 Deze fork voegt toe:
 
-- **Composer Control-knoppen** — vier schakelknoppen in de desktop-composer (sub-agent-orchestratie, spraakcommunicatie, orchestratiemodus, dubbele modus) met live statuskleuren (rood = inactief, geel = inrichting, groen = actief).
+- **Composer Control Buttons** — vier wisselknoppen in de desktop-composer met live statuskleuren (rood = inactief, geel = provisioning, groen = actief) :
+  1. **Sub-agenten activeren** — activeert de gespecialiseerde AI-sub-agenten die autonoom deelopdrachten oppakken, elk met hun eigen gespecialiseerde vaardigheden, en continu leren van opdrachten en in de loop van de tijd.
+  2. **Secretaresse** — de beheerder van de agenten: plant en wijst taken toe, en als communicator biedt een spraakmodus (spraakinvoer/-uitvoer) met filmische audiokwaliteit (Kokoro `df_eva`, snelheid 0.9).
+  3. **Tijdelijk klonen** — laat agenten zich tijdelijk vermenigvuldigen voor de duur van een taak om soortgelijke taken tegelijkertijd te verwerken.
+  4. **Harmonisatie & orkestratie** — harmoniseert/synchroniseert ofwel de agenten binnen de taken (zonder de Secretaresse), of, wanneer de Secretaresse aan staat, worden de agenten door haar aangestuurd en samen met haar geharmoniseerd/gesynchroniseerd.
 - **Orchestration HUD** — vier live panelen met blauwe rand onder de composer-invoer: *Sub-agententeam*, *Hermes Secretaresse (Audiocommunicatie)*, *Gekloonde agenten (Cloned Agents)*, en *Harmonisatie & agentbelasting*. Panelen verschijnen alleen wanneer een echte taak draait — geen demoplaatshouders.
 - **Hermes Secretaresse** — een spraaklaag waarmee je met de agent kunt praten. Duitse TTS via **Kokoro** (`df_eva`, vrouwelijk, filmische snelheid 0.9), STT via Whisper, en een headless microfoonniveau-monitor (geen zichtbare terminalpopup). De agent kan sub-agenten delegeren om gesproken verzoeken uit te voeren.
 - **MLX Runtime Proxy** — een lokale lazy proxy (`:1240`) die de Kokoro TTS, Whisper STT en MLX chatmodellen één voor één bedient, zodat de 16 GB Mac mini binnen de RAM-limieten blijft.

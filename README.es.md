@@ -58,7 +58,11 @@
 
 Este fork añade:
 
-- **Botones de Control del Composer** — cuatro botones de conmutación en el composer de escritorio (orquestación de sub-agentes, comunicación por voz, modo de orquestación, modo doble) con colores de estado en vivo (rojo = inactivo, amarillo = provisioning, verde = activo).
+- **Composer Control Buttons** — cuatro botones de conmutación en el compositor de escritorio con colores de estado en vivo (rojo = inactivo, amarillo = aprovisionamiento, verde = activo) :
+  1. **Activar los sub-agentes** — activa los sub-agentes de IA especializados que asumen sub-tareas de forma autónoma, cada uno con sus propias capacidades especializadas, y aprenden continuamente de las tareas y con el tiempo.
+  2. **Secretaria** — la gestora de los agentes: planifica y asigna tareas, y como comunicadora proporciona un modo de voz (entrada/salida de voz) con audio de calidad cinematográfica (Kokoro `df_eva`, velocidad 0.9).
+  3. **Clonación temporal** — permite a los agentes multiplicarse temporalmente durante la duración de una tarea para procesar tareas similares simultáneamente.
+  4. **Armonización y orquestación** — armoniza/sincroniza ya sea los agentes dentro de las tareas (sin la Secretaria), o, cuando la Secretaria está activa, los agentes son dirigidos por ella y armonizados/sincronizados juntos con ella.
 - **Orchestration HUD** — cuatro paneles en vivo con borde azul bajo la entrada del composer: *Equipo sub-agentes*, *Hermes Secretaria (comunicación de audio)*, *Agentes clonados*, y *Armonización & carga de agentes*. Los paneles solo aparecen cuando una tarea real está en ejecución — sin marcadores de posición de demostración.
 - **Hermes Secretaria** — una capa de voz que te permite hablar con el agente. TTS en alemán vía **Kokoro** (`df_eva`, femenino, velocidad cinematográfica 0.9), STT vía Whisper, y un monitor de nivel de micrófono sin interfaz (sin ventana de terminal visible). El agente puede delegar sub-agentes para llevar a cabo las peticiones habladas.
 - **MLX Runtime Proxy** — un proxy local perezoso (`:1240`) que sirve los modelos Kokoro TTS, Whisper STT y MLX chat uno a la vez, para que el Mac mini de 16 GB se mantenga dentro de los límites de RAM.
