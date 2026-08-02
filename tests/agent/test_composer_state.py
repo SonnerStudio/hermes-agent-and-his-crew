@@ -92,11 +92,19 @@ def test_gate_clone_inert_without_subagent():
 
 
 def test_gate_clone_marks_duplicates():
+    """Phase A: Button 3 (cloning) is still a stub — no tool-call mutation.
+
+    The actual clone fan-out lands in Phase B (composer_dispatch.expand_clones).
+    Until then the gate must stay non-breaking: with both buttons on, the
+    batch passes through unchanged (no _is_clone marker is set in Phase A).
+    """
     agent = SimpleNamespace(_subagent_orchestration=True, _orchestration_mode=True)
     dup = [
         SimpleNamespace(function=SimpleNamespace(name="delegate_task", arguments='{"g":"same"}')),
         SimpleNamespace(function=SimpleNamespace(name="delegate_task", arguments='{"g":"same"}')),
     ]
     out = apply_composer_gates(agent, dup)
+    # Phase A stub: unchanged length, no clone marker yet.
     assert len(out) == 2
-    assert hasattr(out[1], "_is_clone")
+    # Button 3 fan-out is implemented in Phase B; here it is a no-op stub.
+    assert not getattr(out[1], "_is_clone", False)

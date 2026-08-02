@@ -606,6 +606,14 @@ def init_agent(
     agent._voice_comms = False
     agent._orchestration_mode = False
     agent._double_mode = False
+    # Phase 2b (Button 1) runtime counters — isolated, default safe.
+    agent._spawn_depth = 0
+    agent._proactive_dispatch_count = 0
+    agent._clone_factor = int(os.environ.get("HERMES_CLONE_FACTOR", "2"))
+    if agent._clone_factor < 1:
+        agent._clone_factor = 1
+    elif agent._clone_factor > 4:  # hard deckel (plan R2)
+        agent._clone_factor = 4
     agent.log_prefix_chars = log_prefix_chars
     agent.log_prefix = f"{log_prefix} " if log_prefix else ""
     # Store effective base URL for feature detection (prompt caching, reasoning, etc.)
