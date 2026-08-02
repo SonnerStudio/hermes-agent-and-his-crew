@@ -55,6 +55,7 @@ import { useComposerMicroActions } from './hooks/use-micro-actions'
 import { useSlashCompletions } from './hooks/use-slash-completions'
 import { useSessionStatusPresence } from './hooks/use-status-presence'
 import { LanguagePicker } from './LanguagePicker'
+import { LearningFooter } from './LearningFooter'
 import { ActionBadges } from './micro-actions'
 import { OrchestrationStatus } from './orchestration-status'
 import { chipTypedPathOnSpace, pathifyRefs } from './path-refs'
@@ -1265,6 +1266,9 @@ export function ChatBar({
               </div>
             </div>
           </ComposerPrimitive.Root>
+          {/* Learning-score footer: sits a little higher than the very bottom
+              edge, above the underside strip, as a status footer. */}
+          <LearningFooter />
           {/* Underside: chrome-free strip BELOW the composer. Outside the root
               for the same reason as the micro actions — it must not fall inside
               the pop-out drag region. Same px as the strip above, so the two

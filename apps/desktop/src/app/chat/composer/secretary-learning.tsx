@@ -16,7 +16,7 @@ const SECRETARY_URL = 'http://127.0.0.1:1240/secretary-learning'
 
 interface SecretaryNode {
   id: string
-  kind: 'routing' | 'skill'
+  kind: 'routing' | 'skill' | 'crew'
   label: string
   detail: string
   related: string[]
@@ -120,6 +120,7 @@ export const SecretaryLearning = () => {
   const edges = data.graph?.edges ?? []
   const routingNodes = nodes.filter(n => n.kind === 'routing')
   const skillNodes = nodes.filter(n => n.kind === 'skill')
+  const crewNodes = nodes.filter(n => n.kind === 'crew')
   const hasLearning = nodes.length > 0
   const mlx = data.mlx
 
@@ -172,6 +173,19 @@ export const SecretaryLearning = () => {
               >
                 {n.label}
               </span>
+            ))}
+          </div>
+        </Box>
+      )}
+
+      {crewNodes.length > 0 && (
+        <Box title={t('secretary.crew', lang)}>
+          <div className="flex flex-col gap-0.5">
+            {crewNodes.map(n => (
+              <div className="flex flex-col" key={n.id}>
+                <span className="truncate text-[0.6rem] text-foreground" title={n.label}>{n.label}</span>
+                <span className="text-[0.52rem] text-muted-foreground">{n.detail}</span>
+              </div>
             ))}
           </div>
         </Box>
