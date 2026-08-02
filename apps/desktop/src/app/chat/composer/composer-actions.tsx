@@ -118,7 +118,15 @@ const TOGGLES: ToggleSpec[] = [
   }
 ]
 
-function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (spec: ToggleSpec) => void; spec: ToggleSpec }) {
+function ComposerActionButton({
+  busy,
+  onRun,
+  spec
+}: {
+  busy: boolean
+  onRun: (spec: ToggleSpec) => void
+  spec: ToggleSpec
+}) {
   const active = useStore(spec.atom)
   const pending = useStore(spec.pendingAtom)
 

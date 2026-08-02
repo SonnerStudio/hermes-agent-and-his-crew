@@ -17,8 +17,4 @@ export const $orchestrationPending = atom(false)
 export const $doubleModePending = atom(false)
 export const $subagentOrchestrationPending = atom(false)
 
-export type ComposerButtonId =
-  | 'voice-comms'
-  | 'orchestration'
-  | 'double-mode'
-  | 'subagent-orchestration'
+export type ComposerButtonId = 'voice-comms' | 'orchestration' | 'double-mode' | 'subagent-orchestration'

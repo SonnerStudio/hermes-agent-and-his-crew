@@ -43,9 +43,7 @@ interface BoxProps {
 function Box({ title, children, className }: BoxProps) {
   return (
     <div className={cn(BOX, 'min-w-[11rem] flex-1', className)}>
-      <span className="text-[0.6rem] font-medium uppercase tracking-wide text-muted-foreground">
-        {title}
-      </span>
+      <span className="text-[0.6rem] font-medium uppercase tracking-wide text-muted-foreground">{title}</span>
       {children}
     </div>
   )
@@ -55,7 +53,9 @@ function MiniBar({ pct, label }: { pct: number; label: string }) {
   return (
     <div className="flex flex-col gap-0.5">
       <div className="flex items-center justify-between">
-        <span className="truncate text-[0.62rem] text-muted-foreground" title={label}>{label}</span>
+        <span className="truncate text-[0.62rem] text-muted-foreground" title={label}>
+          {label}
+        </span>
         <span className="ml-1 shrink-0 font-mono text-[0.6rem] tabular-nums text-muted-foreground">{pct}%</span>
       </div>
       <div className="h-1 w-full overflow-hidden rounded-full bg-muted/40">
@@ -86,7 +86,11 @@ function BigBar({ pct, hint }: { pct: number; hint?: string }) {
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <span className="font-mono text-[0.7rem] tabular-nums text-muted-foreground">{pct}%</span>
-        {hint && <span className="truncate text-[0.55rem] text-muted-foreground/70" title={hint}>{hint}</span>}
+        {hint && (
+          <span className="truncate text-[0.55rem] text-muted-foreground/70" title={hint}>
+            {hint}
+          </span>
+        )}
       </div>
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
         <div className="h-full rounded-full bg-sky-500 transition-[width] duration-500" style={{ width: `${pct}%` }} />
@@ -105,7 +109,11 @@ export const OrchestrationStatus = () => {
   const [clones, setClones] = useState<Record<string, number>>({})
   const [voiceActive, setVoiceActive] = useState(false)
   const [voiceState, setVoiceState] = useState<string>('bereit')
-  const [audio, setAudio] = useState<{ mic: number; speaker: number; mic_available: boolean }>({ mic: 0, speaker: 0, mic_available: false })
+  const [audio, setAudio] = useState<{ mic: number; speaker: number; mic_available: boolean }>({
+    mic: 0,
+    speaker: 0,
+    mic_available: false
+  })
   const [modelLoaded, setModelLoaded] = useState(false)
   const [currentModel, setCurrentModel] = useState<string | null>(null)
   const [lang, setLangState] = useState<Lang>(getLang())
@@ -122,25 +130,28 @@ export const OrchestrationStatus = () => {
 
     const sync = async () => {
       try {
-        const [orchRes, healthRes] = await Promise.all([
-          fetch(ORCH_URL),
-          fetch(HEALTH_URL),
-        ])
+        const [orchRes, healthRes] = await Promise.all([fetch(ORCH_URL), fetch(HEALTH_URL)])
 
-        if (!alive) {return}
+        if (!alive) {
+          return
+        }
 
         if (orchRes.ok) {
           const orch = await orchRes.json()
 
-          if (Array.isArray(orch?.agents)) {setAgents(orch.agents as AgentNode[])}
+          if (Array.isArray(orch?.agents)) {
+            setAgents(orch.agents as AgentNode[])
+          }
 
-          if (orch?.clones && typeof orch.clones === 'object') {setClones(orch.clones)}
+          if (orch?.clones && typeof orch.clones === 'object') {
+            setClones(orch.clones)
+          }
 
           if (orch?.audio && typeof orch.audio === 'object') {
             setAudio({
               mic: clampPct(Number(orch.audio.mic) || 0),
               speaker: clampPct(Number(orch.audio.speaker) || 0),
-              mic_available: Boolean(orch.audio.mic_available),
+              mic_available: Boolean(orch.audio.mic_available)
             })
           }
         }
@@ -174,9 +185,8 @@ export const OrchestrationStatus = () => {
 
     // Harmonization = mean progress of RUNNING agents only. Idle (none running)
     // => 0%, never a false 100% from already-finished agents.
-    const mean = running.length === 0
-      ? 0
-      : running.reduce((s, a) => s + clampPct(Number(a.progress) || 0), 0) / running.length
+    const mean =
+      running.length === 0 ? 0 : running.reduce((s, a) => s + clampPct(Number(a.progress) || 0), 0) / running.length
 
     return { utilization: util, harmony: clampPct(mean), runningAgents: running }
   }, [agents])
@@ -238,7 +248,9 @@ export const OrchestrationStatus = () => {
               .filter(([, n]) => n > 1)
               .map(([id, n]) => (
                 <div className="flex items-center justify-between text-[0.62rem]" key={id}>
-                  <span className="truncate text-muted-foreground" title={id}>{id}</span>
+                  <span className="truncate text-muted-foreground" title={id}>
+                    {id}
+                  </span>
                   <span className="ml-1 shrink-0 font-mono tabular-nums text-muted-foreground">×{n}</span>
                 </div>
               ))}
