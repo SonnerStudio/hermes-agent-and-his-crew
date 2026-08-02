@@ -176,6 +176,18 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
     # voice_comms / double_mode gates are intentionally no-ops on the call
     # list here (planning / sync layers live in their own stages, C / D).
 
+    # --- Stage C (always-on, display-only): Secretary planning (Button 2) ---
+    # Runs BEFORE the fast path so the plan is produced even when Button 1/3
+    # are off (plan is then purely for display). Never mutates tool_calls.
+    try:
+        from agent.composer_plan import plan_delegation
+
+        _plan = plan_delegation(agent, tool_calls)
+        if _plan is not None:
+            agent._secretary_plan = _plan
+    except Exception:
+        pass
+
     # Non-breaking fast path: if no relevant button is active, return as-is.
     if not _subagent and not _clone:
         return tool_calls
@@ -220,9 +232,24 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
 
     tool_calls = _safe("clones", expand_clones, tool_calls)
 
-    # --- Stage C: secretary planning (Button 2) --- (stub, filled in Phase C)
+    # --- Stage C: secretary planning (Button 2) ---
+    # Produces a structured plan (agent._secretary_plan) without mutating the
+    # call list. The plan is for display + downstream Stages (D). It only
+    # attaches context, never writes system_message (Invariante 2).
+    from agent.composer_plan import plan_delegation
+
+    plan = _safe("plan", lambda a, c: plan_delegation(a, tool_calls), tool_calls)
+    if plan is not None:
+        try:
+            agent._secretary_plan = plan
+        except Exception:
+            pass
+    # Note: Stage C intentionally does NOT rewrite tool_calls here (plan C:
+    # without Button 1 there is nothing to delegate, so the plan is display-only;
+    # with Button 1 the plan context is already mirrored into units in D).
+
     # --- Stage D: harmonization sync (Button 4) — (stub, filled in Phase D)
-    # Stages C-D are no-ops until their phases land; the pipeline is ready.
+    # Stage D is a no-op until it lands; the pipeline is ready.
 
     return tool_calls
 
