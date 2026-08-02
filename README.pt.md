@@ -58,7 +58,11 @@
 
 Este fork adiciona:
 
-- **Botões de Controlo do Composer** — quatro botões de alternância no compositor de ambiente de trabalho (orquestração de sub-agentes, comunicação por voz, modo de orquestração, modo duplo) com cores de estado em tempo real (vermelho = inativo, amarelo = provisionamento, verde = ativo).
+- **Botões de Controlo do Composer** — quatro botões de alternância no compositor de ambiente de trabalho com cores de estado em tempo real (vermelho = inativo, amarelo = provisionamento, verde = ativo) :
+  1. **Ativar os sub-agentes** — ativa os sub-agentes de IA especializados que assumem sub-tarefas autonomamente, cada um com suas próprias capacidades especializadas, e aprendem continuamente com as tarefas e ao longo do tempo.
+  2. **Secretária** — a gestora dos agentes: planeia e atribui tarefas, e como comunicadora fornece um modo de voz (entrada/saída de voz) com áudio de qualidade cinematográfica (Kokoro `df_eva`, velocidade 0.9).
+  3. **Clonagem temporária** — permite que os agentes se multipliquem temporariamente pela duração de uma tarefa para processar tarefas semelhantes simultaneamente.
+  4. **Harmonização & orquestração** — harmoniza/sincroniza ou os agentes dentro das tarefas (sem a Secretária), ou, quando a Secretária está ativa, os agentes são dirigidos por ela e harmonizados/sincronizados juntos com ela.
 - **Orchestration HUD** — quatro painéis ao vivo com borda azul por baixo da entrada do compositor: *Equipa de sub-agentes*, *Hermes Secretária (Comunicação Áudio)*, *Agentes clonados*, e *Harmonização e carga de agentes*. Os painéis só aparecem quando uma tarefa real está em execução — sem marcadores de demonstração.
 - **Hermes Secretária** — uma camada de voz que permite falar com o agente. TTS alemão via **Kokoro** (`df_eva`, feminino, velocidade cinematográfica 0.9), STT via Whisper, e um monitor de nível do microfone sem janela (sem popup de terminal visível). O agente pode delegar sub-agentes para executar pedidos falados.
 - **MLX Runtime Proxy** — um proxy local preguiçoso (`:1240`) que serve o TTS Kokoro, o STT Whisper e os modelos de chat MLX um de cada vez, para que o Mac mini de 16 GB se mantenha dentro dos limites de RAM.

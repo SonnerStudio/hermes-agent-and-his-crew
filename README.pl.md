@@ -58,12 +58,11 @@
 
 Ten fork dodaje:
 
-- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
-  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
-  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
-  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
-  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
-
+- **Composer Control Buttons** — cztery przyciski przełączające w kompozytorze pulpitu z kolorami stanu na żywo (czerwony = nieaktywny, żółty = provisioning, zielony = aktywny) :
+  1. **Aktywuj sub-agentów** — aktywuje wyspecjalizowanych sub-agentów AI, którzy autonomicznie przejmują pod-zadania, każdy ze swoimi specjalistycznymi umiejętnościami, i stale uczą się z zadań i z czasem.
+  2. **Sekretarka** — menedżerka agentów: planuje i przydziela zadania, a jako komunikatorka zapewnia tryb głosowy (wejście/wyjście głosowe) z dźwiękiem w jakości filmowej (Kokoro `df_eva`, prędkość 0.9).
+  3. **Tymczasowe klonowanie** — pozwala agentom tymczasowo się powielać na czas trwania zadania, aby przetwarzać podobne zadania jednocześnie.
+  4. **Harmonizacja & orkiestracja** — harmonizuje/synchronizuje albo agentów wewnątrz zadań (bez Sekretarki), albo, gdy Sekretarka jest aktywna, agenci są nią kierowani i harmonizowani/synchronizowani razem z nią.
 - **Orchestration HUD** — cztery niebiesko obramowane panele na żywo pod polem wejściowym kompozytora: *Zespół pod-agentów*, *Hermes Sekretarka (komunikacja audio)*, *Sklonowani agenci* oraz *Harmonizacja i obciążenie agentów*. Panele pojawiają się tylko wtedy, gdy rzeczywiście działa zadanie — bez demonstracyjnych wypełniaczy.
 - **Hermes Sekretarka** — warstwa głosowa pozwalająca rozmawiać z agentem. Synteza mowy (TTS) w języku niemieckim przez **Kokoro** (`df_eva`, żeński, filmowa prędkość 0.9), rozpoznawanie mowy (STT) przez Whisper oraz bezokienkowy monitor poziomu mikrofonu (bez widocznego wyskakującego terminala). Agent może delegować pod-agentów do realizacji wypowiedzianych próśb.
 - **MLX Runtime Proxy** — lokalny leniwy proxy (`:1240`), które obsługuje modele Kokoro TTS, Whisper STT oraz modele czatu MLX po jednym naraz, dzięki czemu Mac mini z 16 GB RAM mieści się w limitach pamięci.

@@ -58,15 +58,11 @@
 
 Tämä forkki lisää:
 
-- **Composer Control -painikkeet** — neljä vaihtopainiketta työpöytäcomposerissa (aliagenttien orkestrointi, äänikommunikaatio, orkestrointitila, kaksoistila), joissa on reaaliaikaiset tilavärit (punainen = passiivinen, keltainen = valmistelu, vihreä = aktiivinen).
-- **Orkestrointi-HUD** — neljä sinisellä reunustettua reaaliaikaista paneelia composerin syötekentän alla: *Aliagenttitiimi*, *Hermes Sihteeri (Äänikommunikointi)*, *Kloonatut agentit* ja *Harmonisointi ja agenttikuorma*. Paneelit näkyvät vain, kun todellinen tehtävä on käynnissä — ei demotäytteitä.
-- **Hermes Sihteeri** — äänikerros, jonka avulla voit puhua agentille. Saksalainen TTS **Kokoron** kautta (`df_eva`, naisääni, elokuvamainen nopeus 0.9), STT Whisperin kautta ja headless-mikrofonitasomonitori (ei näkyvää terminaali-ikkunaa). Agentti voi delegoida alihtehtäviä aloanteille puhuttujen pyyntöjen toteuttamiseksi.
-- **MLX Runtime -proxy** — paikallinen laiska proxy (`:1240`), joka tarjoilee Kokoro TTS:n, Whisper STT:n ja MLX-keskustelumallit yksi kerrallaan, jotta 16 Gt:n Mac mini pysyy RAM-rajojen sisällä.
-
-> **Huomautus:** MLX-ajonaika, Kokoro-saksalainen TTS ja Hermes Sihteerin ääniputki on viritetty Apple Siliconille (macOS). Katso asennusohjeet kohdasta `plugins/hermes-sekretaerin/`.
-
----
-
+- **Composer Control Buttons** — neljä vaihtokytkintä työpöytäkompositionissa reaaliaikaisilla tilaväreillä (punainen = inaktiivinen, keltainen = provisioning, vihreä = aktiivinen) :
+  1. **Aktivoi sub-agentit** — aktivoi erikoistuneet AI-sub-agentit, jotka ottavat alitehtäviä itsenäisesti, kukin omilla erikoistaitoillaan, ja oppivat jatkuvasti tehtävistä ja ajan myötä.
+  2. **Sihteeri** — agenttien esimies: suunnittelee ja jakaa tehtäviä, ja viestijänä tarjoaa puhetilan (puheen syöttö/tuotto) elokuvalaatuisella äänellä (Kokoro `df_eva`, nopeus 0.9).
+  3. **Väliaikainen kloonaus** — antaa agenttien lisääntyä väliaikaisesti tehtävän keston ajaksi käsitelläkseen samankaltaisia tehtäviä samanaikaisesti.
+  4. **Harmonisointi & orkestraatio** — harmonisoi/synkronoi joko agentit tehtävien sisällä (ilman Sihteeriä), tai, kun Sihteeri on päällä, agentteja ohjaa hän ja ne harmonisoidaan/synkronoidaan yhdessä hänen kanssaan.
 ## Pika-asennus
 
 ### Linux, macOS, WSL2, Termux

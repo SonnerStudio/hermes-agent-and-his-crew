@@ -58,12 +58,11 @@
 
 Denne forken legger til:
 
-- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
-  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
-  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
-  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
-  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
-
+- **Composer Control Buttons** — fire vekselknapper i desktop-kompositøren med live-statusfarger (rød = inaktiv, gul = provisioning, grønn = aktiv) :
+  1. **Aktiver sub-agenter** — aktiverer de spesialiserte AI-sub-agentene som selvstendig tar deloppgaver, hver med sine egne spesialiserte ferdigheter, og løpende lærer av oppgaver og over tid.
+  2. **Sekretær** — agentenes leder: planlegger og tildeler oppgaver, og som kommunikator leverer en taletilstand (taleinntasting/uttasting) med lyd i filmkvalitet (Kokoro `df_eva`, hastighet 0.9).
+  3. **Midlertidig kloning** — lar agenter midlertidig forme seg i varigheten av en oppgave for å behandle lignende oppgaver samtidig.
+  4. **Harmonisering & orkestrering** — harmoniserer/synkroniserer enten agentene innenfor oppgavene (uten Sekretæren), eller, når Sekretæren er på, styres agentene av henne og harmoniseres/synkroniseres sammen med henne.
 - **Orchestration HUD** — fire blåkantede live-paneler under composer-inndatafeltet: *Underagentteam*, *Hermes Sekretær (lyd-kommunikasjon)*, *Klonede agenter*, og *Harmonisering og agentbelastning*. Panelene vises bare når en ekte oppgave kjører — ingen demo-plassholdere.
 - **Hermes Sekretær** — et tale-lag som lar deg snakke med agenten. Tysk TTS via **Kokoro** (`df_eva`, kvinnelig, filmreif hastighet 0.9), STT via Whisper, og en headless mikrofonnivå-overvåker (intet synlig terminalvindu). Agenten kan delegere underagenter for å utføre talte forespørsler.
 - **MLX Runtime Proxy** — en lokal lazy-proxy (`:1240`) som betjener Kokoro TTS, Whisper STT og MLX chat-modeller én om gangen, slik at Mac mini med 16 GB holder seg innenfor RAM-grensene.

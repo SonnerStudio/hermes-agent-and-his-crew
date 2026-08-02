@@ -58,12 +58,11 @@
 
 Tento fork pridáva:
 
-- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
-  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time.
-  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks, and as communicator provides a speech mode (voice in / voice out) with film-quality audio (Kokoro `df_eva`, speed 0.9).
-  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
-  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her.
-
+- **Composer Control Buttons** — štyri prepínacie tlačidlá v desktopovom kompozítoru s farbami stavu v reálnom čase (červená = neaktívna, žltá = provisioning, zelená = aktívna) :
+  1. **Aktivovať sub-agentov** — aktivuje špecializovaných AI-sub-agentov, ktorí samostatne preberajú čiastkové úlohy, každý so svojimi špecializovanými schopnosťami, a neustále sa učia z úloh a v priebehu času.
+  2. **Sekretárka** — manažérka agentov: plánuje a prideľuje úlohy a ako komunikátorka poskytuje hlasový režim (hlasový vstup/výstup) s audiom vo filmovej kvalite (Kokoro `df_eva`, rýchlosť 0.9).
+  3. **Dočasné klonovanie** — umožňuje agentom dočasne sa rozmnožiť na dobu trvania úlohy, aby spracovávali podobné úlohy súčasne.
+  4. **Harmonizácia & orchesterácia** — harmonizuje/synchronizuje buď agentov vnútri úloh (bez Sekretárky), alebo, keď je Sekretárka aktívna, agenti sú riadení ňou a harmonizovaní/synchronizovaní spolu s ňou.
 - **Orchestration HUD** — štyri modro orámované živé panely pod vstupom composere: *Tím sub-agentov*, *Hermes Sekretárka (audiokomunikácia)*, *Klonovaní agenti* a *Harmonizácia a záťaž agentov*. Panely sa zobrazia len vtedy, keď beží skutočná úloha — žiadne demoverstné placeholdery.
 - **Hermes Sekretárka** — hlasová vrstva, ktorá vám umožňuje rozprávať sa s agentom. Nemecké TTS cez **Kokoro** (`df_eva`, ženský hlas, filmová rýchlosť 0.9), STT cez Whisper a bezokienkový monitor hladiny mikrofónu (bez viditeľného vyskakovacieho okna terminálu). Agent môže delegovať sub-agentov na vykonanie hlasom zadaných požiadaviek.
 - **MLX Runtime Proxy** — lokálny lenivý proxy server (`:1240`), ktorý poskytuje Kokoro TTS, Whisper STT a MLX chat modely vždy len jeden naraz, aby Mac mini s 16 GB RAM zostal v rámci limitov pamäte.
