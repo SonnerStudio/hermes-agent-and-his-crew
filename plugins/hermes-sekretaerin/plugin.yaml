@@ -1,0 +1,12 @@
+name: hermes-sekretaerin
+version: 1.0.0
+description: "Hermes-Sekretärin — sprachgesteuerte Audio-Kommunikation mit dem Hermes-Agenten. Startet einen lokalen MLX-Runtime-Proxy (TTS/STT/Modell), misst Mikrofon- und Lautsprecher-Pegel, und lässt den Agenten per Sprache Sub-Agenten zur Aufgabenumsetzung einteilen. Deutsche Stimme: Kokoro TTS (df_eva, weiblich)."
+author: "Jan Friske / SonnerStudio"
+kind: standalone
+platforms:
+  - macos
+provides_tools:
+  - sekretaerin_toggle
+  - sekretaerin_status
+hooks:
+  - on_session_end
