@@ -85,8 +85,8 @@ const TOGGLES: ToggleSpec[] = [
     pendingAtom: $subagentOrchestrationPending,
     icon: 'type-hierarchy',
     id: 'subagent-orchestration',
-    label: 'Orchestrierte Subagentenverwendung scharf schalten',
-    tip: 'Orchestrierte Subagenten — Mehrfach-Delegation an Unteragenten scharf schalten',
+    label: 'Sub-Agenten aktivieren',
+    tip: 'Sub-Agenten aktivieren — Mehrfach-Delegation an spezialisierte Unteragenten scharf schalten',
     method: 'subagent_orchestration.toggle'
   },
   {
