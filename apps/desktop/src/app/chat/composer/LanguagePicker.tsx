@@ -16,11 +16,11 @@ export function LanguagePicker() {
   }
 
   return (
-    <div className="flex items-center gap-1 rounded-md border border-sky-500/40 bg-(--composer-fill) px-1.5 py-0.5">
+    <div className="flex w-full items-center gap-1 rounded-md border border-(--ui-stroke-tertiary) bg-(--ui-control-background) px-1.5 py-1">
       <span aria-hidden className="text-[0.6rem]">🌐</span>
       <select
         aria-label="Language"
-        className="bg-transparent text-[0.65rem] text-foreground outline-none"
+        className="w-full bg-transparent text-[0.7rem] text-foreground outline-none"
         onChange={(e) => choose(e.target.value as Lang)}
         value={lang}
       >

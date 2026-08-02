@@ -1,0 +1,22 @@
+Hermes Agent and his Crew (with Sub-Agents)
+===========================================
+
+This software is a fork of **Hermes Agent** by Nous Research
+(https://github.com/NousResearch/hermes-agent), maintained by SonnerStudio
+(https://www.sonnerstudio.net).
+
+Original work:
+  Copyright (c) Nous Research
+  Licensed under the MIT License — see LICENSE.
+
+This fork:
+  Copyright (c) SonnerStudio
+  Licensed under the MIT License — see LICENSE.
+
+The MIT License permits redistribution and modification, including as a fork,
+provided the copyright notice and permission notice are retained. This NOTICE
+files preserves attribution to the upstream authors as recommended by the
+MIT License for derived works.
+
+Upstream: https://github.com/NousResearch/hermes-agent
+Fork:     https://github.com/SonnerStudio/hermes-agent-and-his-crew

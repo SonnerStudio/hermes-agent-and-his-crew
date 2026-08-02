@@ -5,6 +5,7 @@ import type * as React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
+import { LanguagePicker } from '@/app/chat/composer/LanguagePicker'
 import { PlatformAvatar } from '@/app/messaging/platform-icon'
 import { Button } from '@/components/ui/button'
 import { Codicon } from '@/components/ui/codicon'
@@ -1218,6 +1219,13 @@ export function ChatSidebar({
                 )
               })}
             </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* SonnerStudio: language picker (🌐 + flags) pinned to the top of the sidebar */}
+        <SidebarGroup className="shrink-0 p-0 pb-1 pt-1">
+          <SidebarGroupContent>
+            <LanguagePicker />
           </SidebarGroupContent>
         </SidebarGroup>
 
