@@ -69,6 +69,7 @@ import {
   RICH_INPUT_SLOT
 } from './rich-editor'
 import { useComposerScope } from './scope'
+import { SecretaryLearning } from './secretary-learning'
 import { ComposerStatusStack } from './status-stack'
 import { CodingStatusRow } from './status-stack/coding-row'
 import { extractClipboardImageBlobs, openDirectiveScope } from './text-utils'
@@ -1271,6 +1272,7 @@ export function ChatBar({
           <div className={cn(composerFloatingStrip, 'px-[5px] pt-1.5 empty:hidden')}>
             <LanguagePicker />
             <OrchestrationStatus />
+            <SecretaryLearning />
             <ContribSlot area={COMPOSER_AREAS.underside} />
           </div>
         </div>
