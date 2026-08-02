@@ -100,6 +100,34 @@ def build_secretary_graph() -> Dict[str, Any]:
             detail=f"Präferiert: {topo}, clone_factor={cf}",
         )
 
+    # --- Crew-stage nodes: show that Sub-Agents, Planner, AND Secretary all
+    # learn (shared crew memory, tagged stage="subagent"/"planner"/"secretary").
+    # This is the visible proof that the whole crew is self-improving, not just
+    # the Secretary. ---
+    try:
+        from agent.secretary_memory import SecretaryMemory
+
+        _mem = SecretaryMemory()
+        _outcomes = _mem._data.get("outcomes", [])
+        _stage_counts: Dict[str, int] = {}
+        for _o in _outcomes:
+            _s = _o.get("stage", "secretary")
+            _stage_counts[_s] = _stage_counts.get(_s, 0) + 1
+        _stage_labels = {
+            "subagent": "Sub-Agenten (Button 1)",
+            "planner": "Planungsagent (Button 2)",
+            "secretary": "Sekretärin (Button 2)",
+        }
+        for _s, _c in _stage_counts.items():
+            nodes[f"crew:{_s}"] = SecretaryNode(
+                id=f"crew:{_s}",
+                kind="crew",
+                label=_stage_labels.get(_s, _s),
+                detail=f"{_c} gelernt(e) Entscheidung(en)",
+            )
+    except Exception:
+        pass
+
     # --- Skill nodes (from ~/.hermes/secretary/skills/) ---
     for skill_md in _iter_secretary_skills():
         name = _skill_label(skill_md)
