@@ -43,19 +43,41 @@ class SecretaryMemory:
         self._path = Path(path) if path else _store_path()
         self._lock = threading.RLock()
         self._data: Dict[str, Any] = {"outcomes": [], "learned": {}}
+        self._loaded_mtime: Optional[float] = None
         self._load()
 
     # ── persistence (atomic, like Core) ──────────────────────────────────
 
-    def _load(self) -> None:
+    def _load_if_stale(self) -> None:
+        """Reload only if the backing file changed on disk (mtime-based cache).
+
+        The Secretary learning graph + footer poll this store every ~2s. Without
+        a staleness check we re-parse the JSON on every poll even though writes
+        happen rarely (only when a delegation resolves). This is the single
+        biggest runtime win for the E4 HUD hot path.
+        """
+        try:
+            mtime = self._path.stat().st_mtime if self._path.exists() else None
+        except OSError:
+            mtime = None
+        if mtime == self._loaded_mtime:
+            return  # unchanged — keep in-memory data, skip disk read
         try:
             if self._path.exists():
                 with open(self._path, "r", encoding="utf-8") as fh:
                     self._data = json.load(fh)
                 if not isinstance(self._data, dict):
                     self._data = {"outcomes": [], "learned": {}}
+            else:
+                self._data = {"outcomes": [], "learned": {}}
+            self._loaded_mtime = mtime
         except (OSError, json.JSONDecodeError):
             self._data = {"outcomes": [], "learned": {}}
+            self._loaded_mtime = mtime
+
+    def _load(self) -> None:
+        self._loaded_mtime = None  # force a fresh read on next access
+        self._load_if_stale()
 
     def _save(self) -> None:
         self._path.parent.mkdir(parents=True, exist_ok=True)
@@ -63,6 +85,12 @@ class SecretaryMemory:
         with open(tmp, "w", encoding="utf-8") as fh:
             json.dump(self._data, fh, ensure_ascii=False, indent=2)
         tmp.replace(self._path)
+        # Refresh our cached mtime so the next poll sees the fresh write
+        # (don't skip the just-written data on the very next read).
+        try:
+            self._loaded_mtime = self._path.stat().st_mtime
+        except OSError:
+            self._loaded_mtime = None
 
     # ── learning API (mirrors MemoryManager.sync_turn) ─────────────────────
 
@@ -138,6 +166,7 @@ class SecretaryMemory:
     def get_learned_routing(self, units: int = 1) -> Dict[str, Any]:
         """Return the learned preferred config for a given unit count."""
         with self._lock:
+            self._load_if_stale()
             learned = self._data.get("learned", {})
             if units <= 2:
                 key = "small"
@@ -162,6 +191,7 @@ class SecretaryMemory:
         the absolute score and how many decisions fed it.
         """
         with self._lock:
+            self._load_if_stale()
             outcomes = self._data.get("outcomes", [])
         from collections import Counter
 
@@ -216,6 +246,7 @@ class SecretaryMemory:
     def prefetch(self) -> Dict[str, Any]:
         """Lightweight read of learned state (mirrors MemoryManager.prefetch)."""
         with self._lock:
+            self._load_if_stale()
             return {
                 "learned": self._data.get("learned", {}),
                 "outcome_count": len(self._data.get("outcomes", [])),
@@ -223,4 +254,5 @@ class SecretaryMemory:
 
     def count(self) -> int:
         with self._lock:
+            self._load_if_stale()
             return len(self._data.get("outcomes", []))
