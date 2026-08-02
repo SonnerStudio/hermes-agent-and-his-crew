@@ -58,7 +58,11 @@
 
 Bản fork này bổ sung:
 
-- **Nút điều khiển Composer (Composer Control Buttons)** — bốn nút chuyển đổi (toggle) trong composer của desktop (điều phối tiểu-agent, giao tiếp giọng nói, chế độ điều phối, chế độ kép) với màu trạng thái trực tiếp (đỏ = không hoạt động, vàng = đang cung cấp/dựng, xanh lá = đang hoạt động).
+- **Composer Control Buttons** — bốn nút chuyển đổi trong trình soạn thảo máy tính để bàn với màu trạng thái trực tiếp (đỏ = không hoạt động, vàng = đang chuẩn bị, xanh lá = hoạt động) :
+  1. **Kích hoạt các sub-agent** — kích hoạt các sub-agent AI chuyên biệt tự động đảm nhận các nhiệm vụ con, mỗi agent có năng lực chuyên môn riêng và liên tục học hỏi từ các nhiệm vụ và theo thời gian.
+  2. **Thư ký (Secretary)** — người quản lý các agent: lập kế hoạch và phân công nhiệm vụ, và với tư cách là người giao tiếp cung cấp chế độ giọng nói (đầu vào/đầu ra giọng nói) với âm thanh chất lượng điện ảnh (Kokoro `df_eva`, tốc độ 0.9).
+  3. **Nhân bản tạm thời** — cho phép các agent tự nhân bản tạm thời trong thời gian thực hiện một nhiệm vụ để xử lý các nhiệm vụ tương tự đồng thời.
+  4. **Hài hòa & điều phối** — điều hòa/đồng bộ hóa các agent trong các nhiệm vụ (không có Thư ký), hoặc, khi Thư ký bật, các agent được cô ấy điều khiển và được hài hòa/đồng bộ hóa cùng với cô ấy.
 - **Orchestration HUD** — bốn bảng trực tiếp có viền màu xanh dương bên dưới ô nhập composer: *Đội ngũ tiểu-agent (Sub-Agent Team)*, *Hermes Thư Ký (Giao tiếp âm thanh)*, *Các agent nhân bản (Cloned Agents)*, và *Sự hài hòa và tải agent (Harmonisierung & Agentenauslastung)*. Các bảng chỉ xuất hiện khi một tác vụ thực sự đang chạy — không có trình giữ chỗ (placeholder) giả lập.
 - **Hermes Thư Ký (Hermes Secretary)** — một lớp giọng nói cho phép bạn nói chuyện với agent. TTS tiếng Đức qua **Kokoro** (`df_eva`, nữ, tốc độ filmreif 0.9), STT qua Whisper, và một trình giám sát mức micrô không giao diện (headless, không có cửa sổ terminal hiện lên). Agent có thể ủy quyền cho các tiểu-agent thực hiện các yêu cầu bằng lời nói.
 - **MLX Runtime Proxy** — một proxy lazy cục bộ (`:1240`) phục vụ lần lượt các mô hình Kokoro TTS, Whisper STT, và MLX chat, để Mac mini 16 GB luôn nằm trong giới hạn RAM.
