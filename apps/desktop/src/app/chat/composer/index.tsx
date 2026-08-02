@@ -54,7 +54,6 @@ import { useEmojiCompletions } from './hooks/use-emoji-completions'
 import { useComposerMicroActions } from './hooks/use-micro-actions'
 import { useSlashCompletions } from './hooks/use-slash-completions'
 import { useSessionStatusPresence } from './hooks/use-status-presence'
-import { LanguagePicker } from './LanguagePicker'
 import { LearningFooter } from './LearningFooter'
 import { ActionBadges } from './micro-actions'
 import { OrchestrationStatus } from './orchestration-status'
@@ -1274,7 +1273,7 @@ export function ChatBar({
               the pop-out drag region. Same px as the strip above, so the two
               bracket the composer on one vertical line. */}
           <div className={cn(composerFloatingStrip, 'px-[5px] pt-1.5 empty:hidden')}>
-            <LanguagePicker />
+            {/* Language picker moved to the sidebar top (SonnerStudio fork). */}
             <OrchestrationStatus />
             <SecretaryLearning />
             <ContribSlot area={COMPOSER_AREAS.underside} />

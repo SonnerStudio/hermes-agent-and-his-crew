@@ -105,6 +105,9 @@ export const OrchestrationStatus = () => {
   const [clones, setClones] = useState<Record<string, number>>({})
   const [voiceActive, setVoiceActive] = useState(false)
   const [voiceState, setVoiceState] = useState<string>('bereit')
+  const [subagentActive, setSubagentActive] = useState(false)
+  const [cloneActive, setCloneActive] = useState(false)
+  const [harmonyActive, setHarmonyActive] = useState(false)
   const [audio, setAudio] = useState<{ mic: number; speaker: number; mic_available: boolean }>({ mic: 0, speaker: 0, mic_available: false })
   const [modelLoaded, setModelLoaded] = useState(false)
   const [currentModel, setCurrentModel] = useState<string | null>(null)
@@ -151,6 +154,9 @@ export const OrchestrationStatus = () => {
           const vc = btns['voice_comms.toggle']
           setVoiceActive(Boolean(vc?.active))
           setVoiceState(vc?.active ? (vc?.pending ? 'startet…' : 'aktiv — hört zu') : 'bereit')
+          setSubagentActive(Boolean(btns['subagent_orchestration.toggle']?.active))
+          setCloneActive(Boolean(btns['orchestration.toggle']?.active))
+          setHarmonyActive(Boolean(btns['double_mode.toggle']?.active))
           setModelLoaded(Boolean(h?.current_model))
           setCurrentModel(h?.current_model ?? null)
         }
@@ -181,11 +187,13 @@ export const OrchestrationStatus = () => {
     return { utilization: util, harmony: clampPct(mean), runningAgents: running }
   }, [agents])
 
-  // Show the strip only while something is genuinely active.
-  const showTeam = runningAgents.length > 0
+  // Show the strip only while something is genuinely active. Each box appears
+  // as soon as its OWN button is armed (real state from /health), not only
+  // mid-action — so every activated button shows a box, per requirement.
+  const showTeam = subagentActive
   const showVoice = voiceActive
-  const showClones = Object.values(clones).some(n => n > 1)
-  const showHarmony = runningAgents.length > 0
+  const showClones = cloneActive
+  const showHarmony = harmonyActive
 
   if (!showTeam && !showVoice && !showClones && !showHarmony) {
     return null
@@ -203,9 +211,15 @@ export const OrchestrationStatus = () => {
       {showTeam && (
         <Box title={t('panel.subagents', lang)}>
           <div className="flex flex-col gap-1">
-            {runningAgents.map(a => (
-              <MiniBar key={a.id} label={a.purpose} pct={clampPct(Number(a.progress) || 0)} />
-            ))}
+            {runningAgents.length > 0 ? (
+              runningAgents.map(a => (
+                <MiniBar key={a.id} label={a.purpose} pct={clampPct(Number(a.progress) || 0)} />
+              ))
+            ) : (
+              <span className="text-[0.62rem] text-muted-foreground">
+                {t('panel.subagents_ready', lang)}
+              </span>
+            )}
           </div>
         </Box>
       )}
@@ -234,14 +248,18 @@ export const OrchestrationStatus = () => {
       {showClones && (
         <Box title={t('panel.clones', lang)}>
           <div className="flex flex-col gap-0.5">
-            {Object.entries(clones)
-              .filter(([, n]) => n > 1)
-              .map(([id, n]) => (
-                <div className="flex items-center justify-between text-[0.62rem]" key={id}>
-                  <span className="truncate text-muted-foreground" title={id}>{id}</span>
-                  <span className="ml-1 shrink-0 font-mono tabular-nums text-muted-foreground">×{n}</span>
-                </div>
-              ))}
+            {Object.entries(clones).filter(([, n]) => n > 1).length > 0 ? (
+              Object.entries(clones)
+                .filter(([, n]) => n > 1)
+                .map(([id, n]) => (
+                  <div className="flex items-center justify-between text-[0.62rem]" key={id}>
+                    <span className="truncate text-muted-foreground" title={id}>{id}</span>
+                    <span className="ml-1 shrink-0 font-mono tabular-nums text-muted-foreground">×{n}</span>
+                  </div>
+                ))
+            ) : (
+              <span className="text-[0.62rem] text-muted-foreground">{t('panel.clones_ready', lang)}</span>
+            )}
           </div>
         </Box>
       )}
@@ -250,7 +268,9 @@ export const OrchestrationStatus = () => {
         <Box title={t('panel.harmony', lang)}>
           <BigBar hint={modelLoaded ? `Modell: ${currentModel}` : 'kein Modell geladen'} pct={harmony} />
           <div className="mt-1 flex items-center justify-between border-t border-muted/20 pt-1">
-            <span className="text-[0.6rem] text-muted-foreground">{t('panel.harmony', lang)}</span>
+            <span className="text-[0.6rem] text-muted-foreground">
+              {runningAgents.length > 0 ? t('panel.harmony', lang) : t('panel.harmony_ready', lang)}
+            </span>
             <span className="font-mono text-[0.65rem] tabular-nums text-muted-foreground">
               {runningAgents.length}/{MAX_AGENTS} · {utilization}%
             </span>
