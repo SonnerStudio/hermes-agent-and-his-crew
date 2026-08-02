@@ -212,10 +212,17 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
             except Exception:
                 pass
 
-    # --- Stage B: clone fan-out (Button 3) --- (stub, filled in Phase B)
+    # --- Stage B: clone fan-out (Button 3) ---
+    # Collapse each clone/clone-eligible delegate_task call into ONE batch call
+    # with factor cloned tasks. expand_clones is a no-op unless Button 3 is on
+    # AND Button 1 is armed (per plan Phase B.4).
+    from agent.composer_dispatch import expand_clones
+
+    tool_calls = _safe("clones", expand_clones, tool_calls)
+
     # --- Stage C: secretary planning (Button 2) --- (stub, filled in Phase C)
     # --- Stage D: harmonization sync (Button 4) — (stub, filled in Phase D)
-    # Stages B-D are no-ops until their phases land; the pipeline is ready.
+    # Stages C-D are no-ops until their phases land; the pipeline is ready.
 
     return tool_calls
 
