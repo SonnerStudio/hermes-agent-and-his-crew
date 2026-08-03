@@ -59,10 +59,17 @@
 Tämä forkki lisää:
 
 - **Composer Control Buttons** — neljä vaihtokytkintä työpöytäkompositionissa reaaliaikaisilla tilaväreillä (punainen = inaktiivinen, keltainen = provisioning, vihreä = aktiivinen) :
-  1. **Aktivoi sub-agentit** — aktivoi erikoistuneet AI-sub-agentit, jotka ottavat alitehtäviä itsenäisesti, kukin omilla erikoistaitoillaan, ja oppivat jatkuvasti tehtävistä ja ajan myötä.
-  2. **Sihteeri** — agenttien esimies: suunnittelee ja jakaa tehtäviä, ja viestijänä tarjoaa puhetilan (puheen syöttö/tuotto) elokuvalaatuisella äänellä (Kokoro `df_eva`, nopeus 0.9).
+  1. **Aktivoi sub-agentit** — aktivoi erikoistuneet AI-sub-agentit, jotka ottavat alitehtäviä itsenäisesti, kukin omilla erikoistaitoillaan, ja oppivat jatkuvasti tehtävistä ja ajan myötä. Kun Sihteeri on **pois päältä**, miehistö työskentelee itsenäisesti: se hakee tehtävät itse Hermes Agentilta (matalampi rinnakkaiskynnys, kaksinkertainen oma budjetti) ja raportoi suoraan hänelle.
+  2. **Sihteeri** — agenttien esimies: suunnittelee ja jakaa tehtäviä, ja viestijänä tarjoaa puhetilan (puheen syöttö/tuotto) elokuvalaatuisella äänellä (Kokoro `df_eva`, nopeus 0.9). Hän on samalla **viestintärajapinta** moniagenttijärjestelmän ja inhimillisen käyttäjän välillä. Kun hänet kytketään päälle, hän aktivoi automaattisesti miehistönsä (painike 1); kun hänet kytketään pois, **manuaalisesti** aktivoitu miehistö jää päälle.
   3. **Väliaikainen kloonaus** — antaa agenttien lisääntyä väliaikaisesti tehtävän keston ajaksi käsitelläkseen samankaltaisia tehtäviä samanaikaisesti.
   4. **Harmonisointi & orkestraatio** — harmonisoi/synkronoi joko agentit tehtävien sisällä (ilman Sihteeriä), tai, kun Sihteeri on päällä, agentteja ohjaa hän ja ne harmonisoidaan/synkronoidaan yhdessä hänen kanssaan.
+- **Orchestration HUD** — neljä sinireunaista live-kenttää Composer-syötekentän alla: *Aliagenttitiimi*, *Hermes-Sihteeri (ääniviestintä)*, *Kloonatut agentit* ja *Harmonisointi ja agenttien kuormitus*. Kentät ilmestyvät vain, kun todellinen tehtävä on käynnissä — ei demo-paikkamerkkejä.
+- **Hermes-Sihteeri** — äänikerros, jonka avulla voit puhua agentille. Saksankielinen TTS **Kokoron** kautta (`df_eva`, naisääni, elokuvalaatuinen nopeus 0.9), STT Whisperin kautta ja headless-mikrofonitason valvonta (ei näkyvää pääteikkunaa). Agentti voi delegoida aliagentteja suorittamaan puhuttuja pyyntöjä.
+- **Oppiva miehistö (live-pisteet)** — Composerin alla oleva palkki näyttää oppimisen edistymisen: ylin rivi *Hermes Agent*, *Suunnittelija* ja *Sihteeri*, niiden alla erikoisosaajat (tutkimus, koodi, analyysi, kuva, ääni, suunnittelu) **enintään kahdella tiiviillä rivillä** — ei koskaan yhtä riviä per erikoisosaaja. Jokaisella erikoisosaajalla on oma pistemäärä, oma päätösten määrä ja oma trendi. Vain todelliset arvot näytetään; ilman todellista delegointia palkki pysyy tyhjänä.
+- **Mallinvalinta** — pudotusvalikko kokoaa Nous-mallit, **OpenRouterin** ja kategorian **MLX-Runtime nativ** järjestelmän asemilla paikallisesti saatavilla olevilla MLX-malleilla. Vaihto on välitön ja turvallinen: käynnissä on aina vain yksi taustaosa (RAM-suojaus 16 Gt:n Mac minissä), ja nopeissa vaihdoissa voittaa aina **viimeksi** valittu kohta; ohitetut lataukset keskeytyvät siististi.
+- **MLX Runtime Proxy** — paikallinen laiska välityspalvelin (`:1240`), joka tarjoilee Kokoro TTS:n, Whisper STT:n ja MLX-chat-mallit yksi kerrallaan, jotta 16 Gt:n Mac mini pysyy RAM-rajojen sisällä.
+
+> **Huomio:** MLX-ajonaika, Kokoron saksankielinen TTS ja Hermes-Sihteerin puheputki on viritetty Apple Siliconille (macOS). Katso asennusohjeet kohdasta `plugins/hermes-sekretaerin/`.
 ## Pika-asennus
 
 ### Linux, macOS, WSL2, Termux
