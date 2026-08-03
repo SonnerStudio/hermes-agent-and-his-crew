@@ -56,6 +56,7 @@ LISTEN_HOST = "127.0.0.1"
 LISTEN_PORT = 1240
 VENV_PY = "/Users/m4janfriske/.hermes/hermes-agent/venv/bin/python3"
 OMNI_PY = "/Users/m4janfriske/.omni-venv/bin/mlx-omni-server"
+OMNI_PY3 = "/Users/m4janfriske/.omni-venv/bin/python3"  # interpreter (mlx_vlm lives here)
 STT_PY = "/Users/m4janfriske/.omni-venv/bin/python3"
 STT_SCRIPT = "/Users/m4janfriske/whisper-stt-server.py"
 STT_PORT = 1250
@@ -100,20 +101,35 @@ BACKENDS = {
     # === Google AI Studio (Gemini API, OpenAI-compatible endpoint) ===
     "google-gemini-flash":          {"online": True, "provider": "google", "model": "gemini-flash-latest", "port": 1249},
     "google-gemini-pro":            {"online": True, "provider": "google", "model": "gemini-pro-latest", "port": 1249},
+    # === Groq (free tier, OpenAI-compatible) ===
+    # Strong/fast free chat models. Used by the Hermes Agent cloud selection
+    # and as an auto-fallback target when another provider runs out of credits.
+    "groq-llama-3.3-70b":        {"online": True, "provider": "groq", "model": "llama-3.3-70b-versatile", "port": 1244},
+    "groq-mixtral-8x7b":         {"online": True, "provider": "groq", "model": "mixtral-8x7b-32768", "port": 1244},
+    "groq-gemma2-9b":            {"online": True, "provider": "groq", "model": "gemma2-9b-it", "port": 1244},
     "nous-portal-free":            {"online": True, "provider": "nous", "model": "hermes-3-llama-3.1-405b", "port": 1246},
+    # === LOCAL Vision (Bild-Spezialist) — Qwen2-VL 2B 4bit ===
+    # Loaded ON-DEMAND when the Bild-Spezialist needs it. Runs in PARALLEL to
+    # the chat model (MAX_CONCURRENT=2) so the chat never blocks. Small (1.5GB)
+    # so both fit on 16GB RAM. No cloud — the crew's vision is fully local.
+    "mlx-vision-qwen2vl-2b":     {"path": f"/Users/m4janfriske/mlx_models/qwen2vl_2b_4bit", "port": 1239,
+                                   "launcher": "vlm", "sticky": True, "vision": True},
 }
 
-STARTUP_TIMEOUT = 90.0       # seconds to wait for a model server to come up
+STARTUP_TIMEOUT = 150.0      # seconds to wait for a model server to come up
+                         # (vision model loads slower when the chat model
+                         # already holds RAM; 150s avoids false timeouts)
 PROBE_TIMEOUT = 2.0
-# Max models alive at once (RAM safety). 1 = strict single-model.
-MAX_CONCURRENT = 1
+# Max models alive at once (RAM safety). 2 = chat + vision can coexist.
+MAX_CONCURRENT = 2
 
-_state = {"current": None, "proc": None, "ready": False,
-          "loading_model": None, "lock": asyncio.Lock(), "cancel": False,
-          # Last model the user actually asked for. Set synchronously on every
-          # request so a superseded load can abort instead of winning a race.
-          "desired": None}
-_stt = {"proc": None, "ready": False, "lock": asyncio.Lock()}
+_state = {"running": {}, "lock": asyncio.Lock(), "cancel": False,
+          # Last model the user actually asked for (chat switch wins).
+          "desired": None, "loading_model": None}
+# _state["running"]: dict model_id -> {"proc", "ready", "loading"}
+# MAX_CONCURRENT>1 means several local backends can be alive at once
+# (e.g. chat model + vision model). Sticky models are never evicted.
+
 _log = []
 
 
@@ -139,14 +155,16 @@ async def _is_ready(port):
         return False
 
 
-async def _stop_current():
-    proc = _state.get("proc")
+async def _stop_model(model_id):
+    """Stop ONE running backend (by model id). Sticky models are never killed."""
+    entry = _state["running"].get(model_id)
+    if not entry:
+        return
+    if BACKENDS.get(model_id, {}).get("sticky"):
+        log(f"keeping sticky model {model_id} alive for agent crew")
+        return
+    proc = entry.get("proc")
     if proc and proc.returncode is None:
-        current_model = _state.get("current")
-        # Don't stop sticky models — they stay alive for the agent crew
-        if current_model and BACKENDS.get(current_model, {}).get("sticky"):
-            log(f"keeping sticky model {current_model} alive for agent crew")
-            return
         try:
             proc.terminate()
             await asyncio.wait_for(proc.wait(), timeout=5)
@@ -155,18 +173,38 @@ async def _stop_current():
                 proc.kill()
             except Exception:
                 pass
-    # belt-and-suspenders: ensure nothing lingers
-    try:
-        subprocess.run(["pkill", "-f", "mlx_lm.server"], check=False,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run(["pkill", "-f", "mlx_omni_server"], check=False,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except Exception:
-        pass
-    _state["current"] = None
-    _state["proc"] = None
-    _state["ready"] = False
-    _state["loading_model"] = None
+    _state["running"].pop(model_id, None)
+
+
+async def _evict_if_needed(keep_id):
+    """If too many local backends are running, evict the oldest non-sticky one
+    (excluding keep_id). Sticky models (agent/vision) are never evicted."""
+    running = list(_state["running"].keys())
+    if len(running) < MAX_CONCURRENT:
+        return
+    # Eviction candidates: non-sticky, not the one we're about to start.
+    candidates = [m for m in running
+                  if m != keep_id and not BACKENDS.get(m, {}).get("sticky")]
+    if not candidates:
+        # Everything running is sticky — we can't evict. Force-stop the oldest
+        # non-sticky anyway only if keep_id itself is non-sticky; otherwise the
+        # RAM budget is owned by sticky models and we refuse to OOM the crew.
+        if not BACKENDS.get(keep_id, {}).get("sticky"):
+            # evict oldest non-sticky even if it means dropping a sticky-less one
+            for m in running:
+                if m != keep_id:
+                    candidates.append(m)
+                    break
+    if candidates:
+        victim = candidates[0]
+        log(f"evicting {victim} to free RAM (concurrent limit {MAX_CONCURRENT})")
+        await _stop_model(victim)
+
+
+# Back-compat alias used at shutdown.
+async def _stop_current():
+    for mid in list(_state["running"].keys()):
+        await _stop_model(mid)
 
 
 async def _ensure_stt():
@@ -270,6 +308,9 @@ async def _route_online(request, model_id, backend, suffix):
     elif provider == "google":
         api_key = os.environ.get("GEMINI_API_KEY")
         base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
+    elif provider == "groq":
+        api_key = os.environ.get("GROQ_API_KEY")
+        base_url = "https://api.groq.com/openai/v1"
     else:
         return err(503, f"unknown online provider: {provider}", "service_unavailable")
 
@@ -302,9 +343,29 @@ async def _route_online(request, model_id, backend, suffix):
             upstream = await session.post(url, data=raw, headers=headers)
         except Exception as e:
             await session.close()
+            # Upstream unreachable — try fallback chain (credit/quota safe).
+            fb = await _try_fallback(provider, body, suffix)
+            if fb is not None:
+                return fb
             return err(503, f"upstream ({provider}) unreachable: {e}", "service_unavailable")
     except Exception as e:
         return err(503, f"upstream ({provider}) unreachable: {e}", "service_unavailable")
+
+    # Non-2xx (e.g. 402 quota/credit, 429 rate) -> attempt fallback chain.
+    if upstream.status >= 400:
+        err_body = b""
+        try:
+            err_body = await upstream.read()
+        except Exception:
+            pass
+        await session.close()
+        log(f"{provider} returned {upstream.status}; trying fallback chain")
+        fb = await _try_fallback(provider, body, suffix, exclude=provider)
+        if fb is not None:
+            return fb
+        # No fallback worked — return the original upstream error.
+        return web.Response(status=upstream.status, body=err_body or b"{}",
+                            content_type="application/json")
 
     ctype = upstream.headers.get("Content-Type", "application/json")
     if body.get("stream") or "text/event-stream" in ctype:
@@ -320,7 +381,7 @@ async def _route_online(request, model_id, backend, suffix):
                 await resp.write(chunk)
             await resp.write_eof()
         except Exception as e:
-            log("stream error:", e)
+            log(f"stream error: {e}")
         finally:
             upstream.release()
             await session.close()
@@ -334,31 +395,106 @@ async def _route_online(request, model_id, backend, suffix):
         await session.close()
 
 
-async def _ensure_model(model_id):
-    """Make sure `model_id` is the running backend. Start it if needed; stop
-    any other running backend first (MAX_CONCURRENT == 1).
+# Fallback chain for cloud providers: when the primary returns 402/429/5xx
+# (credits exhausted, quota, outage), automatically retry a FREE model on
+# another provider so the crew never blocks on a dead paid account.
+_FALLBACK_ORDER = ["openrouter", "groq", "google", "nous"]
 
-    The lock guards only the *transition* (stop old + spawn new process) so two
-    rapid switches don't interleave process spawning. The (up to STARTUP_TIMEOUT)
-    wait for readiness happens OUTSIDE the lock: a slow load must not block a
-    subsequent switch request, which would otherwise hang in `loading` forever.
+
+async def _try_fallback(failed_provider, body, suffix, exclude=None):
+    """Try the next available free provider from the fallback order. Returns a
+    web.Response on success, or None if no fallback succeeded/available."""
+    order = _FALLBACK_ORDER[:]
+    if exclude and exclude in order:
+        order.remove(exclude)
+    # Respect config.yaml crew.fallback.order if present.
+    try:
+        from hermes_cli.config import cfg_get, load_config
+
+        cfg_order = cfg_get(load_config(), "crew", "fallback", "order")
+        if isinstance(cfg_order, list):
+            order = [p for p in cfg_order if p != (exclude or failed_provider)]
+    except Exception:
+        pass
+    for fb in order:
+        if fb == failed_provider:
+            continue
+        be = next((b for b in BACKENDS.values()
+                   if b.get("online") and b.get("provider") == fb), None)
+        if not be:
+            continue
+        key = {
+            "openrouter": "OPENROUTER_API_KEY",
+            "google": "GEMINI_API_KEY",
+            "nous": "NOUS_API_KEY",
+            "groq": "GROQ_API_KEY",
+        }.get(fb)
+        api_key = os.environ.get(key) if key else None
+        if not api_key:
+            continue
+        base_url = {
+            "openrouter": "https://openrouter.ai/api/v1",
+            "google": "https://generativelanguage.googleapis.com/v1beta/openai",
+            "nous": "https://inference-api.nousresearch.com/v1",
+            "groq": "https://api.groq.com/openai/v1",
+        }[fb]
+        fb_body = dict(body)
+        fb_body["model"] = be["model"]
+        fb_raw = json.dumps(fb_body).encode()
+        try:
+            async with ClientSession(timeout=ClientTimeout(total=None, sock_connect=10)) as s2:
+                async with s2.post(f"{base_url}{suffix}", data=fb_raw,
+                                   headers={"Content-Type": "application/json",
+                                             "Authorization": f"Bearer {api_key}"}) as r2:
+                    if r2.status == 200:
+                        log(f"fallback OK: {failed_provider} -> {fb}")
+                        ctype = r2.headers.get("Content-Type", "application/json")
+                        if fb_body.get("stream") or "text/event-stream" in ctype:
+                            # Streaming fallback: re-stream to client.
+                            resp = web.StreamResponse(status=200, headers={
+                                "Content-Type": "text/event-stream",
+                                "Cache-Control": "no-cache",
+                                "X-Accel-Buffering": "no",
+                            })
+                            await resp.prepare(request)
+                            try:
+                                async for chunk in r2.content.iter_any():
+                                    await resp.write(chunk)
+                                await resp.write_eof()
+                            except Exception:
+                                pass
+                            return resp
+                        data = await r2.read()
+                        return web.Response(status=200, body=data,
+                                            content_type=ctype.split(";")[0] or "application/json")
+        except Exception as e:
+            log(f"fallback {fb} failed: {e}")
+            continue
+    return None
+
+
+async def _ensure_model(model_id):
+    """Make sure `model_id` is a running backend. Start it if needed (in
+    parallel with other running backends, up to MAX_CONCURRENT). Sticky models
+    (agent/vision) are never evicted to free RAM for a non-sticky switch.
+
+    The lock guards only the *transition* (evict old + spawn new process) so
+    two rapid switches don't interleave process spawning. The (up to
+    STARTUP_TIMEOUT) wait for readiness happens OUTSIDE the lock.
     """
     async with _state["lock"]:
         # A newer request superseded this one while we waited for the lock.
-        # Abandon instead of spawning a backend nobody asked for any more —
-        # this is what makes the LAST dropdown click win a rapid switch.
         if _state.get("desired") not in (None, model_id):
             log(f"abandoning {model_id}: superseded by {_state['desired']}")
             return False
-        if _state["current"] == model_id and _state["ready"]:
+        entry = _state["running"].get(model_id)
+        if entry and entry.get("ready"):
             return True
-        if _state["current"] == model_id and _state["proc"] is not None:
+        if entry and entry.get("proc") is not None:
             # still starting — release lock, wait outside
             return await _wait_ready(model_id)
-        # different or none -> stop current, start requested
-        if _state["current"] is not None and _state["current"] != model_id:
-            log(f"stopping {_state['current']} to free RAM for {model_id}")
-            await _stop_current()
+        # Not running -> free a slot if needed, then start.
+        await _evict_if_needed(model_id)
         path = BACKENDS[model_id]["path"]
         port = BACKENDS[model_id]["port"]
         launcher = BACKENDS[model_id]["launcher"]
@@ -368,54 +504,57 @@ async def _ensure_model(model_id):
             return False
         log(f"starting {model_id} on :{port} (launcher={launcher})"
             + (f" draft={draft}" if draft else ""))
-        # Surface a "loading" flag so the UI can show a switch-in-progress state
-        # instead of appearing frozen during the (up to STARTUP_TIMEOUT) load.
         _state["loading_model"] = model_id
-        _state["current"] = model_id
-        _state["ready"] = False
+        _state["running"][model_id] = {"proc": None, "ready": False,
+                                        "loading": True}
         _clean_env = dict(os.environ)
         _clean_env.pop("PYTHONPATH", None)  # avoid .mlx-venv (py3.13) shadowing
         if launcher != "omni":
             _clean_env["UV_SYSTEM_PYTHON"] = "1"
         if launcher == "omni":
-            # Build a minimal env so the omni-venv is fully isolated from the
-            # Hermes venv (whose site-packages would otherwise shadow it via the
-            # inherited PYTHONPATH). Keep only what's needed to run.
             _omni_env = {
                 "PATH": _clean_env.get("PATH", "/usr/bin:/bin:/usr/sbin:/sbin"),
                 "HOME": os.environ.get("HOME", "/Users/m4janfriske"),
                 "TMPDIR": os.environ.get("TMPDIR", "/tmp"),
                 "LANG": _clean_env.get("LANG", "en_US.UTF-8"),
-                # mlx-omni-server calls `uv` at startup to fetch spacy models;
-                # point uv at the system python so it does not abort with
-                # "no virtual environment found" (spacy model is pre-installed).
                 "UV_SYSTEM_PYTHON": "1",
             }
-            _state["proc"] = await asyncio.create_subprocess_exec(
+            proc = await asyncio.create_subprocess_exec(
                 OMNI_PY,
                 "--host", "127.0.0.1", "--port", str(port),
                 stdout=asyncio.subprocess.DEVNULL,
                 stderr=asyncio.subprocess.DEVNULL,
                 env=_omni_env,
-                cwd="/tmp",  # TTS writes sample.wav relative to cwd
+                cwd="/tmp",
+            )
+        elif launcher == "vlm":
+            # Local vision model via mlx_vlm server (OpenAI-compatible /v1).
+            # Used by the Bild-Spezialist — fully local, no cloud. mlx_vlm
+            # lives in the omni-venv (NOT the hermes-venv), so use OMNI_PY3.
+            proc = await asyncio.create_subprocess_exec(
+                OMNI_PY3, "-m", "mlx_vlm", "server",
+                "--model", path, "--port", str(port),
+                "--host", "127.0.0.1",
+                stdout=asyncio.subprocess.DEVNULL,
+                stderr=asyncio.subprocess.DEVNULL,
+                env=_clean_env,
+                cwd="/tmp",
             )
         else:  # mlx_lm
             cmd = [VENV_PY, "-m", "mlx_lm", "server",
                    "--model", path, "--port", str(port), "--host", "127.0.0.1"]
-            # Speculative decoding: a small draft model pre-fills candidate
-            # tokens that the target accepts in one step -> fewer target
-            # forward passes -> materially faster decode on Apple Silicon.
             if draft and os.path.isdir(draft):
                 cmd += ["--draft-model", draft,
                         "--num-draft-tokens", str(DEFAULT_DRAFT_TOKENS)]
                 log(f"speculative decoding enabled (draft={draft}, "
                     f"n={DEFAULT_DRAFT_TOKENS})")
-            _state["proc"] = await asyncio.create_subprocess_exec(
+            proc = await asyncio.create_subprocess_exec(
                 *cmd,
                 stdout=asyncio.subprocess.DEVNULL,
                 stderr=asyncio.subprocess.DEVNULL,
                 env=_clean_env,
             )
+        _state["running"][model_id]["proc"] = proc
     # Wait for readiness OUTSIDE the lock so a concurrent switch can take over.
     return await _wait_ready(model_id, port=port)
 
@@ -425,22 +564,28 @@ async def _wait_ready(model_id, port=None):
         port = BACKENDS[model_id]["port"]
     deadline = time.monotonic() + STARTUP_TIMEOUT
     while time.monotonic() < deadline:
-        # A newer switch request cancelled this load (user switched again).
         if _state.get("desired") not in (None, model_id):
             log(f"load of {model_id} superseded by {_state['desired']}")
             return False
-        if _state.get("cancel") and _state["current"] != model_id:
-            log(f"load of {model_id} cancelled by newer switch to {_state['current']}")
+        if _state.get("cancel") and model_id not in _state["running"]:
+            log(f"load of {model_id} cancelled by newer switch")
             return False
         if await _is_ready(port):
-            _state["ready"] = True
+            entry = _state["running"].get(model_id)
+            if entry:
+                entry["ready"] = True
+                entry["loading"] = False
             _state["loading_model"] = None
             _state["cancel"] = False
             log(f"{model_id} ready on :{port}")
             return True
         await asyncio.sleep(1.0)
     log(f"TIMEOUT waiting for {model_id} on :{port}")
-    _state["loading_model"] = None
+    # Clean up: drop the failed/stuck process so a later request can retry,
+    # and clear the loading flag (unless a *different* model is now loading).
+    _state["running"].pop(model_id, None)
+    if _state.get("loading_model") == model_id:
+        _state["loading_model"] = None
     return False
 
 
@@ -461,13 +606,16 @@ async def handle_models(request):
 async def handle_health(request):
     # `loading_model` is set the moment a switch begins and cleared when the
     # target is ready — lets the desktop picker show a "model loading…" state
-    # during the (up to STARTUP_TIMEOUT) lazy-load instead of looking frozen.
     loading = _state.get("loading_model")
+    running_ids = list(_state["running"].keys())
+    primary = next((m for m in running_ids
+                    if not BACKENDS.get(m, {}).get("sticky")), None)
     return web.json_response({
-        "status": "ok" if _state["ready"] else ("loading" if loading else "idle"),
-        "current_model": _state["current"],
+        "status": "ok" if running_ids else ("loading" if loading else "idle"),
+        "current_model": primary,
+        "running_models": running_ids,
         "loading_model": loading,
-        "ready": _state["ready"],
+        "ready": any(e.get("ready") for e in _state["running"].values()),
         "buttons": _button_state,
         "catalog": list(BACKENDS),
     })
@@ -499,10 +647,12 @@ async def proxy_json(request, suffix):
     # return immediately. The desktop picker polls /health for `loading_model`
     # and shows a "model loading…" state instead of the UI freezing for up to
     # STARTUP_TIMEOUT seconds. The real generation request lands once ready.
-    if model != _state["current"] or not _state["ready"]:
+    # With MAX_CONCURRENT>1 a local model that is ALREADY running (e.g. the
+    # vision model, loaded in parallel) is served immediately without reload.
+    entry = _state["running"].get(model)
+    if not (entry and entry.get("ready")):
         # If a different model is already loading, cancel that load so the new
-        # switch wins instead of queuing behind a 90s startup (which made the
-        # UI hang in `loading` on rapid 9B->4b switches).
+        # switch wins instead of queuing behind a 90s startup.
         if _state.get("loading_model") and _state["loading_model"] != model:
             _state["cancel"] = True
         async def _safe_ensure(mid):
@@ -512,16 +662,10 @@ async def proxy_json(request, suffix):
                 # Never leave the proxy stuck "loading" on a crashed start.
                 log(f"MODEL START FAILED for {mid}: {e}")
                 _state["loading_model"] = None
-                _state["ready"] = False
+                _state["running"].pop(mid, None)
         asyncio.create_task(_safe_ensure(model))
         # Mark loading immediately so a concurrent /health poll sees it.
-        # NOTE: do NOT set `current` here. `_ensure_model` owns that field and
-        # keys "is a process already running for this model?" off it — writing
-        # it optimistically made the loader believe the *old* backend process
-        # belonged to the new model, so it skipped the spawn and then waited
-        # out STARTUP_TIMEOUT on a port nothing was listening on.
         _state["loading_model"] = model
-        _state["ready"] = False
         return web.json_response(
             {"status": "loading", "model": model,
              "message": "model switch initiated; poll /health for readiness"},
@@ -864,9 +1008,13 @@ async def handle_secretary_learning(request):
         graph = {"nodes": [], "edges": []}
 
     # Native MLX runtime status (mirrors /health, but scoped for the Secretary panel).
+    running_ids = list(_state["running"].keys())
+    primary = next((m for m in running_ids
+                    if not BACKENDS.get(m, {}).get("sticky")), None)
     mlx = {
-        "current_model": _state.get("current"),
-        "ready": _state.get("ready", False),
+        "current_model": primary,
+        "running_models": running_ids,
+        "ready": any(e.get("ready") for e in _state["running"].values()),
         "loading_model": _state.get("loading_model"),
         "catalog": list(BACKENDS),
     }
