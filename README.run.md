@@ -6,6 +6,7 @@
 
 <ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
   <ᚨ ᚺᚱᛖᚠ="https://www.sonnerstudio.net">SonnerStudio</a> | <ᚨ ᚺᚱᛖᚠ="https://hermes-agent.nousresearch.com/">Hermes ᚨᚷᛖᚾᛏ (ᚢᛈᛋᛏᚱᛖᚨᛗ)</ᚨ>
+* **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
 </ᛈ>
 <ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
   <ᚨ ᚺᚱᛖᚠ="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img ᛋᚱᚲ="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" ᚨᛚᛏ="ᛚᛁᚲᛖᚾᛋᛖ: ᛗᛁᛏ"></ᚨ>
