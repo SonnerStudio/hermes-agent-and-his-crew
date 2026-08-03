@@ -27,13 +27,30 @@ from aiohttp import web, ClientSession, ClientTimeout
 # Load credentials from ~/.hermes/.env (secrets only — API keys). This makes
 # the proxy pick up OPENROUTER_API_KEY / NOUS_API_KEY the same way Hermes core
 # does, so the setup routine only needs to write those vars to .env once.
-try:
-    from dotenv import load_dotenv
-    _HERMES_ENV = os.path.join(os.path.expanduser("~"), ".hermes", ".env")
-    if os.path.isfile(_HERMES_ENV):
-        load_dotenv(_HERMES_ENV)
-except Exception:
-    pass
+# Uses a stdlib parser (no dotenv dependency — the proxy runs under
+# `env -u PYTHONPATH` where dotenv may be unavailable in the active venv).
+def _load_hermes_env():
+    """Minimal .env parser: reads KEY=VALUE lines into os.environ (override)."""
+    env_path = os.path.join(os.path.expanduser("~"), ".hermes", ".env")
+    if not os.path.isfile(env_path):
+        return
+    try:
+        with open(env_path, "r", encoding="utf-8") as fh:
+            for raw in fh:
+                line = raw.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, val = line.partition("=")
+                key, val = key.strip(), val.strip()
+                # Strip surrounding quotes if present.
+                if len(val) >= 2 and val[0] == val[-1] and val[0] in ("'", '"'):
+                    val = val[1:-1]
+                os.environ[key] = val
+    except Exception:
+        pass
+
+
+_load_hermes_env()
 
 LISTEN_HOST = "127.0.0.1"
 LISTEN_PORT = 1240
@@ -78,6 +95,8 @@ BACKENDS = {
     "openrouter-nemotron-3-ultra": {"online": True, "provider": "openrouter", "model": "nvidia/nemotron-3-ultra-550b-a55b:free", "port": 1245},
     # Fast free chat model for everyday tasks / low-latency replies.
     "openrouter-ling-3-flash":      {"online": True, "provider": "openrouter", "model": "inclusionai/ling-3.0-flash:free", "port": 1247},
+    # Google Gemma 4 31B (free) — strong general-purpose chat.
+    "openrouter-gemma-4-31b":       {"online": True, "provider": "openrouter", "model": "google/gemma-4-31b-it:free", "port": 1248},
     "nous-portal-free":            {"online": True, "provider": "nous", "model": "hermes-3-llama-3.1-405b", "port": 1246},
 }
 
