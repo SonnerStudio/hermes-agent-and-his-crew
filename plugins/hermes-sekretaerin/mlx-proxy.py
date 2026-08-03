@@ -24,6 +24,17 @@ import time
 
 from aiohttp import web, ClientSession, ClientTimeout
 
+# Load credentials from ~/.hermes/.env (secrets only — API keys). This makes
+# the proxy pick up OPENROUTER_API_KEY / NOUS_API_KEY the same way Hermes core
+# does, so the setup routine only needs to write those vars to .env once.
+try:
+    from dotenv import load_dotenv
+    _HERMES_ENV = os.path.join(os.path.expanduser("~"), ".hermes", ".env")
+    if os.path.isfile(_HERMES_ENV):
+        load_dotenv(_HERMES_ENV)
+except Exception:
+    pass
+
 LISTEN_HOST = "127.0.0.1"
 LISTEN_PORT = 1240
 VENV_PY = "/Users/m4janfriske/.hermes/hermes-agent/venv/bin/python3"
@@ -61,6 +72,13 @@ BACKENDS = {
     "Gemma-4-E4B-MLX-6bit":       {"path": f"{MODELS_DIR}/gemma4_mlx_e4b_6bit_local", "port": 1235, "launcher": "omni"},
     "Qwen3-4b-MLX-8bit":          {"path": f"{MODELS_DIR}/qwen3_mlx_8bit_local", "port": 1236, "launcher": "mlx_lm", "draft": DRAFT_MODEL_PATH},
     "gpt-oss-20b-MXFP4-Q8":       {"path": f"{MODELS_DIR}/gptoss_mlx_q8_local", "port": 1237, "launcher": "mlx_lm"},
+    # === Sticky Agent Model (never auto-stopped) ===
+    "agent-sticky-qwen3-4b-8bit": {"path": f"{MODELS_DIR}/qwen3_mlx_8bit_local", "port": 1238, "launcher": "mlx_lm", "draft": DRAFT_MODEL_PATH, "sticky": True},
+    # === Online backends (routed through proxy) ===
+    "openrouter-nemotron-3-ultra": {"online": True, "provider": "openrouter", "model": "nvidia/nemotron-3-ultra-550b-a55b:free", "port": 1245},
+    # Fast free chat model for everyday tasks / low-latency replies.
+    "openrouter-ling-3-flash":      {"online": True, "provider": "openrouter", "model": "inclusionai/ling-3.0-flash:free", "port": 1247},
+    "nous-portal-free":            {"online": True, "provider": "nous", "model": "hermes-3-llama-3.1-405b", "port": 1246},
 }
 
 STARTUP_TIMEOUT = 90.0       # seconds to wait for a model server to come up
@@ -102,6 +120,11 @@ async def _is_ready(port):
 async def _stop_current():
     proc = _state.get("proc")
     if proc and proc.returncode is None:
+        current_model = _state.get("current")
+        # Don't stop sticky models — they stay alive for the agent crew
+        if current_model and BACKENDS.get(current_model, {}).get("sticky"):
+            log(f"keeping sticky model {current_model} alive for agent crew")
+            return
         try:
             proc.terminate()
             await asyncio.wait_for(proc.wait(), timeout=5)
@@ -202,6 +225,88 @@ async def _ensure_tts():
             await asyncio.sleep(2.0)
         log(f"TIMEOUT waiting for TTS on :{TTS_PORT}")
         return False
+
+
+async def _route_online(request, model_id, backend, suffix):
+    """Route requests to online providers (OpenRouter, Nous Portal) directly.
+
+    These never compete for local RAM and don't trigger _ensure_model.
+    The proxy injects the correct Authorization header and forwards to the
+    provider's OpenAI-compatible endpoint.
+    """
+    provider = backend["provider"]
+    upstream_model = backend["model"]
+
+    # Get API key from environment
+    api_key = None
+    if provider == "openrouter":
+        api_key = os.environ.get("OPENROUTER_API_KEY")
+        base_url = "https://openrouter.ai/api/v1"
+    elif provider == "nous":
+        api_key = os.environ.get("NOUS_API_KEY")
+        base_url = "https://inference-api.nousresearch.com/v1"
+    else:
+        return err(503, f"unknown online provider: {provider}", "service_unavailable")
+
+    if not api_key:
+        return err(503, f"{provider.upper()}_API_KEY not set in environment", "service_unavailable")
+
+    # Rewrite the request body with the provider's model name
+    try:
+        raw = await request.read()
+        body = json.loads(raw) if raw else {}
+    except Exception as e:
+        return err(400, f"invalid JSON body: {e}", "invalid_request_error")
+
+    body["model"] = upstream_model
+    raw = json.dumps(body).encode()
+
+    url = f"{base_url}{suffix}"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}",
+    }
+    # Forward any additional headers from the original request
+    for k, v in request.headers.items():
+        if k.lower() not in ("host", "content-length", "authorization"):
+            headers[k] = v
+
+    try:
+        session = ClientSession(timeout=ClientTimeout(total=None, sock_connect=10))
+        try:
+            upstream = await session.post(url, data=raw, headers=headers)
+        except Exception as e:
+            await session.close()
+            return err(503, f"upstream ({provider}) unreachable: {e}", "service_unavailable")
+    except Exception as e:
+        return err(503, f"upstream ({provider}) unreachable: {e}", "service_unavailable")
+
+    ctype = upstream.headers.get("Content-Type", "application/json")
+    if body.get("stream") or "text/event-stream" in ctype:
+        resp = web.StreamResponse(status=upstream.status, headers={
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        })
+        await resp.prepare(request)
+        try:
+            async for chunk in upstream.content.iter_any():
+                await resp.write(chunk)
+            await resp.write_eof()
+        except Exception as e:
+            log("stream error:", e)
+        finally:
+            upstream.release()
+            await session.close()
+        return resp
+
+    try:
+        data = await upstream.read()
+        return web.Response(status=upstream.status, body=data,
+                            content_type=ctype.split(";")[0] or "application/json")
+    finally:
+        await session.close()
 
 
 async def _ensure_model(model_id):
@@ -358,6 +463,12 @@ async def proxy_json(request, suffix):
     # Record the user's intent synchronously, BEFORE any await, so a rapid
     # second switch is already visible to the first one's slow load.
     _state["desired"] = model
+
+    backend = BACKENDS[model]
+    # Online backends (OpenRouter, Nous) are routed directly — they never
+    # compete for local RAM and don't trigger _ensure_model/_stop_current.
+    if backend.get("online"):
+        return await _route_online(request, model, backend, suffix)
 
     # Non-blocking switch: kick off the (slow, lazy) load in the background and
     # return immediately. The desktop picker polls /health for `loading_model`
