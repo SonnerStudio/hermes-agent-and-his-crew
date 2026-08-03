@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Hermes-Sekretärin + SonnerStudio Addon — Einrichtungsroutine
 #
-# Richtet die 3-Modell-Architektur ein:
+# Richtet die Modell-Architektur ein:
 #   1. MLX-Runtime Proxy (TTS/STT/MLX-Modelle auf :1240) — automatisch
 #   2. MLX-Modell auto-setup (passend zum System, nach Genehmigung)
 #   3. OpenRouter-Anmeldung — interaktiv (vom Anwender selbst)
 #   4. Nous-Portal-Anmeldung — interaktiv (vom Anwender selbst)
+#   5. Google AI Studio (Gemini) — interaktiv (vom Anwender selbst)
 #
 # Aufruf:  bash plugins/hermes-sekretaerin/setup.sh
 set -euo pipefail
@@ -78,7 +79,7 @@ fi
 
 # ── 3) OpenRouter-Anmeldung (interaktiv) ─────────────────────────────
 echo ""
-echo "==> [3/4] OpenRouter-Anmeldung (vom Anwender selbst)"
+echo "==> [3/5] OpenRouter-Anmeldung (vom Anwender selbst)"
 echo "    Hole dir einen kostenlosen Key: https://openrouter.ai/keys"
 read -r -p "    OpenRouter API-Key eingeben (oder Enter zum Überspringen): " _or_key
 if [[ -n "$_or_key" ]]; then
@@ -96,7 +97,7 @@ fi
 
 # ── 4) Nous-Portal-Anmeldung (interaktiv) ────────────────────────────
 echo ""
-echo "==> [4/4] Nous-Portal-Anmeldung (vom Anwender selbst)"
+echo "==> [4/5] Nous-Portal-Anmeldung (vom Anwender selbst)"
 echo "    Nous Research Portal: https://nousresearch.com (device_code OAuth)"
 read -r -p "    Nous API-Key eingeben (oder Enter zum Überspringen): " _nous_key
 if [[ -n "$_nous_key" ]]; then
@@ -109,6 +110,23 @@ if [[ -n "$_nous_key" ]]; then
     echo "    [ok] NOUS_API_KEY in ~/.hermes/.env gespeichert."
 else
     echo "    [skip] Nous später via 'hermes auth add nous' einrichten."
+fi
+
+# ── 5) Google AI Studio (Gemini) ─────────────────────────────────────
+echo ""
+echo "==> [5/5] Google AI Studio (Gemini) — vom Anwender selbst"
+echo "    API-Key: https://aistudio.google.com/apikey"
+read -r -p "    Gemini API-Key eingeben (oder Enter zum Überspringen): " _gem_key
+if [[ -n "$_gem_key" ]]; then
+    touch "$HERMES_ENV"
+    if grep -q "^GEMINI_API_KEY=" "$HERMES_ENV" 2>/dev/null; then
+        sed -i '' "s|^GEMINI_API_KEY=.*|GEMINI_API_KEY=$_gem_key|" "$HERMES_ENV"
+    else
+        printf '\nGEMINI_API_KEY=%s\n' "$_gem_key" >> "$HERMES_ENV"
+    fi
+    echo "    [ok] GEMINI_API_KEY in ~/.hermes/.env gespeichert."
+else
+    echo "    [skip] Google AI Studio später via 'hermes auth add google' einrichten."
 fi
 
 # ── LaunchAgents laden ──────────────────────────────────────────────
