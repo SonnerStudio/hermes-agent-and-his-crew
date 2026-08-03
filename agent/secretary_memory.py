@@ -126,6 +126,45 @@ class SecretaryMemory:
             self._update_learned()
             self._save()
 
+    def refine_last_outcome(
+        self,
+        stage: str,
+        agent_id: Optional[str] = None,
+        success: Optional[bool] = None,
+        latency_s: Optional[float] = None,
+    ) -> None:
+        """Post-run refinement: correct the LAST recorded outcome for a crew
+        member with the actual task result.
+
+        The dispatcher records ``success=True`` at dispatch time (it cannot
+        know the result yet — see composer_state.py). This closes the loop:
+        after the delegated sub-agent returns, the real outcome (error vs.
+        success, latency) is written back so ``module_scores`` trends and the
+        learned routing reflect reality. This makes EVERY specialist — incl.
+        the Bild-Spezialist — genuinely self-improving, not just experience-
+        counting.
+
+        Non-blocking: any failure is swallowed (Invariante 3).
+        """
+        if success is None and latency_s is None:
+            return
+        with self._lock:
+            self._load_if_stale()
+            outcomes = self._data.get("outcomes", [])
+            # Walk backwards for the most recent matching outcome.
+            for o in reversed(outcomes):
+                if o.get("stage") != stage:
+                    continue
+                if agent_id is not None and o.get("agent_id") != agent_id:
+                    continue
+                if success is not None:
+                    o["success"] = bool(success)
+                if latency_s is not None:
+                    o["latency_s"] = float(latency_s)
+                break
+            self._update_learned()
+            self._save()
+
     def _update_learned(self) -> None:
         """Derive a preferred (topology, clone_factor) per unit-count bucket.
 

@@ -28,7 +28,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict
 
 # The four button method names persisted by the proxy. Keys here are the
 # short internal names used by the Core (see AIAgent flag attributes).
@@ -433,6 +433,53 @@ def composer_learn(agent, stage: str, outcome: dict) -> None:
 def secretary_learn(agent, outcome: dict) -> None:
     """Deprecated alias — use composer_learn(agent, 'secretary', outcome)."""
     composer_learn(agent, "secretary", outcome)
+
+
+def refine_composer_learning(agent, agent_id: str, task_result: Any) -> None:
+    """Phase E (Option B) — post-run refinement.
+
+    The dispatcher records ``success=True`` at dispatch time (composer_learn,
+    line ~270) because it cannot know the outcome yet. Once the delegated
+    sub-agent returns, we close the loop: inspect ``task_result`` for an error
+    and write the real success/latency back into the crew memory so the
+    specialist's score trend and learned routing reflect reality.
+
+    This is what makes the Bild-Spezialist (and every other specialist) truly
+    self-improving: it learns from failures, not just from being dispatched.
+
+    Non-blocking (Invariante 3). No-op when no crew flag is active.
+    """
+    if not (
+        getattr(agent, "_voice_comms", False)
+        or getattr(agent, "_subagent_orchestration", False)
+        or getattr(agent, "_orchestration_mode", False)
+    ):
+        return
+    try:
+        # Derive success from the result payload (defensive: many shapes).
+        success = True
+        latency = None
+        if isinstance(task_result, dict):
+            if task_result.get("success") is False or "error" in task_result:
+                success = False
+            latency = task_result.get("latency_s")
+        elif isinstance(task_result, str):
+            # Raw string result: error markers => failure.
+            low = task_result.lower()
+            if any(k in low for k in ("error", "failed", "exception", "traceback")):
+                success = False
+        from agent.secretary_memory import SecretaryMemory
+
+        store = getattr(agent, "_secretary_memory", None)
+        if store is None:
+            store = SecretaryMemory()
+            agent._secretary_memory = store
+        store.refine_last_outcome(
+            "subagent", agent_id=agent_id, success=success, latency_s=latency
+        )
+    except Exception:
+        # Invariante 3: learning never breaks the delegation.
+        pass
 
 
 def _wrap_as_tool_call(synthetic: dict):

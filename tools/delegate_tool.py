@@ -2749,6 +2749,29 @@ def _run_child_lifecycle(
         [(task_index, task, child)],
         parent_agent,
     )
+    # Phase E (Option B): close the self-learning loop. After the sub-agent
+    # returns, refine the crew memory with the real outcome (success/latency)
+    # so every specialist — incl. the Bild-Spezialist — learns from results,
+    # not just from being dispatched. Lazy import keeps delegate_tool decoupled
+    # from the composer module; no-op when the crew flags are off.
+    try:
+        if parent_agent is not None and (
+            getattr(parent_agent, "_subagent_orchestration", False)
+            or getattr(parent_agent, "_voice_comms", False)
+            or getattr(parent_agent, "_orchestration_mode", False)
+        ):
+            from agent.composer_state import refine_composer_learning
+
+            # The child's specialist id (if the composer tagged it) rides on
+            # the child; fall back to parsing the goal for a specialist hint.
+            _aid = getattr(child, "_composer_specialist_id", None)
+            if not _aid:
+                import re as _re
+                _m = _re.search(r"\[specialist:([a-z\-]+)\]", goal or "")
+                _aid = _m.group(1) if _m else None
+            refine_composer_learning(parent_agent, _aid or "subagent", result)
+    except Exception:
+        pass
     return result
 
 

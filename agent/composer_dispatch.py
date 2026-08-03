@@ -235,7 +235,18 @@ def _specialist_task(category: str, raw_args: str) -> tuple:
     Vision tasks get a specialist context that points the sub-agent at the
     real ``vision_analyze`` tool (no local model needed). Other categories fall
     back to a generic autonomous-execution context.
+
+    A ``[specialist:<id>]`` marker is embedded in the goal so the post-run
+    learning hook (delegate_tool._run_child_lifecycle -> refine_composer_learning)
+    can attribute the result to the right crew specialist (e.g. ``vision`` for
+    the Bild-Spezialist).
     """
+    specialist_id = {
+        "vision_analyze": "vision",
+        "web_search": "web-search",
+        "terminal": "coder",
+    }.get(category)
+    marker = f" [specialist:{specialist_id}]" if specialist_id else ""
     ctx = _SPECIALIST_CONTEXT.get(category)
     if ctx is not None:
         if category == "vision_analyze":
@@ -249,6 +260,7 @@ def _specialist_task(category: str, raw_args: str) -> tuple:
             goal = "Execute the shell command(s) below and return the output."
         else:
             goal = f"Execute the following {category} tool call autonomously."
+        goal = f"{goal}{marker}"
         return goal, f"{ctx}\n\nOriginal tool call:\n{raw_args}"
     return (
         f"Execute the following tool call as an independent sub-task: {raw_args}",
