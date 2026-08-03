@@ -115,6 +115,9 @@ class SecretaryMemory:
                 "latency_s": float(outcome.get("latency_s", 0.0)),
                 "cost": float(outcome.get("cost", 0.0)),
                 "stage": outcome.get("stage", "secretary"),
+                # Optional agent id so per-sub-agent scores can be shown in the HUD.
+                "agent_id": outcome.get("agent_id"),
+                "agent_name": outcome.get("agent_name"),
             }
             self._data.setdefault("outcomes", []).append(rec)
             # Keep bounded (last 200 outcomes).
@@ -241,6 +244,36 @@ class SecretaryMemory:
             else:
                 trend = "steigend" if all(o.get("success", True) for o in recs[-3:]) else "stabil"
             result[m] = {"score": score, "decisions": n, "trend": trend}
+
+        # Per-sub-agent breakdown (each delegated agent gets its own score bar).
+        agents: Dict[str, Any] = {}
+        for o in outcomes:
+            if o.get("stage") != "subagent":
+                continue
+            aid = o.get("agent_id") or o.get("agent_name") or "subagent"
+            agents.setdefault(aid, []).append(o)
+        agent_scores: Dict[str, Any] = {}
+        for aid, recs in agents.items():
+            n = len(recs)
+            if n == 0:
+                continue
+            topo = Counter(o.get("topology", "peer") for o in recs)
+            cf = Counter(int(o.get("clone_factor", 1)) for o in recs)
+            consistency = 0.5 * (max(topo.values()) / n) + 0.5 * (max(cf.values()) / n)
+            import math
+
+            volume = min(1.0, math.log(n + 1) / math.log(40 + 1))
+            recency = 0.5
+            if n >= 4:
+                recency = len(recs[int(n * 0.75):]) / len(recs)
+            score = int(round(100 * (0.55 * consistency + 0.30 * volume + 0.15 * recency)))
+            agent_scores[aid] = {
+                "score": score,
+                "decisions": n,
+                "name": next((o.get("agent_name") or aid for o in recs), aid),
+                "trend": "steigend" if all(o.get("success", True) for o in recs[-3:]) else "stabil",
+            }
+        result["agents"] = agent_scores
         return result
 
     def prefetch(self) -> Dict[str, Any]:
