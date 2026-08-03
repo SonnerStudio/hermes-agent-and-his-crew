@@ -31,11 +31,11 @@ OMNI_PY = "/Users/m4janfriske/.omni-venv/bin/mlx-omni-server"
 STT_PY = "/Users/m4janfriske/.omni-venv/bin/python3"
 STT_SCRIPT = "/Users/m4janfriske/whisper-stt-server.py"
 STT_PORT = 1250
-STT_MODEL = "mlx-community/whisper-large-v3-mlx"
+STT_MODEL = "mlx-community/whisper-small-mlx"
 TTS_PY = "/Users/m4janfriske/.omni-venv/bin/python3"
 TTS_SCRIPT = "/Users/m4janfriske/kokoro-tts-server.py"
 TTS_PORT = 1255
-KOKORO_CLI = "/tmp/kokoro.cpp/build/kokoro-cli"
+KOKORO_CLI = "/Users/m4janfriske/.hermes/hermes-agent/plugins/hermes-sekretaerin/build/kokoro-cli"
 KOKORO_MODEL = "/Users/m4janfriske/.cache/huggingface/hub/models--cstr--kokoro-de-hui-base-GGUF/snapshots/77d32b1d18f2815f9403d43e96bb3ff270c4ca13/kokoro-de-hui-base-q8_0.gguf"
 KOKORO_VOICE = "/Users/m4janfriske/.cache/huggingface/hub/models--cstr--kokoro-voices-GGUF/snapshots/d6435f2e72f28392c36051c832714815382d36bd/kokoro-voice-df_eva.gguf"
 KOKORO_VOICE_DIR = "/Users/m4janfriske/.cache/huggingface/hub/models--cstr--kokoro-voices-GGUF/snapshots/d6435f2e72f28392c36051c832714815382d36bd"
@@ -69,7 +69,10 @@ PROBE_TIMEOUT = 2.0
 MAX_CONCURRENT = 1
 
 _state = {"current": None, "proc": None, "ready": False,
-          "loading_model": None, "lock": asyncio.Lock(), "cancel": False}
+          "loading_model": None, "lock": asyncio.Lock(), "cancel": False,
+          # Last model the user actually asked for. Set synchronously on every
+          # request so a superseded load can abort instead of winning a race.
+          "desired": None}
 _stt = {"proc": None, "ready": False, "lock": asyncio.Lock()}
 _log = []
 
@@ -211,6 +214,12 @@ async def _ensure_model(model_id):
     subsequent switch request, which would otherwise hang in `loading` forever.
     """
     async with _state["lock"]:
+        # A newer request superseded this one while we waited for the lock.
+        # Abandon instead of spawning a backend nobody asked for any more —
+        # this is what makes the LAST dropdown click win a rapid switch.
+        if _state.get("desired") not in (None, model_id):
+            log(f"abandoning {model_id}: superseded by {_state['desired']}")
+            return False
         if _state["current"] == model_id and _state["ready"]:
             return True
         if _state["current"] == model_id and _state["proc"] is not None:
@@ -287,6 +296,9 @@ async def _wait_ready(model_id, port=None):
     deadline = time.monotonic() + STARTUP_TIMEOUT
     while time.monotonic() < deadline:
         # A newer switch request cancelled this load (user switched again).
+        if _state.get("desired") not in (None, model_id):
+            log(f"load of {model_id} superseded by {_state['desired']}")
+            return False
         if _state.get("cancel") and _state["current"] != model_id:
             log(f"load of {model_id} cancelled by newer switch to {_state['current']}")
             return False
@@ -343,6 +355,10 @@ async def proxy_json(request, suffix):
         return err(404, f"unknown model '{model}'. available: {sorted(BACKENDS)}",
                    "model_not_found")
 
+    # Record the user's intent synchronously, BEFORE any await, so a rapid
+    # second switch is already visible to the first one's slow load.
+    _state["desired"] = model
+
     # Non-blocking switch: kick off the (slow, lazy) load in the background and
     # return immediately. The desktop picker polls /health for `loading_model`
     # and shows a "model loading…" state instead of the UI freezing for up to
@@ -363,10 +379,13 @@ async def proxy_json(request, suffix):
                 _state["ready"] = False
         asyncio.create_task(_safe_ensure(model))
         # Mark loading immediately so a concurrent /health poll sees it.
-        if _state.get("loading_model") != model:
-            _state["loading_model"] = model
-            _state["current"] = model
-            _state["ready"] = False
+        # NOTE: do NOT set `current` here. `_ensure_model` owns that field and
+        # keys "is a process already running for this model?" off it — writing
+        # it optimistically made the loader believe the *old* backend process
+        # belonged to the new model, so it skipped the spawn and then waited
+        # out STARTUP_TIMEOUT on a port nothing was listening on.
+        _state["loading_model"] = model
+        _state["ready"] = False
         return web.json_response(
             {"status": "loading", "model": model,
              "message": "model switch initiated; poll /health for readiness"},
@@ -467,10 +486,12 @@ async def handle_audio_speech(request):
     """
     body = await request.json()
     text = body.get("input", "")
-    voice = body.get("voice", "af_sky")
+    voice = body.get("voice", "df_eva")  # default: German female (Hermes-Sekretärin)
     lang = body.get("lang_code", "")
+    # Prefer German route when explicitly requested OR text looks German. This
+    # avoids falling through to F5 (English/asian-accented) on short/deafult calls.
     is_german = (lang == "de" or voice.lower().startswith("de")
-                 or _looks_german(text))
+                 or voice.lower().startswith("df_") or _looks_german(text))
 
     # Bump the speaker level so the Hermes-Sekretärin panel shows live TTS
     # output activity. It decays in the audio monitor loop.
@@ -582,9 +603,19 @@ async def handle_rpc(request):
                     # Start the live audio monitor (mic level sampling). The
                     # speaker level is bumped when the proxy synthesizes TTS.
                     _start_audio_monitor()
-                    await asyncio.sleep(1.0)
+                    # Start the actual Secretary voice agent (listens + replies).
+                    # This is the process that makes her ACT, not just plan.
+                    subprocess.Popen(
+                        ["/bin/bash", "-c", f"unset PYTHONPATH; exec "
+                         f"/Users/m4janfriske/.omni-venv/bin/python3 {spec['script']}"],
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                    )
+                    # Give both processes a moment to spawn; the real readiness
+                    # is the user hearing the Secretary's greeting. We clear
+                    # pending after spawn so the UI flips to green.
+                    await asyncio.sleep(2.0)
                 except Exception as e:
-                    log(f"RPC: failed to start audio monitor: {e}")
+                    log(f"RPC: failed to start voice_comms: {e}")
                     _button_state[method]["active"] = False
                 finally:
                     _button_state[method]["pending"] = False
@@ -601,6 +632,9 @@ async def handle_rpc(request):
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
             except Exception as e:
                 log(f"RPC: failed to stop mic helper: {e}")
+            # Stop the Secretary voice agent.
+            subprocess.run(["pkill", "-f", spec["script"]], check=False,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             # The monitor thread self-exits when voice_comms goes inactive.
     elif spec["script"]:
         if active:
@@ -632,8 +666,88 @@ async def handle_rpc(request):
             subprocess.run(["pkill", "-f", spec["script"]], check=False,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+    # Secretary (Button 2 / voice_comms) <-> Sub-Agent crew (Button 1).
+    # ASYMMETRIC arming (user requirement):
+    #   * Secretary ON  -> auto-arms Button 1 (her crew must be available).
+    #   * Secretary OFF -> only revokes the crew if IT WAS AUTO-ARMED by her.
+    #     A crew the user switched on MANUALLY stays on — sub-agents must be
+    #     usable standalone, without the Secretary.
+    # The distinction is tracked via the "auto_armed" marker on Button 1.
+    _SUB = "subagent_orchestration.toggle"
+
+    if method == _SUB:
+        # Any explicit user toggle of Button 1 clears the auto-arm marker:
+        # from now on this is a manual decision the Secretary must not undo.
+        _button_state.setdefault(_SUB, {})["auto_armed"] = False
+
+    if method == "voice_comms.toggle":
+        sub = _button_state.setdefault(_SUB, {})
+        if active:
+            # Only mark as auto-armed if the crew was not already running
+            # under the user's own control.
+            if not sub.get("active"):
+                sub["auto_armed"] = True
+            sub["active"] = True
+            sub["pending"] = False
+        else:
+            # Hand the crew back only if the Secretary armed it herself.
+            if sub.get("auto_armed"):
+                sub["active"] = False
+                sub["auto_armed"] = False
+            sub["pending"] = False
+
     _persist_buttons()
     return web.json_response({"ok": True, "method": method, "active": active})
+
+
+async def handle_secretary_learning(request):
+    """Secretary learning graph + native MLX runtime status for the desktop HUD.
+
+    GET returns the Secretary's self-learned journey (routing preferences +
+    her private planning skills, rendered as a graph by
+    ``agent.secretary_learning_graph``) alongside the live MLX runtime state
+    (current model, loaded status, catalog) so the HUD can show BOTH the
+    Secretary's learning AND the native MLX model powering her.
+
+    This is the E4 HUD endpoint: the Secretary is the Managerin of Hermes Agent
+    and runs natively on the local MLX runtime (per user requirement). Non-
+    blocking: any failure returns a safe empty graph so the HUD never breaks.
+    """
+    try:
+        # Import the Secretary's learning graph from the Hermes core checkout
+        # (same repo the proxy lives beside). Lazy import keeps startup clean.
+        import sys as _sys
+        _core = "/Users/m4janfriske/.hermes/hermes-agent"
+        if _core not in _sys.path:
+            _sys.path.insert(0, _core)
+        from agent.secretary_learning_graph import render_secretary_graph_json
+
+        graph = json.loads(render_secretary_graph_json())
+    except Exception as exc:
+        log(f"secretary-learning: graph render failed: {exc}")
+        graph = {"nodes": [], "edges": []}
+
+    # Native MLX runtime status (mirrors /health, but scoped for the Secretary panel).
+    mlx = {
+        "current_model": _state.get("current"),
+        "ready": _state.get("ready", False),
+        "loading_model": _state.get("loading_model"),
+        "catalog": list(BACKENDS),
+    }
+    # Live learning scores per crew module (self-improvement gauge).
+    try:
+        from agent.secretary_learning_graph import _get_memory
+
+        scores = _get_memory().module_scores()
+    except Exception as exc:
+        log(f"secretary-learning: scores failed: {exc}")
+        scores = {}
+    return web.json_response({
+        "graph": graph,
+        "mlx": mlx,
+        "scores": scores,
+        "updated_at": time.time(),
+    })
 
 
 async def handle_orchestration(request):
@@ -706,8 +820,14 @@ def _persist_buttons():
     try:
         # Persist only the durable `active` flag — never `pending`, so a crash
         # or reload mid-transition cannot leave a button stuck yellow.
+        # `auto_armed` IS durable: it records whether the Secretary armed the
+        # sub-agent crew (revocable) or the user did (must survive her going
+        # off), so a proxy reload must not silently turn a manual crew into
+        # an auto-armed one.
         durable = {k: {"active": bool(v.get("active", False)),
-                       "pending": False} for k, v in _button_state.items()}
+                       "pending": False,
+                       "auto_armed": bool(v.get("auto_armed", False))}
+                   for k, v in _button_state.items()}
         tmp = FLAGS_FILE + ".tmp"
         with open(tmp, "w") as f:
             json.dump(durable, f)
@@ -764,8 +884,10 @@ def _audio_monitor_loop():
                     _audio_peaks["mic_available"] = not bool(data.get("no_device", False))
                 else:
                     _audio_peaks["mic_available"] = False
+                    _audio_peaks["mic"] = 0
             else:
                 _audio_peaks["mic_available"] = False
+                _audio_peaks["mic"] = 0
         except Exception:
             _audio_peaks["mic"] = 0
             _audio_peaks["mic_available"] = False
@@ -862,6 +984,9 @@ async def on_shutdown(app):
 
 def main():
     _load_buttons()
+    if _button_state.get("voice_comms.toggle", {}).get("active"):
+        _start_audio_monitor()
+        
     app = web.Application(client_max_size=1024 ** 3)
     app.on_shutdown.append(on_shutdown)
     app.router.add_get("/v1/models", handle_models)
@@ -873,6 +998,7 @@ def main():
     app.router.add_post("/v1/audio/speech", handle_audio_speech)
     app.router.add_post("/rpc", handle_rpc)
     app.router.add_route("*", "/orchestration", handle_orchestration)
+    app.router.add_route("*", "/secretary-learning", handle_secretary_learning)
     app.router.add_route("*", "/v1/{tail:.*}", handle_catchall)
     log(f"mlx-runtime proxy listening on http://{LISTEN_HOST}:{LISTEN_PORT}/v1")
     web.run_app(app, host=LISTEN_HOST, port=LISTEN_PORT, access_log=None)
