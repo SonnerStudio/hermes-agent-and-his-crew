@@ -55,13 +55,19 @@ const ICON_BUTTON = cn(
   'border bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]',
   'transition-colors',
   'disabled:cursor-default disabled:opacity-50',
-  'focus-visible:outline-none focus-visible:ring-[0.1875rem] focus-visible:ring-ring/50'
+  'focus-visible:outline-none focus-visible:ring-[0.1875rem] focus-visible:ring-current/50'
 )
 
 // Inactive = red, Pending = yellow, Active = green.
 const BTN_INACTIVE = 'border-red-500/70 text-red-400 hover:bg-red-500/10'
 const BTN_PENDING = 'border-yellow-500/70 text-yellow-400 hover:bg-yellow-500/10'
 const BTN_ACTIVE = 'border-green-500/70 bg-green-500/15 text-green-400 hover:bg-green-500/20'
+
+// Pure decision: pending (yellow) > active (green) > inactive (red).
+// Exported for tests; the button color must follow the real function state.
+export function buttonColorClass(pending: boolean, active: boolean): string {
+  return pending ? BTN_PENDING : active ? BTN_ACTIVE : BTN_INACTIVE
+}
 
 interface ToggleSpec {
   atom: WritableAtom<boolean>
@@ -79,8 +85,8 @@ const TOGGLES: ToggleSpec[] = [
     pendingAtom: $subagentOrchestrationPending,
     icon: 'type-hierarchy',
     id: 'subagent-orchestration',
-    label: 'Orchestrierte Subagentenverwendung scharf schalten',
-    tip: 'Orchestrierte Subagenten — Mehrfach-Delegation an Unteragenten scharf schalten',
+    label: 'Sub-Agenten aktivieren',
+    tip: 'Sub-Agenten aktivieren — Mehrfach-Delegation an spezialisierte Unteragenten scharf schalten',
     method: 'subagent_orchestration.toggle'
   },
   {
@@ -117,7 +123,7 @@ function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (sp
   const pending = useStore(spec.pendingAtom)
 
   // Color follows the function state: pending (yellow) > active (green) > inactive (red).
-  const colorClass = pending ? BTN_PENDING : active ? BTN_ACTIVE : BTN_INACTIVE
+  const colorClass = buttonColorClass(pending, active)
 
   return (
     <button
