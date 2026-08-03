@@ -26,8 +26,42 @@ const MAX_AGENTS = 3
 interface AgentNode {
   id: string
   purpose: string
+  /** Specialisation label (Recherche-, Code-, Analyse-Spezialist, …). Shown as
+   *  the bar's name so the team reads as roles, not as free-form task text. */
+  specialist?: string
   status: 'running' | 'done' | 'blocked' | 'reassigned' | string
   progress?: number // 0-100, set manually by the agent per task
+}
+
+/** Derive a specialisation label from the agent's purpose when the backend
+ *  did not send an explicit one (older payloads / manual posts). */
+export function specialistOf(a: AgentNode): string {
+  if (a.specialist) {
+    return a.specialist
+  }
+
+  const p = (a.purpose || '').toLowerCase()
+
+  // Order matters: the most specific domain wins over generic verbs, so
+  // "TTS Stimme prüfen" is an Audio job, not an Analysis job. Analysis is
+  // therefore matched LAST among the domain rules.
+  const table: [RegExp, string][] = [
+    [/audio|stimme|voice|tts|stt|sprach/, 'Audio-Spezialist'],
+    [/bild|image|grafik|visual|design/, 'Bild-Spezialist'],
+    [/readme|doku|docs|übersetz|uebersetz|translat|i18n/, 'Dokumentations-Spezialist'],
+    [/recherch|research|such|search|web/, 'Recherche-Spezialist'],
+    [/code|refactor|implement|patch|build/, 'Code-Spezialist'],
+    [/plan|konzept|architekt/, 'Planungs-Spezialist'],
+    [/analys|review|prüf|pruef|test|verif/, 'Analyse-Spezialist'],
+  ]
+
+  for (const [re, label] of table) {
+    if (re.test(p)) {
+      return label
+    }
+  }
+
+  return a.purpose || a.id
 }
 
 const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)))
@@ -213,7 +247,7 @@ export const OrchestrationStatus = () => {
           <div className="flex flex-col gap-1">
             {runningAgents.length > 0 ? (
               runningAgents.map(a => (
-                <MiniBar key={a.id} label={a.purpose} pct={clampPct(Number(a.progress) || 0)} />
+                <MiniBar key={a.id} label={specialistOf(a)} pct={clampPct(Number(a.progress) || 0)} />
               ))
             ) : (
               <span className="text-[0.62rem] text-muted-foreground">
