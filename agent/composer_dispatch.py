@@ -183,18 +183,26 @@ def build_delegation_call(decision: DispatchDecision, tool_calls: List[Any]) -> 
     """
     cat = decision.category
     tasks = []
+    # Crew policy: sub-agents run on LOCAL MLX models via the proxy (no cloud).
+    # Read from config.yaml `crew.subagents` so the user can retune without
+    # code edits. Falls back to the local sticky model if unset.
+    sub_cfg = _crew_subagent_model()
     for i in decision.unit_indices:
         tc = tool_calls[i]
         fn = getattr(tc, "function", None)
         args = fn.get("arguments", "{}") if isinstance(fn, dict) else getattr(fn, "arguments", "{}") or "{}"
         goal, context = _specialist_task(cat, args)
-        tasks.append(
-            {
-                "goal": goal,
-                "context": context,
-                "role": "leaf",
-            }
-        )
+        task = {
+            "goal": goal,
+            "context": context,
+            "role": "leaf",
+            # Pin the sub-agent to the local MLX proxy so NO cloud model is
+            # ever used by the crew (per SonnerStudio policy).
+            "base_url": sub_cfg["base_url"],
+            "model": sub_cfg["model"],
+            "api_key": sub_cfg.get("api_key", "not-needed"),
+        }
+        tasks.append(task)
     synthetic = {
         "id": f"composer_dispatch_{abs(hash(cat)) % 10**8}",
         "type": "function",
@@ -206,17 +214,45 @@ def build_delegation_call(decision: DispatchDecision, tool_calls: List[Any]) -> 
     return synthetic
 
 
+# Crew model policy (SonnerStudio): sub-agents run LOCAL (no cloud).
+# Read from config.yaml `crew.subagents` so the user can retune without code
+# edits. Falls back to the local sticky MLX model + proxy URL.
+_DEFAULT_SUB_CFG = {
+    "base_url": "http://127.0.0.1:1240/v1",
+    "model": "agent-sticky-qwen3-4b-8bit",
+    "api_key": "not-needed",
+}
+
+
+def _crew_subagent_model() -> dict:
+    """Resolve the local model sub-agents must use (crew policy: no cloud)."""
+    try:
+        from hermes_cli.config import cfg_get, load_config
+
+        cfg = load_config()
+        sub = cfg_get(cfg, "crew", "subagents")
+        if isinstance(sub, dict):
+            return {
+                "base_url": sub.get("base_url", _DEFAULT_SUB_CFG["base_url"]),
+                "model": sub.get("model", _DEFAULT_SUB_CFG["model"]),
+                "api_key": sub.get("api_key", "not-needed"),
+            }
+    except Exception:
+        pass
+    return dict(_DEFAULT_SUB_CFG)
+
+
 # Specialist-tuned delegation context. Keyed by tool category so the composer
 # can hand each crew specialist the exact instructions/backend it needs.
 _SPECIALIST_CONTEXT = {
     "vision_analyze": (
         "You are the Bild-Spezialist (vision analyst) of the Hermes crew. "
-        "Use the native `vision_analyze` tool — it is already wired to the "
-        "user's vision backends (OpenRouter / Nous Portal / Google AI Studio "
-        "Gemini). Do NOT read image bytes with read_file (it cannot decode "
-        "pixels). Call vision_analyze(image_path=..., user_prompt=...) for "
-        "each image and report what the backend returns. Never fabricate "
-        "image contents; if vision_analyze errors, report it.",
+        "Use the LOCAL vision model at the MLX proxy — NO cloud. The proxy "
+        "serves a local Qwen2-VL model at http://127.0.0.1:1240/v1 with "
+        "model id 'mlx-vision-qwen2vl-2b'. Make one chat/completions call per "
+        "image with the image inline as base64 and the user's question as "
+        "text. Do NOT read image bytes with read_file (it cannot decode "
+        "pixels). Never fabricate image contents; if the call errors, report it.",
     ),
     "web_search": (
         "You are the Recherche-Spezialist. Run the web_search tool for each "
