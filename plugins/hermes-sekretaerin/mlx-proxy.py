@@ -97,6 +97,9 @@ BACKENDS = {
     "openrouter-ling-3-flash":      {"online": True, "provider": "openrouter", "model": "inclusionai/ling-3.0-flash:free", "port": 1247},
     # Google Gemma 4 31B (free) — strong general-purpose chat.
     "openrouter-gemma-4-31b":       {"online": True, "provider": "openrouter", "model": "google/gemma-4-31b-it:free", "port": 1248},
+    # === Google AI Studio (Gemini API, OpenAI-compatible endpoint) ===
+    "google-gemini-flash":          {"online": True, "provider": "google", "model": "gemini-flash-latest", "port": 1249},
+    "google-gemini-pro":            {"online": True, "provider": "google", "model": "gemini-pro-latest", "port": 1249},
     "nous-portal-free":            {"online": True, "provider": "nous", "model": "hermes-3-llama-3.1-405b", "port": 1246},
 }
 
@@ -264,6 +267,9 @@ async def _route_online(request, model_id, backend, suffix):
     elif provider == "nous":
         api_key = os.environ.get("NOUS_API_KEY")
         base_url = "https://inference-api.nousresearch.com/v1"
+    elif provider == "google":
+        api_key = os.environ.get("GEMINI_API_KEY")
+        base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
     else:
         return err(503, f"unknown online provider: {provider}", "service_unavailable")
 
