@@ -174,22 +174,29 @@ def build_delegation_call(decision: DispatchDecision, tool_calls: List[Any]) -> 
     The returned dict is OpenAI-style (``id``/``function``) so it can be
     inserted into ``assistant_message.tool_calls`` in place of the original
     calls. The batch uses the native parallel ``tasks=[...]`` form.
+
+    For specialist categories (vision_analyze, web_search, terminal, ...) the
+    delegated sub-agent receives a specialist-tuned context so it runs as the
+    named crew specialist (e.g. the Bild-Spezialist) instead of a generic
+    runner. This is what makes "Lernende Crew" show each specialist on its own
+    row AND routes the real work to the right tool/backend.
     """
+    cat = decision.category
     tasks = []
     for i in decision.unit_indices:
         tc = tool_calls[i]
         fn = getattr(tc, "function", None)
-        args = fn.get("arguments", "{}") if isinstance(fn, dict) else getattr(fn, "arguments", "{}")
-        goal = f"Execute the following tool call as an independent sub-task: {args}"
+        args = fn.get("arguments", "{}") if isinstance(fn, dict) else getattr(fn, "arguments", "{}") or "{}"
+        goal, context = _specialist_task(cat, args)
         tasks.append(
             {
                 "goal": goal,
-                "context": "Run this single tool call autonomously and return its result.",
+                "context": context,
                 "role": "leaf",
             }
         )
     synthetic = {
-        "id": f"composer_dispatch_{abs(hash(decision.category)) % 10**8}",
+        "id": f"composer_dispatch_{abs(hash(cat)) % 10**8}",
         "type": "function",
         "function": {
             "name": "delegate_task",
@@ -197,6 +204,56 @@ def build_delegation_call(decision: DispatchDecision, tool_calls: List[Any]) -> 
         },
     }
     return synthetic
+
+
+# Specialist-tuned delegation context. Keyed by tool category so the composer
+# can hand each crew specialist the exact instructions/backend it needs.
+_SPECIALIST_CONTEXT = {
+    "vision_analyze": (
+        "You are the Bild-Spezialist (vision analyst) of the Hermes crew. "
+        "Use the native `vision_analyze` tool — it is already wired to the "
+        "user's vision backends (OpenRouter / Nous Portal / Google AI Studio "
+        "Gemini). Do NOT read image bytes with read_file (it cannot decode "
+        "pixels). Call vision_analyze(image_path=..., user_prompt=...) for "
+        "each image and report what the backend returns. Never fabricate "
+        "image contents; if vision_analyze errors, report it.",
+    ),
+    "web_search": (
+        "You are the Recherche-Spezialist. Run the web_search tool for each "
+        "query and synthesize the findings into a cited, structured answer.",
+    ),
+    "terminal": (
+        "You are the Code-Spezialist. Execute the shell command(s) via the "
+        "terminal tool and return the real output. Capture errors verbatim.",
+    ),
+}
+
+
+def _specialist_task(category: str, raw_args: str) -> tuple:
+    """Return (goal, context) for one delegated sub-task of ``category``.
+
+    Vision tasks get a specialist context that points the sub-agent at the
+    real ``vision_analyze`` tool (no local model needed). Other categories fall
+    back to a generic autonomous-execution context.
+    """
+    ctx = _SPECIALIST_CONTEXT.get(category)
+    if ctx is not None:
+        if category == "vision_analyze":
+            goal = (
+                "Analyze the image(s) from the tool call below using the "
+                "native vision_analyze tool and answer the user's question."
+            )
+        elif category == "web_search":
+            goal = "Run the web search(es) below and synthesize the findings."
+        elif category == "terminal":
+            goal = "Execute the shell command(s) below and return the output."
+        else:
+            goal = f"Execute the following {category} tool call autonomously."
+        return goal, f"{ctx}\n\nOriginal tool call:\n{raw_args}"
+    return (
+        f"Execute the following tool call as an independent sub-task: {raw_args}",
+        "Run this single tool call autonomously and return its result.",
+    )
 
 
 def expand_clones(
