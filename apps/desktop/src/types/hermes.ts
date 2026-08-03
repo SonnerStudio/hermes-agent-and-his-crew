@@ -386,6 +386,11 @@ export interface ModelOptionProvider {
   slug: string
   total_models?: number
   warning?: string
+  /** UI grouping category. Providers sharing a category are rendered under one
+   *  collapsible section header in the model picker (e.g. "NOUS Portal" groups
+   *  the Nous Portal + local MLX-Runtime providers; "OpenRouter" nests under
+   *  the MLX group). Flat providers (no category) render at top level. */
+  category?: string
   /** Curated shortlist (one flagship per lab) the picker shows by default for
    *  aggregator providers that serve dozens of models across many labs. Empty
    *  for providers with no manifest entry — the picker falls back to top-N.

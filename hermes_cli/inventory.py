@@ -273,6 +273,20 @@ def build_models_payload(
     if featured:
         _apply_featured(rows)
 
+    # --- UI category grouping (NOUS Portal → MLX → OpenRouter hierarchy).
+    # Tag each provider with a `category` so the desktop model picker can render
+    # them under collapsible section headers. The MLX-Runtime provider and the
+    # Nous Portal share "NOUS Portal"; OpenRouter nests under the MLX group.
+    _PROVIDER_CATEGORY = {
+        "nous": "NOUS Portal",
+        "mlx-runtime": "NOUS Portal",
+        "openrouter": "MLX",
+    }
+    for row in rows:
+        slug = str(row.get("slug", "")).strip().lower()
+        if slug in _PROVIDER_CATEGORY and not row.get("category"):
+            row["category"] = _PROVIDER_CATEGORY[slug]
+
     return {
         "providers": rows,
         "model": ctx.current_model,

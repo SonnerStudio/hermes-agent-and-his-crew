@@ -47,6 +47,17 @@ MAX_WORDS = 6  # keep phrases short to avoid kokoro.cpp internal hard cuts
 USE_IPA = True  # epitran IPA (deu-Latn) — bypasses kokoro.cpp's broken espeak
 
 
+def _load_custom_dict():
+    dict_path = os.path.expanduser("~/.hermes/tts_dictionary.json")
+    try:
+        if os.path.exists(dict_path):
+            with open(dict_path, "r") as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"[kokoro-tts] Error loading custom dict: {e}", flush=True)
+    return {}
+
+
 def _to_ipa(text, lang):
     """German/English text -> IPA. Returns None if epitran unavailable."""
     try:
@@ -55,6 +66,14 @@ def _to_ipa(text, lang):
             ep = Epitran("deu-Latn")
         else:
             ep = Epitran("eng-Latn")
+            
+        custom_dict = _load_custom_dict()
+        
+        # Apply custom phonetic replacements (case-insensitive word boundaries)
+        for bad_word, replacement in custom_dict.items():
+            pattern = r'(?i)\b' + re.escape(bad_word) + r'\b'
+            text = re.sub(pattern, replacement, text)
+
         # word-by-word keeps punctuation/spaces intact
         return " ".join(ep.transliterate(w) for w in text.split(" "))
     except Exception as e:
@@ -141,7 +160,7 @@ async def handle_speech(request):
             inp = ipa if ipa else ph
             out = tempfile.mktemp(suffix=".wav")
             cmd = [KOKORO_CLI, "-m", MODEL, "-v", vpath, "-l", lang,
-                   "--backend", "cpu", "-s", "1.0", "-o", out]
+                   "--backend", "cpu", "-s", "0.9", "-o", out]
             if ipa:
                 cmd.append("--phonemes")  # skip espeak, use our IPA
             cmd.append(inp)
