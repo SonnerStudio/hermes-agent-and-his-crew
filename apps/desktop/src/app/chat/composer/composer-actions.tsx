@@ -85,8 +85,8 @@ const TOGGLES: ToggleSpec[] = [
     pendingAtom: $subagentOrchestrationPending,
     icon: 'type-hierarchy',
     id: 'subagent-orchestration',
-    label: 'Sub-Agenten aktivieren',
-    tip: 'Sub-Agenten aktivieren — Mehrfach-Delegation an spezialisierte Unteragenten scharf schalten',
+    label: 'Sub-Agenten',
+    tip: 'Sub-Agenten — spezialisierte Unteragenten scharf schalten (grün = aktiv)',
     method: 'subagent_orchestration.toggle'
   },
   {
@@ -94,26 +94,26 @@ const TOGGLES: ToggleSpec[] = [
     pendingAtom: $voiceCommsPending,
     icon: 'mic',
     id: 'voice-comms',
-    label: 'Sprachkommunikation (Hey Hermes)',
-    tip: 'Sprachkommunikation (Hey Hermes) — Mikrofon ein/aus',
+    label: 'Sekretärin',
+    tip: 'Sekretärin — Managerin der Agenten und Sprachschnittstelle (grün = aktiv)',
     method: 'voice_comms.toggle'
   },
   {
     atom: $orchestrationActive,
     pendingAtom: $orchestrationPending,
-    icon: 'git-merge',
+    icon: 'copy',
     id: 'orchestration',
-    label: 'Orchestration scharf schalten',
-    tip: 'Orchestration — Aufgabenzerlegung in parallele Arbeitsströme scharf schalten',
+    label: 'Temporäres Klonen',
+    tip: 'Temporäres Klonen — Agenten für die Dauer einer Aufgabe vervielfältigen (grün = aktiv)',
     method: 'orchestration.toggle'
   },
   {
     atom: $doubleModeActive,
     pendingAtom: $doubleModePending,
-    icon: 'copy',
+    icon: 'git-merge',
     id: 'double-mode',
-    label: 'Double-Mode (Subagenten klonen)',
-    tip: 'Double-Mode — Subagenten klonen für redundante Ausführung ein/aus',
+    label: 'Harmonisierte Orchestrierung',
+    tip: 'Harmonisierte Orchestrierung — Agenten synchronisieren und gemeinsam steuern (grün = aktiv)',
     method: 'double_mode.toggle'
   }
 ]
@@ -127,10 +127,13 @@ function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (sp
 
   return (
     <button
+      aria-busy={busy}
       aria-label={spec.label}
       aria-pressed={active}
       className={cn(ICON_BUTTON, colorClass)}
-      disabled={busy}
+      // NOT `disabled`: that greys the button out (opacity-50) and would hide
+      // the yellow pending phase behind a dimmed icon. `run()` already ignores
+      // re-entrant clicks per button, so the guard lives there, not here.
       onClick={() => onRun(spec)}
       title={spec.tip}
       type="button"
@@ -152,7 +155,10 @@ function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (sp
  * just the local guess.
  */
 export const ComposerActions = memo(function ComposerActions() {
-  const [runningId, setRunningId] = useState<null | string>(null)
+  // Per-button in-flight set. A single shared `runningId` made one slow RPC
+  // (the Secretary boots a voice process) freeze ALL four buttons; each button
+  // must react instantly and independently.
+  const [runningIds, setRunningIds] = useState<ReadonlySet<string>>(() => new Set())
 
   // Poll the proxy /health endpoint and reconcile each button's active atom
   // with the backend's ground-truth `buttons` map. This makes the color state
@@ -218,16 +224,20 @@ export const ComposerActions = memo(function ComposerActions() {
   }, [])
 
   const run = (spec: ToggleSpec) => {
-    if (runningId) {
+    // Only this button is gated — a second click on the SAME button while its
+    // RPC is in flight is ignored; the other three stay live.
+    if (runningIds.has(spec.id)) {
       return
     }
 
     const previous = spec.atom.get()
     const next = !previous
 
+    // Instant feedback: flip optimistically and go yellow (pending) in the
+    // same tick as the click, before the RPC round-trip.
     spec.atom.set(next)
     spec.pendingAtom.set(true)
-    setRunningId(spec.id)
+    setRunningIds(prev => new Set(prev).add(spec.id))
 
     void (async () => {
       try {
@@ -249,7 +259,13 @@ export const ComposerActions = memo(function ComposerActions() {
         spec.pendingAtom.set(false)
         notifyError(error, spec.label)
       } finally {
-        setRunningId(null)
+        setRunningIds(prev => {
+          const nextIds = new Set(prev)
+
+          nextIds.delete(spec.id)
+
+          return nextIds
+        })
       }
     })()
   }
@@ -257,7 +273,7 @@ export const ComposerActions = memo(function ComposerActions() {
   return (
     <>
       {TOGGLES.map(spec => (
-        <ComposerActionButton busy={runningId === spec.id} key={spec.id} onRun={run} spec={spec} />
+        <ComposerActionButton busy={runningIds.has(spec.id)} key={spec.id} onRun={run} spec={spec} />
       ))}
     </>
   )
