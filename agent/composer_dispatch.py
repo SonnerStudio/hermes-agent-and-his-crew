@@ -116,6 +116,16 @@ def should_dispatch(
         # Only consider calls that are safe to parallelise (read-only-ish).
         by_cat.setdefault(name, []).append(i)
 
+    # Autonomy rule (Jan): with Button 1 armed but the Secretary (Button 2)
+    # OFF, the crew has no Managerin allocating work — so it must go looking
+    # for jobs on its own. It therefore bids more eagerly: the parallel
+    # threshold drops by one and the per-conversation budget doubles.
+    # With the Secretary ON she does the coordinating, so the crew falls back
+    # to the conservative defaults and waits to be tasked by her.
+    _autonomous = not getattr(agent, "_voice_comms", False)
+    if _autonomous:
+        min_parallel_units = max(2, min_parallel_units - 1)
+
     # S2: find a category with >= min_parallel_units independent calls.
     best_cat = ""
     best_idx: List[int] = []
@@ -142,13 +152,19 @@ def should_dispatch(
     if _tool_call_count(agent):
         return DispatchDecision(False, "spawn_paused")
 
-    # S6: per-conversation budget.
+    # S6: per-conversation budget. An autonomous crew (no Secretary) is
+    # allowed twice the self-initiated dispatches, since nobody else is
+    # handing it work.
     count = getattr(agent, "_proactive_dispatch_count", 0)
-    if count >= MAX_PROACTIVE_DISPATCHES:
+    budget = MAX_PROACTIVE_DISPATCHES * (2 if _autonomous else 1)
+    if count >= budget:
         return DispatchDecision(False, "budget_exhausted")
 
     return DispatchDecision(
-        True, "ok", unit_indices=best_idx[:TOTAL_CHILDREN_CAP], category=best_cat
+        True,
+        "ok_autonomous" if _autonomous else "ok",
+        unit_indices=best_idx[:TOTAL_CHILDREN_CAP],
+        category=best_cat,
     )
 
 

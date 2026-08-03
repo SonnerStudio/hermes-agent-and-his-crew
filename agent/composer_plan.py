@@ -216,7 +216,17 @@ def plan_delegation(agent, tool_calls: List[Any]) -> Optional[SecretaryPlan]:
         directive = (
             f"Secretary (Managerin von Hermes Agent): {len(units)} Einheit(en) "
             f"geplant, {orch_n} als Orchestrator. Ich koordiniere die Agenten — "
-            f"führe zuerst die priorisierten Einheiten aus, dann den Rest."
+            f"führe zuerst die priorisierten Einheiten aus, dann den Rest. "
+            f"Ich bin die Kommunikationsschnittstelle zum Anwender: melde "
+            f"Ergebnisse, Rückfragen und Blocker über mich, nicht einzeln."
+        )
+    elif getattr(agent, "_subagent_orchestration", False):
+        # Crew armed, Secretary off: the sub-agents source their own work and
+        # report straight back to Hermes Agent (no Managerin in between).
+        directive = (
+            f"Sub-Agenten-Crew (autonom, ohne Sekretärin): {len(units)} "
+            f"Einheit(en) eigenständig übernommen. Die Crew holt sich Jobs "
+            f"selbst bei Hermes Agent ab und meldet direkt an ihn zurück."
         )
     else:
         directive = (
