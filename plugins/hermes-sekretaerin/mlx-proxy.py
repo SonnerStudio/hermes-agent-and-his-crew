@@ -311,6 +311,9 @@ async def _route_online(request, model_id, backend, suffix):
     elif provider == "groq":
         api_key = os.environ.get("GROQ_API_KEY")
         base_url = "https://api.groq.com/openai/v1"
+    elif provider == "huggingface":
+        api_key = os.environ.get("HF_TOKEN")
+        base_url = "https://router.huggingface.co/v1"
     else:
         return err(503, f"unknown online provider: {provider}", "service_unavailable")
 

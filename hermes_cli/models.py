@@ -603,6 +603,22 @@ _PROVIDER_MODELS: dict[str, list[str]] = {
         "deepseek/deepseek-r1-0528",
         "qwen/qwen3-235b-a22b-fp8",
     ],
+    # Groq (free tier, OpenAI-compatible)
+    "groq": [
+        "groq-llama-3.3-70b",
+        "groq-mixtral-8x7b",
+        "groq-gemma2-9b",
+    ],
+    # Huggingface (free serverless inference — verified free LLMs via HF API)
+    "huggingface": [
+        "Qwen/Qwen3-0.6B", "Qwen/Qwen3-1.7B", "Qwen/Qwen3-4B", "Qwen/Qwen3-8B",
+        "Qwen/Qwen3-14B", "Qwen/Qwen3-32B",
+        "Qwen/Qwen2.5-0.5B-Instruct", "Qwen/Qwen2.5-1.5B-Instruct",
+        "Qwen/Qwen2.5-3B-Instruct", "Qwen/Qwen2.5-7B-Instruct", "Qwen/Qwen2.5-14B-Instruct",
+        "google/gemma-4-31B-it", "google/gemma-4-26B-A4B-it", "google/gemma-3-1b-it",
+        "meta-llama/Llama-3.1-8B-Instruct", "deepseek-ai/DeepSeek-R1",
+        "deepseek-ai/DeepSeek-V4-Flash", "openai/gpt-oss-20b", "openai/gpt-oss-120b",
+    ],
 }
 
 # Vercel AI Gateway: derive the bare-model-id catalog from the curated
