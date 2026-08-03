@@ -314,13 +314,41 @@ class SecretaryMemory:
             }
         result["agents"] = agent_scores
 
+        # ── Known specialist registry (Jan's requirement: EVERY crew
+        # specialist gets its OWN scored row, even before it has recorded any
+        # learning decision). Merge the live agent_scores (from outcomes)
+        # with the canonical registry so newly-added specialists appear
+        # immediately with a neutral (score 0, "neu") placeholder instead of
+        # only after their first delegation. Stable slugs match
+        # composer_dispatch.specialist_for().
+        KNOWN_SPECIALISTS = (
+            ("vision", "Bild-Spezialist"),
+            ("web-search", "Recherche-Spezialist"),
+            ("coder", "Code-Spezialist"),
+            ("audio", "Audio-Spezialist"),
+            ("analyst", "Analyse-Spezialist"),
+            ("planner", "Planungs-Spezialist"),
+        )
+        merged: Dict[str, Any] = {}
+        for aid, label in KNOWN_SPECIALISTS:
+            if aid in agent_scores:
+                merged[aid] = agent_scores[aid]
+            else:
+                merged[aid] = {
+                    "score": 0, "decisions": 0, "name": label, "trend": "neu",
+                }
+        # Keep any other live agents not in the known registry (forward-compat).
+        for aid, d in agent_scores.items():
+            merged.setdefault(aid, d)
+        result["agents"] = merged
+
         # HUD layout (Jan's requirement): EVERY sub-agent specialist gets its
         # OWN scored row with its specialization label — never collapsed into a
         # single anonymous bar. The frontend stacks them vertically (wrapping
         # to 2-3 rows only on very narrow widths), so the crew stays readable.
         # ``agents`` above is kept as the raw source (tooltips/details).
         ranked = sorted(
-            agent_scores.items(), key=lambda kv: (-kv[1]["score"], kv[0])
+            merged.items(), key=lambda kv: (-kv[1]["score"], kv[0])
         )
         per_line = max(1, -(-len(ranked) // 2))  # ceil: fill line 1, then 2+
         result["agent_lines"] = [

@@ -582,6 +582,7 @@ function renderGroupedProviders(
             const isCurrent = activeId !== null
             const name = modelDisplayParts(family.id).name
             const caps = group.provider.capabilities?.[family.id]
+            const isFree = Boolean(group.provider.pricing?.[family.id]?.free)
 
             const preset = modelPresets[modelPresetKey(group.provider.slug, family.id)] ?? {}
             const effEffort = isCurrent ? currentReasoningEffort : (preset.effort ?? '')
@@ -623,6 +624,11 @@ function renderGroupedProviders(
                 >
                   <span className="min-w-0 flex-1 truncate">
                     <HighlightMatches query={search} text={name} />
+                    {isFree ? (
+                      <span className="ml-1 rounded bg-green-500/20 px-1 text-[0.5rem] font-medium uppercase tracking-wide text-green-400">
+                        Free
+                      </span>
+                    ) : null}
                     {meta ? <span className="text-(--ui-text-tertiary)"> {meta}</span> : null}
                   </span>
                   {isCurrent ? (

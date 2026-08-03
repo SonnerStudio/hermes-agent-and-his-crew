@@ -399,4 +399,24 @@ describe('ModelMenuPanel provider collapse', () => {
     expect($collapsedProviders.get()).toContain('google')
     expect($collapsedProviders.get()).toContain('deepseek')
   })
+
+  it('renders a "Free" badge for models the backend marks free', async () => {
+    // Backend sends per-model pricing with `free: true` for cost-free tiers.
+    const FREE_PROVIDER = {
+      models: ['groq-llama-3.3-70b', 'groq-mixtral-8x7b'],
+      name: 'Groq',
+      slug: 'groq',
+      pricing: {
+        'groq-llama-3.3-70b': { input: 'free', output: 'free', cache: null, free: true },
+        'groq-mixtral-8x7b': { input: '$0.20', output: '$0.20', cache: null, free: false }
+      }
+    }
+    getGlobalModelOptions.mockResolvedValueOnce({ providers: [FREE_PROVIDER] })
+    const panel = renderPanel()
+    await panel.content.findByText('Groq')
+
+    const freeBadges = panel.content.getAllByText('Free')
+    expect(freeBadges.length).toBeGreaterThanOrEqual(1)
+    panel.content.unmount()
+  })
 })
