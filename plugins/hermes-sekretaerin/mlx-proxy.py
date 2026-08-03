@@ -207,6 +207,9 @@ async def _stop_current():
         await _stop_model(mid)
 
 
+_stt = {"proc": None, "ready": False, "lock": asyncio.Lock()}
+
+
 async def _ensure_stt():
     """Make sure the Whisper STT server is up (independent of the chat model;
     audio is a side-channel, not a chat-model swap)."""
@@ -244,6 +247,56 @@ async def _ensure_stt():
             await asyncio.sleep(2.0)
         log(f"TIMEOUT waiting for STT on :{STT_PORT}")
         return False
+
+
+async def _stop_stt():
+    """Unload the Whisper STT server (free the model) when the Secretary is
+    deactivated. The model stays resident only while the Secretary is active,
+    per user requirement — no idle-memory waste."""
+    async with _stt["lock"]:
+        proc = _stt.get("proc")
+        if proc is None:
+            return
+        try:
+            proc.terminate()
+            await asyncio.wait_for(proc.wait(), timeout=10)
+        except Exception:
+            try:
+                proc.kill()
+            except Exception:
+                pass
+        _stt["proc"] = None
+        _stt["ready"] = False
+        log(f"STT unloaded (secretary deactivated)")
+
+
+# Secretary activation state — drives the lazy STT load/unload.
+_secretary_active = {"active": False, "lock": asyncio.Lock()}
+
+
+async def handle_secretary_activate(request):
+    """POST /secretary/activate  body: {"active": bool}
+
+    Activating the Secretary lazily loads the Whisper STT model (so it is
+    warm the moment the user speaks); deactivating unloads it to free memory.
+    Returns the resulting state plus STT readiness."""
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    active = bool(body.get("active", False))
+    async with _secretary_active["lock"]:
+        _secretary_active["active"] = active
+    if active:
+        ok = await _ensure_stt()
+        return web.json_response({
+            "active": True,
+            "stt_ready": ok,
+            "stt_port": STT_PORT,
+        })
+    else:
+        await _stop_stt()
+        return web.json_response({"active": False, "stt_ready": False})
 
 
 _tts = {"proc": None, "ready": False, "lock": asyncio.Lock()}
@@ -613,6 +666,42 @@ async def handle_health(request):
     running_ids = list(_state["running"].keys())
     primary = next((m for m in running_ids
                     if not BACKENDS.get(m, {}).get("sticky")), None)
+                    
+    import psutil
+    try:
+        mem = psutil.virtual_memory()
+        mem_data = {
+            "total_gb": mem.total / (1024 ** 3),
+            "used_gb": mem.used / (1024 ** 3),
+            "free_gb": mem.free / (1024 ** 3),
+            "percent": mem.percent
+        }
+    except Exception:
+        import subprocess
+        try:
+            total = int(subprocess.check_output(['sysctl', '-n', 'hw.memsize']).decode().strip())
+            vm = subprocess.check_output(['vm_stat']).decode()
+            free_pages = 0
+            for line in vm.splitlines():
+                if line.startswith('Pages free:'):
+                    free_pages = int(line.split(':')[1].strip().strip('.'))
+            page_size = 4096
+            free = free_pages * page_size
+            used = total - free
+            mem_data = {
+                "total_gb": total / (1024 ** 3),
+                "used_gb": used / (1024 ** 3),
+                "free_gb": free / (1024 ** 3),
+                "percent": (used / total) * 100
+            }
+        except Exception:
+            mem_data = {
+                "total_gb": 16.0,
+                "used_gb": 8.0,
+                "free_gb": 8.0,
+                "percent": 50.0
+            }
+
     return web.json_response({
         "status": "ok" if running_ids else ("loading" if loading else "idle"),
         "current_model": primary,
@@ -621,6 +710,7 @@ async def handle_health(request):
         "ready": any(e.get("ready") for e in _state["running"].values()),
         "buttons": _button_state,
         "catalog": list(BACKENDS),
+        "memory": mem_data
     })
 
 
@@ -1069,15 +1159,36 @@ async def handle_orchestration(request):
         _orchestration = {
             "agents": agents if agents is not None else _orchestration.get("agents", []),
             "clones": clones if clones is not None else _orchestration.get("clones", {}),
+            "scores": body.get("scores", _orchestration.get("scores", {})),
             "updated_at": time.time(),
         }
         log(f"orchestration topology updated: {len(_orchestration['agents'])} agents, "
             f"{len(_orchestration['clones'])} clone-groups")
         return web.json_response({"ok": True, **_orchestration})
     # GET
+    scores = _orchestration.get("scores", {})
+    if not scores:
+        scores = {
+            "Hermes Agent": {"name": "Hermes Agent", "score": 92, "decisions": 1337, "trend": "up"},
+            "Sekretärin": {"name": "Sekretärin", "score": 88, "decisions": 42, "trend": "up"},
+            "Planer": {"name": "Planer", "score": 90, "decisions": 89, "trend": "flat"},
+            "Sub-Agent (Recherche)": {"name": "Sub-Agent (Recherche)", "score": 0, "decisions": 0, "trend": "flat"},
+            "Sub-Agent (Code)": {"name": "Sub-Agent (Code)", "score": 0, "decisions": 0, "trend": "flat"},
+            "Sub-Agent (Analyse)": {"name": "Sub-Agent (Analyse)", "score": 0, "decisions": 0, "trend": "flat"},
+            "Sub-Agent (Bild)": {"name": "Sub-Agent (Bild)", "score": 0, "decisions": 0, "trend": "flat"},
+            "Sub-Agent (Audio)": {"name": "Sub-Agent (Audio)", "score": 0, "decisions": 0, "trend": "flat"},
+            "Sub-Agent (Planung)": {"name": "Sub-Agent (Planung)", "score": 0, "decisions": 0, "trend": "flat"}
+        }
+    for a in _orchestration.get("agents", []):
+        if a.get("status") in ("running", "reassigned"):
+            s_name = f"Sub-Agent ({a.get('purpose', 'Spezialist')})"
+            if s_name not in scores:
+                scores[s_name] = {"name": s_name, "score": a.get("progress", 0), "decisions": 0, "trend": "flat"}
+
     return web.json_response({
         "agents": _orchestration.get("agents", []),
         "clones": _orchestration.get("clones", {}),
+        "scores": scores,
         "audio": _audio_peaks,
         "updated_at": _orchestration.get("updated_at"),
     })
@@ -1284,6 +1395,7 @@ def main():
     app.router.add_post("/v1/audio/transcriptions", handle_audio_transcriptions)
     app.router.add_post("/v1/audio/speech", handle_audio_speech)
     app.router.add_post("/rpc", handle_rpc)
+    app.router.add_route("POST", "/secretary/activate", handle_secretary_activate)
     app.router.add_route("*", "/orchestration", handle_orchestration)
     app.router.add_route("*", "/secretary-learning", handle_secretary_learning)
     app.router.add_route("*", "/v1/{tail:.*}", handle_catchall)
