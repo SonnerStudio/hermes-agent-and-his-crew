@@ -67,6 +67,7 @@ const DE: Dict = {
   "secretary.routing": "Routing-Präferenzen",
   "secretary.skills": "Planungs-Skills",
   "secretary.crew": "Lernende Crew",
+  "secretary.subagents": "Sub-Agenten",
   "secretary.graph": "Lern-Graph",
 };
 
@@ -89,6 +90,7 @@ const EN: Dict = {
   "secretary.routing": "Routing Preferences",
   "secretary.skills": "Planning Skills",
   "secretary.crew": "Learning Crew",
+  "secretary.subagents": "Sub-Agents",
   "secretary.graph": "Learning Graph",
 };
 

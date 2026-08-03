@@ -122,14 +122,28 @@ export const LearningFooter = () => {
     }
   }, [])
 
-  // Build the ordered bar list: Hermes Agent → Planer → Sekretärin, with the
-  // specialists packed into at most two rows UNDER that line (never one row
-  // per specialist — the crew would push the composer off-screen).
   const modules = scores ? Object.keys(scores).filter(k => ['subagent', 'planner', 'secretary'].includes(k)) : []
   const agentList = scores?.agents ? Object.entries(scores.agents) : []
-  const agentLines = scores?.agent_lines ?? []
+  const specialistLines = scores?.agent_lines ?? []
+  // Build the data groups:
+  //   A. Hermes Agent (core, own area)
+  //   B. Sub-Agenten (each its own bar, vertically stacked)
+  //   C. Sekretärin (own area)
+  // Rendered as THREE stacked sections (never all side-by-side).
+  const hermesScore = scores ? clampPct(
+    ((scores.subagent?.score ?? 0) +
+      (scores.planner?.score ?? 0) +
+      (scores.secretary?.score ?? 0)) / 3,
+  ) : 0
+  const hermesDecisions = scores ? Math.max(
+    1,
+    (scores.subagent?.decisions ?? 0) +
+      (scores.planner?.decisions ?? 0) +
+      (scores.secretary?.decisions ?? 0) +
+      agentList.reduce((s, [, a]) => s + (a.decisions ?? 0), 0),
+  ) : 0
 
-  if (!scores || (modules.length === 0 && agentList.length === 0)) {
+  if (!scores || (modules.length === 0 && agentList.length === 0 && specialistLines.length === 0)) {
     return null
   }
 
@@ -137,59 +151,55 @@ export const LearningFooter = () => {
     <div
       aria-label="Live learning scores"
       className={cn(
-        'flex flex-col gap-1 rounded-lg border border-sky-500/40 px-3 py-1.5',
+        'flex flex-col gap-1.5 rounded-lg border border-sky-500/40 px-3 py-1.5',
         'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]',
       )}
       role="status"
     >
-      <div className="flex items-stretch gap-3">
-        <span className="flex shrink-0 items-center text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
+      {/* ── A. Hermes Agent (own area) ── */}
+      <div className="flex flex-col gap-0.5">
+        <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
           {t('secretary.crew', lang)}
         </span>
-        {/* 1. Hermes Agent (the core agent itself) */}
         <ScoreBar
-          decisions={Math.max(
-            1,
-            (scores.subagent?.decisions ?? 0) +
-              (scores.planner?.decisions ?? 0) +
-              (scores.secretary?.decisions ?? 0) +
-              agentList.reduce((s, [, a]) => s + (a.decisions ?? 0), 0),
-          )}
+          decisions={hermesDecisions}
           key="hermes-agent"
           lang={lang}
           name="Hermes Agent"
-          score={clampPct(
-            ((scores.subagent?.score ?? 0) +
-              (scores.planner?.score ?? 0) +
-              (scores.secretary?.score ?? 0)) / 3,
-          )}
+          score={hermesScore}
           trend="steigend"
         />
-        {/* Planer + Sekretärin (fixed crew roles) */}
-        {(['planner', 'secretary'] as const).map(k => {
-          const m = scores[k]
-
-          if (!m || m.decisions === 0) {return null}
-
-          return (
-            <ScoreBar
-              decisions={m.decisions}
-              key={k}
-              lang={lang}
-              name={MODULE_LABELS[k]}
-              score={m.score}
-              trend={m.trend}
-            />
-          )
-        })}
       </div>
-      {/* Specialists: at most two compact rows beneath the crew line. */}
-      {agentLines.map((line, i) => (
-        <div className="flex items-stretch gap-3 pl-2" key={`agent-line-${i}`}>
+
+      {/* ── B. Sub-Agenten (JEDER einzeln mit Spezialisierung, vertikal gestapelt) ── */}
+      {agentList.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
+            {t('secretary.subagents', lang)}
+          </span>
+          {agentList.map(([id, a]) => (
+            <ScoreBar
+              decisions={a.decisions}
+              key={`agent-${id}`}
+              lang={lang}
+              name={a.name ?? id}
+              score={a.score}
+              trend={a.trend}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Specialist summary lines (fallback if backend sends packed lines) */}
+      {specialistLines.length > 0 && agentList.length === 0 && specialistLines.map((line, i) => (
+        <div className="flex flex-col gap-1" key={`spec-line-${i}`}>
+          <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
+            {t('secretary.subagents', lang)}
+          </span>
           {line.map(a => (
             <ScoreBar
               decisions={a.decisions}
-              key={`agent-${a.id}`}
+              key={`spec-${a.id}`}
               lang={lang}
               name={a.name}
               score={a.score}
@@ -198,6 +208,23 @@ export const LearningFooter = () => {
           ))}
         </div>
       ))}
+
+      {/* ── C. Sekretärin (own area) ── */}
+      {scores.secretary && scores.secretary.decisions > 0 && (
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
+            {t('secretary.title', lang)}
+          </span>
+          <ScoreBar
+            decisions={scores.secretary.decisions}
+            key="secretary"
+            lang={lang}
+            name={MODULE_LABELS.secretary}
+            score={scores.secretary.score}
+            trend={scores.secretary.trend}
+          />
+        </div>
+      )}
     </div>
   )
 }
