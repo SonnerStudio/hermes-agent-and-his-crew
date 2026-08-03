@@ -47,11 +47,11 @@ def _tc(name, args="{}"):
     return types.SimpleNamespace(id=f"call_{name}", function=fn, _is_clone=False)
 
 
-def _agent(button1=False, spawn_depth=0, dispatch_count=0):
+def _agent(button1=False, spawn_depth=0, dispatch_count=0, secretary=False):
     a = types.SimpleNamespace()
     a._subagent_orchestration = button1
     a._orchestration_mode = False
-    a._voice_comms = False
+    a._voice_comms = secretary
     a._double_mode = False
     a._spawn_depth = spawn_depth
     a._proactive_dispatch_count = dispatch_count
@@ -71,8 +71,28 @@ def test_button1_off_never_dispatches():
 
 
 def test_below_threshold_no_dispatch():
-    a = _agent(button1=True)
+    # Secretary ON => conservative threshold (3): 2 calls stay below it.
+    a = _agent(button1=True, secretary=True)
     calls = [_tc("web_search", '{"q": str(i)}') for i in range(2)]  # < 3
+    d = composer_dispatch.should_dispatch(a, calls)
+    assert d.dispatch is False
+    assert d.reason == "below_parallel_threshold"
+
+
+def test_autonomous_crew_lowers_threshold():
+    """Button 1 on, Secretary off: the crew sources its own work, so 2 calls
+    are already enough to dispatch (threshold 3 -> 2)."""
+    a = _agent(button1=True, secretary=False)
+    calls = [_tc("web_search", '{"q": str(i)}') for i in range(2)]
+    d = composer_dispatch.should_dispatch(a, calls)
+    assert d.dispatch is True
+    assert d.reason == "ok_autonomous"
+
+
+def test_autonomous_below_threshold_still_blocks():
+    """Even autonomous, a single call is not a parallel unit."""
+    a = _agent(button1=True, secretary=False)
+    calls = [_tc("web_search", '{"q": "only one"}')]
     d = composer_dispatch.should_dispatch(a, calls)
     assert d.dispatch is False
     assert d.reason == "below_parallel_threshold"
@@ -96,11 +116,24 @@ def test_spawn_depth_limit_respected():
 
 
 def test_budget_exhausted():
-    a = _agent(button1=True, dispatch_count=2)
+    # Secretary ON => normal budget (2 dispatches) is already used up.
+    a = _agent(button1=True, dispatch_count=2, secretary=True)
     calls = [_tc("web_search", '{"q": str(i)}') for i in range(4)]
     d = composer_dispatch.should_dispatch(a, calls)
     assert d.dispatch is False
     assert d.reason == "budget_exhausted"
+
+
+def test_autonomous_crew_gets_double_budget():
+    """Without a Secretary the crew may self-dispatch twice as often."""
+    a = _agent(button1=True, dispatch_count=2, secretary=False)
+    calls = [_tc("web_search", '{"q": str(i)}') for i in range(4)]
+    assert composer_dispatch.should_dispatch(a, calls).dispatch is True
+    # ...but the doubled budget is still a hard ceiling.
+    a2 = _agent(button1=True, dispatch_count=4, secretary=False)
+    d2 = composer_dispatch.should_dispatch(a2, calls)
+    assert d2.dispatch is False
+    assert d2.reason == "budget_exhausted"
 
 
 def test_killswitch_disables():

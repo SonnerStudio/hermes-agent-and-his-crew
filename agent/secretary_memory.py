@@ -274,6 +274,24 @@ class SecretaryMemory:
                 "trend": "steigend" if all(o.get("success", True) for o in recs[-3:]) else "stabil",
             }
         result["agents"] = agent_scores
+
+        # HUD layout (Jan's requirement): the specialists must NOT each get
+        # their own row. They are packed into at most TWO compact lines placed
+        # directly under the existing "Lernende Crew" row — highest score
+        # first, so the strongest specialists stay visible when the crew grows.
+        # ``agents`` above is kept as the raw source (tooltips/details).
+        ranked = sorted(
+            agent_scores.items(), key=lambda kv: (-kv[1]["score"], kv[0])
+        )
+        per_line = max(1, -(-len(ranked) // 2))  # ceil: fill line 1, then 2
+        result["agent_lines"] = [
+            [
+                {"id": aid, "name": d["name"], "score": d["score"],
+                 "decisions": d["decisions"], "trend": d["trend"]}
+                for aid, d in ranked[i:i + per_line]
+            ]
+            for i in range(0, len(ranked), per_line)
+        ][:2]
         return result
 
     def prefetch(self) -> Dict[str, Any]:

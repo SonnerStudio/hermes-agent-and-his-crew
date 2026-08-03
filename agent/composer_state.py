@@ -243,17 +243,35 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
                 agent._proactive_dispatch_count = getattr(agent, "_proactive_dispatch_count", 0) + 1
                 # Phase E (Option B): Sub-Agents learn from this dispatch
                 # decision (self-improving like Hermes). Shared crew memory.
+                # Per-specialist: record ONE entry per named specialist in the
+                # unit (not one anonymous batch entry), so the "Lernende Crew"
+                # HUD can give every specialist its own scored row.
                 try:
-                    composer_learn(
-                        agent,
-                        "subagent",
-                        {
-                            "topology": "peer",
-                            "clone_factor": 1,
-                            "units": len(decision.unit_indices),
-                            "success": True,  # decision recorded; refined post-run
-                        },
-                    )
+                    _seen = {}
+                    for _i in decision.unit_indices:
+                        try:
+                            _cat = _fn_name(tool_calls[_i])
+                        except Exception:
+                            _cat = decision.category
+                        _aid, _aname = specialist_for(_cat, decision.category)
+                        _seen.setdefault(_aid, [_aname, 0])
+                        _seen[_aid][1] += 1
+                    if not _seen:  # safety: never lose the signal entirely
+                        _aid, _aname = specialist_for(decision.category)
+                        _seen = {_aid: [_aname, len(decision.unit_indices)]}
+                    for _aid, (_aname, _n) in _seen.items():
+                        composer_learn(
+                            agent,
+                            "subagent",
+                            {
+                                "topology": "peer",
+                                "clone_factor": 1,
+                                "units": _n,
+                                "success": True,  # decision recorded; refined post-run
+                                "agent_id": _aid,
+                                "agent_name": _aname,
+                            },
+                        )
                 except Exception:
                     pass
                 return keep
@@ -320,6 +338,56 @@ def apply_composer_gates(agent, tool_calls: list) -> list:
         pass
 
     return tool_calls
+
+
+def specialist_for(category: str, goal: str = "") -> tuple:
+    """Map a tool category / delegation goal to a named crew SPECIALIST.
+
+    Jan's requirement: the "Lernende Crew" HUD must list EVERY sub-agent
+    specialist on its own row with its own score, instead of collapsing them
+    into one anonymous "subagent" bar. To score them individually they must
+    first be *identified* individually, which is what this does.
+
+    Returns ``(agent_id, display_name)``. Unknown categories fall back to a
+    generic-but-still-distinct id so a new tool never silently merges into an
+    existing specialist's score.
+    """
+    cat = (category or "").strip().lower()
+    goal_l = (goal or "").lower()
+
+    # tool/function name -> (stable id, German HUD label)
+    table = {
+        "web_search": ("web-search", "Recherche-Spezialist"),
+        "web_extract": ("web-search", "Recherche-Spezialist"),
+        "browser_navigate": ("web-search", "Recherche-Spezialist"),
+        "terminal": ("coder", "Code-Spezialist"),
+        "execute_code": ("coder", "Code-Spezialist"),
+        "patch": ("coder", "Code-Spezialist"),
+        "write_file": ("coder", "Code-Spezialist"),
+        "read_file": ("analyst", "Analyse-Spezialist"),
+        "search_files": ("analyst", "Analyse-Spezialist"),
+        "vision_analyze": ("vision", "Bild-Spezialist"),
+        "text_to_speech": ("audio", "Audio-Spezialist"),
+        "delegate_task": ("planner-agent", "Planungs-Spezialist"),
+    }
+    if cat in table:
+        return table[cat]
+
+    # Fall back to intent keywords in the delegation goal.
+    for kw, val in (
+        ("recherch", ("web-search", "Recherche-Spezialist")),
+        ("search", ("web-search", "Recherche-Spezialist")),
+        ("code", ("coder", "Code-Spezialist")),
+        ("plan", ("planner-agent", "Planungs-Spezialist")),
+        ("bild", ("vision", "Bild-Spezialist")),
+        ("image", ("vision", "Bild-Spezialist")),
+        ("audio", ("audio", "Audio-Spezialist")),
+    ):
+        if kw in goal_l:
+            return val
+
+    safe = cat or "generalist"
+    return (safe, f"Spezialist: {safe}")
 
 
 def composer_learn(agent, stage: str, outcome: dict) -> None:
