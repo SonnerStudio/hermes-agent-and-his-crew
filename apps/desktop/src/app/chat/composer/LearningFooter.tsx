@@ -125,16 +125,19 @@ export const LearningFooter = () => {
   const modules = scores ? Object.keys(scores).filter(k => ['subagent', 'planner', 'secretary'].includes(k)) : []
   const agentList = scores?.agents ? Object.entries(scores.agents) : []
   const specialistLines = scores?.agent_lines ?? []
+
   // Build the data groups:
   //   A. Hermes Agent (core, own area)
   //   B. Sub-Agenten (each its own bar, vertically stacked)
   //   C. Sekretärin (own area)
   // Rendered as THREE stacked sections (never all side-by-side).
+
   const hermesScore = scores ? clampPct(
     ((scores.subagent?.score ?? 0) +
       (scores.planner?.score ?? 0) +
       (scores.secretary?.score ?? 0)) / 3,
   ) : 0
+
   const hermesDecisions = scores ? Math.max(
     1,
     (scores.subagent?.decisions ?? 0) +
