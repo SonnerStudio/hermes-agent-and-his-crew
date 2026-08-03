@@ -184,9 +184,102 @@ Nach allen Code-Änderungen (Proxy + Frontend + i18n + Tests):
 
 ---
 
-## 8. Commit + Push (Datenplatte-Clone)
+## 9. PHASE 2 (Option B): Button-Logik im Hermes-Core (vertieft)
 
-Alle Änderungen landen im Datenplatte-Clone
-(`/Volumes/Datenplatte/HermesAgentProjekt/repo-mirror/hermes-agent-and-his-crew`),
-werden committet und via frischem Token gepusht. **Kein** Commit im lokalen
-`~/.hermes/hermes-agent`-Clone (Bucket-Versehen vom 2026-08-02 behoben).
+**Entscheidung (Nutzer, 2026-08-02):** Die Button-Funktionen gehören in den
+**Hermes-Core** (`run_agent.py` / `agent/conversation_loop.py` / `tools/delegate_tool.py`
+/ `cli.py`), nicht nur in den Proxy. Feature-Flags, keine separaten Prozesse.
+
+**Verifizierte Architektur-Lücken (müssen geschlossen werden):**
+
+1. **Der Core liest `composer-flags.json` NICHT.** Die Proxy-Buttons schreiben
+   nur in `~/.hermes/composer-flags.json`, aber kein Core-Modul liest es.
+   → **Brücke fehlt komplett.**
+2. **Keine Feature-Flag-Infrastruktur im Core.** `AIAgent.__init__` hat zwar
+   `self._codex_reasoning_replay_enabled`-artige Flags, aber KEIN generisches
+   „behavior switch"-System für UI-Buttons.
+
+**Sicheres Integrationsdesign (schrittweise, nicht-breaking):**
+
+### 9.1 Neues Modul `agent/composer_state.py`
+- Liest `~/.hermes/composer-flags.json` periodenfrei via `watchdog` (falls
+  verfügbar) oder bei jedem `run_conversation`-Aufruf (lazy re-read, <1ms).
+- Exportiert `get_composer_flags() -> dict` mit den 4 Keys
+  (`subagent_orchestration`, `voice_comms`, `orchestration`, `double_mode`),
+  alle als `bool`, Default `False`.
+- **Strikter Bool-Cast** (behebt den `bool("false")=True`-Trap aus Phase 1):
+  ```python
+  def _coerce(v):
+      if isinstance(v, str): return v.strip().lower() in ("1","true","yes","on")
+      if isinstance(v, int): return v != 0
+      return bool(v)
+  ```
+- **Keine** Abhängigkeit zum Proxy — reine Datei-Lese, damit Core ohne Proxy läuft.
+
+### 9.2 `AIAgent` erhält 4 Feature-Flags
+In `run_agent.py AIAgent.__init__` (nach den bestehenden `self._*`-Flags):
+```python
+self._subagent_orchestration = False
+self._voice_comms = False
+self._orchestration_mode = False
+self._double_mode = False
+```
+`run_conversation` lädt beim Start: `flags = get_composer_flags()` und setzt die
+4 Attribute. **Nur lesend** — bestehende Logik bleibt unberührt, wenn alle Flags `False`.
+
+### 9.3 Button 1 — Sub-Agenten aktivieren (Core-Flag)
+- Wenn `self._subagent_orchestration`: `delegate_task` wird „scharf" geschaltet.
+  Konkret: In `agent/conversation_loop.py` wird bei Bedarf (wenn die Aufgabe
+  parallelisierbar ist) automatisch `delegate_task(goal=...)` aufgerufen —
+  **aber nur, wenn das Flag an ist**. Ohne Flag: aktuelles Verhalten (kein Auto-Delegate).
+- **Lernen:** `delegate_tool.py` schreibt nach Task-Ende ein `learnings.json`
+  pro Sub-Agent nach `~/.hermes/subagents/<name>/learnings.json`.
+- **Nicht-breaking:** Bestehende `_cap_delegate_task_calls`-Logik (Zeile 5925)
+  bleibt; das Flag ist nur ein zusätzlicher Gate vor dem Auto-Dispatch.
+
+### 9.4 Button 2 — Secretary / Sekretärin (Core-Flag + Sprach-I/O)
+- Wenn `self._voice_comms`: Ein „Secretary"-Layer wird **vor** der Task-Ausführung
+  eingehängt (Plant + teilt zu). Die Sprach-I/O (Whisper STT / Kokoro TTS) läuft
+  weiterhin im Proxy (`voice_comms.py`), aber die **Planung** (welche Sub-Agenten
+  bekommen was) wird im Core gemacht.
+- **Nicht-breaking:** Ohne Flag: keine Secretary-Logik, Sprach-I/O nur pass-through.
+
+### 9.5 Button 3 — Temporäres Klonen (Core-Flag)
+- Wenn `self._orchestration_mode`: `delegate_task` erlaubt **parallele Klone**
+  gleicher Ziele für die Dauer einer Aufgabe. Implementiert via
+  `max_concurrent_children`-Erhöhung + Task-Signature-Dedup in `delegate_tool.py`.
+- **Nicht-breaking:** Ohne Flag: `delegate_task` wie gehabt (kein Auto-Klon).
+
+### 9.6 Button 4 — Harmonisierung & Orchestrierung (Core-Flag)
+- Wenn `self._double_mode`:
+  - **Sekretärin AUS** (`voice_comms=False`): Peer-to-Peer-Harmonisierung —
+    Agenten synchronisieren untereinander über die `/orchestration`-Topologie.
+  - **Sekretärin AN** (`voice_comms=True`): Sekretärin orchestriert die
+    Harmonisierung (steuert die Agenten, sync über ihren Plan).
+- **Nicht-breaking:** Ohne Flag: keine Harmonisierungs-Logik.
+
+### 9.7 Tests (Core, nicht Proxy)
+- `tests/agent/test_composer_flags.py`: liest temporäre `composer-flags.json`,
+  prüft `get_composer_flags()` Coercion (`"false"`→False, `"true"`→True, `0`→False).
+- `tests/agent/test_subagent_orchestration_flag.py`: mit Flag an → `delegate_task`
+  wird aufgerufen; ohne Flag → nicht.
+- Bestehende Tests (`test_delegate.py`, `test_async_delegation.py`) müssen
+  **unverändert grün** bleiben (Non-regression).
+
+### 9.8 Risiken & Vorsichtsmaßnahmen (gründlich/vorsichtig)
+- **Kein** Eingriff in `gateway/run.py`, `model_tools.py`, `cli.py` Core-Dispatch
+  außer minimalem Flag-Load in `run_conversation`.
+- **Pro-Flag isoliert:** Jedes Flag ist unabhängig; ein defektes Flag darf die
+  anderen nicht blockieren (Try/Except pro Flag-Load).
+- **Rollback-fähig:** Alle Änderungen in einem separaten Commit, damit bei
+  Regression ein `git revert` reicht.
+- **Keine** Prompt-Cache-Invaliderung: Flags werden **nicht** in `system_message`
+  geschrieben, sondern nur als Runtime-Attribute genutzt (AGENTS.md: Cache heilig).
+
+---
+
+## 10. Build + asar (einmalig, nach Phase 2)
+→ siehe Abschnitt 6 (unverändert). Nach Phase 2: `npm run build` + asar repack,
+damit die Core-Änderungen in der Desktop-App wirken.
+
+

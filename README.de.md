@@ -45,6 +45,8 @@
 <p align="center">
   <a href="https://www.sonnerstudio.net">SonnerStudio</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Agent (Upstream)</a>
 * **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
+* **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
+* **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
 </p>
 <p align="center">
   <a href="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
@@ -67,8 +69,10 @@ Dieser Fork fügt hinzu:
 - **Orchestration HUD** — vier blau umrandete Live-Felder unter dem Composer-Eingabefeld: *Sub-Agenten-Team*, *Hermes-Sekretärin (Audio-Kommunikation)*, *Kopierte Agenten (Cloned Agents)* und *Harmonisierung & Agentenauslastung*. Felder erscheinen nur, wenn eine echte Aufgabe läuft — keine Demo-Platzhalter.
 - **Hermes-Sekretärin** — eine Sprachebene, mit der du mit dem Agenten sprechen kannst. Deutsche TTS über **Kokoro** (`df_eva`, weiblich, filmreif speed 0.9), STT über Whisper und ein headless Mikrofon-Pegel-Monitor (kein sichtbares Terminal-Fenster). Der Agent kann Sub-Agenten delegieren, um gesprochene Anfragen auszuführen.
 - **Lernende Crew (Live-Scores)** — eine Leiste unter dem Composer zeigt den Lernfortschritt: obere Zeile *Hermes Agent*, *Planer* und *Sekretärin*, darunter die Spezialisten (Recherche, Code, Analyse, Bild, Audio, Planung) in **höchstens zwei kompakten Zeilen** — nie eine Zeile pro Spezialist. Jeder Spezialist führt einen eigenen Score, eine eigene Entscheidungszahl und einen eigenen Trend. Angezeigt werden ausschließlich echte Werte; ohne echte Delegation bleibt die Leiste leer.
-- **Modellauswahl** — das Dropdown bündelt die Nous-Modelle, **OpenRouter** und die Kategorie **MLX-Runtime nativ** mit den lokal auf den Datenträgern vorhandenen MLX-Modellen. Der Wechsel ist sofort und sicher: es läuft immer nur ein Backend (RAM-Schutz auf dem 16-GB-Mac-mini), und bei schnellem Umschalten gewinnt stets der **zuletzt** gewählte Eintrag; überholte Ladevorgänge brechen sauber ab.
-- **MLX Runtime Proxy** — ein lokaler Lazy-Proxy (`:1240`), der Kokoro TTS, Whisper STT und MLX-Chat-Modelle nacheinander bereitstellt, damit der 16-GB-Mac-mini innerhalb der RAM-Grenzen bleibt.
+- **Bild-Spezialist (lokaler Vision-Dienst)** — ein dedizierter Sub-Agent analysiert Bilder über ein lokales MLX-Modell (Qwen2-VL 2B, via Proxy `:1240`). Er lädt das Vision-Modell bei Bedarf parallel zum Chat-Modell (RAM-schonend, 16 GB) und arbeitet **vollständig ohne Cloud** — ideal für Datenschutz. Der Bild-Spezialist lernt aus Erfolg und Misserfolg jeder Analyse.
+- **Modellauswahl** — das Dropdown bündelt die Nous-Modelle, **OpenRouter**, **Google AI Studio (Gemini)**, **Groq** und die Kategorie **MLX-Runtime nativ** mit den lokal auf den Datenträgern vorhandenen MLX-Modellen. Der Wechsel ist sofort und sicher: bei schnellem Umschalten gewinnt stets der **zuletzt** gewählte Eintrag; überholte Ladevorgänge brechen sauber ab.
+- **Cloud-Auto-Fallback** — wenn ein Cloud-Modell keine Credits mehr hat (402/Quota), wechselt der Proxy automatisch auf ein kostenloses Free-Modell eines anderen Anbieters (OpenRouter → Groq → Google → Nous), damit die Crew nie blockiert.
+- **MLX Runtime Proxy** — ein lokaler Lazy-Proxy (`:1240`), der Kokoro TTS, Whisper STT, MLX-Chat-Modelle und das lokale Vision-Modell nacheinander bereitstellt, damit der 16-GB-Mac-mini innerhalb der RAM-Grenzen bleibt.
 
 > **Hinweis:** Die MLX-Laufzeit, Kokoro Deutsche TTS und die Hermes-Sekretärin-Sprachpipeline sind auf Apple Silicon (macOS) abgestimmt. Siehe `plugins/hermes-sekretaerin/` für die Einrichtung.
 

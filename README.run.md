@@ -7,6 +7,9 @@
 <ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
   <ᚨ ᚺᚱᛖᚠ="https://www.sonnerstudio.net">SonnerStudio</a> | <ᚨ ᚺᚱᛖᚠ="https://hermes-agent.nousresearch.com/">Hermes ᚨᚷᛖᚾᛏ (ᚢᛈᛋᛏᚱᛖᚨᛗ)</ᚨ>
 * **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
+* **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
+* **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
+
 </ᛈ>
 <ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
   <ᚨ ᚺᚱᛖᚠ="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img ᛋᚱᚲ="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" ᚨᛚᛏ="ᛚᛁᚲᛖᚾᛋᛖ: ᛗᛁᛏ"></ᚨ>
