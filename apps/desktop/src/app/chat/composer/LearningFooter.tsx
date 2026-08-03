@@ -103,7 +103,11 @@ export const LearningFooter = () => {
     }
   }, [])
 
-  const modules = Object.keys(scores).filter(k => (scores[k]?.decisions ?? 0) > 0)
+  // Always show the crew score strip once we know the modules exist (the
+  // proxy returns all three with score 0 when nothing is learned yet). This
+  // makes the live learning-score point VISIBLE immediately, not only after
+  // the first delegation. The bars start at 0% and fill as the crew learns.
+  const modules = Object.keys(scores)
 
   if (modules.length === 0) {
     return null
