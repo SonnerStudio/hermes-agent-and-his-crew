@@ -27,7 +27,7 @@ FF = "/Users/m4janfriske/.local/bin/ffmpeg"
 STT_URL = "http://127.0.0.1:1240/v1/audio/transcriptions"
 LLM_URL = "http://127.0.0.1:1240/v1/chat/completions"
 TTS_URL = "http://127.0.0.1:1240/v1/audio/speech"
-MODEL = "Qwen3.5-9B-MLX-4bit"  # default Secretary brain (native MLX)
+MODEL = "Gemma-4-E4B-MLX-6bit"  # Secretary brain (native MLX, loads reliably on 16GB)
 VOICE = "df_eva"
 SPEED = 0.9  # "filmreif" per user requirement
 
@@ -86,22 +86,39 @@ def _transcribe(dev: str) -> str:
         return ""
 
 
-def _chat(user_text: str) -> str:
-    try:
-        body = {
-            "model": MODEL,
-            "messages": [
-                {"role": "system", "content": SYS_PROMPT},
-                {"role": "user", "content": user_text},
-            ],
-            "max_tokens": 200,
-            "temperature": 0.7,
-        }
-        raw, _ = _post_json(LLM_URL, body)
-        return json.loads(raw)["choices"][0]["message"]["content"].strip()
-    except Exception as e:
-        sys.stderr.write(f"secretary: LLM failed: {e}\n")
-        return "Entschuldigung, ich konnte gerade nicht antworten."
+def _chat(user_text: str, model: str = None) -> str:
+    """Talk to the Secretary brain. Polls through a transient 'loading' state
+    (the proxy lazy-loads the MLX model on first use) instead of crashing on
+    the interim ``{"status":"loading"}`` envelope.
+    """
+    use_model = model or MODEL
+    body = {
+        "model": use_model,
+        "messages": [
+            {"role": "system", "content": SYS_PROMPT},
+            {"role": "user", "content": user_text},
+        ],
+        "max_tokens": 200,
+        "temperature": 0.7,
+    }
+    # Up to ~60s: wait for a lazy-loading model to become ready.
+    for attempt in range(12):
+        try:
+            raw, _ = _post_json(LLM_URL, body)
+            data = json.loads(raw)
+            # Proxy returns {"status":"loading",...} while the model warms up.
+            if data.get("status") == "loading" or "choices" not in data:
+                if attempt < 11:
+                    time.sleep(5)
+                    continue
+                return "Einen Moment, ich bin noch nicht ganz bereit."
+            return data["choices"][0]["message"]["content"].strip()
+        except Exception as e:
+            sys.stderr.write(f"secretary: LLM failed (attempt {attempt}): {e}\n")
+            if attempt < 11:
+                time.sleep(3)
+                continue
+            return "Entschuldigung, ich konnte gerade nicht antworten."
 
 
 def _speak(text: str):
