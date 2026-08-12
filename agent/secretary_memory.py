@@ -361,6 +361,24 @@ class SecretaryMemory:
         ]
         return result
 
+    def last_learning_event(self) -> Optional[Dict[str, Any]]:
+        """Return the most recent successful learning outcome for the
+        'Last Learning Success' HUD panel.
+
+        Falls back to the last outcome (successful or not) if no successful
+        outcome exists yet. Returns None if there are no outcomes at all.
+        """
+        with self._lock:
+            self._load_if_stale()
+            outcomes = self._data.get("outcomes", [])
+            if not outcomes:
+                return None
+            # Most recent successful outcome first; fall back to last overall.
+            for o in reversed(outcomes):
+                if o.get("success", False):
+                    return o
+            return outcomes[-1]
+
     def prefetch(self) -> Dict[str, Any]:
         """Lightweight read of learned state (mirrors MemoryManager.prefetch)."""
         with self._lock:

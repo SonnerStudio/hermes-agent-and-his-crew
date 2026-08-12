@@ -29,9 +29,25 @@ interface MlxStatus {
   catalog: string[]
 }
 
+// Shape of the `last_learning` field emitted by /secretary-learning.
+// It is the most recent successful learning outcome: which agent improved and
+// what was achieved (topology, clone factor, units, latency).
+interface LastLearning {
+  stage?: string
+  agent_id?: string
+  agent_name?: string
+  success?: boolean
+  latency_s?: number
+  topology?: string
+  clone_factor?: number
+  units?: number
+  ts?: number
+}
+
 interface SecretaryLearningData {
   graph: { nodes: SecretaryNode[]; edges: [string, string][] }
   mlx: MlxStatus
+  last_learning?: LastLearning | null
   updated_at: number
 }
 
@@ -118,14 +134,30 @@ export const SecretaryLearning = () => {
 
   const nodes = data.graph?.nodes ?? []
   const edges = data.graph?.edges ?? []
-  const routingNodes = nodes.filter(n => n.kind === 'routing')
   const skillNodes = nodes.filter(n => n.kind === 'skill')
-  const crewNodes = nodes.filter(n => n.kind === 'crew')
   const hasLearning = nodes.length > 0
   const mlx = data.mlx
+  const last = data.last_learning
+
+  // Format the last learning success: which agent + what was achieved.
+  const lastAgent = last?.agent_name || last?.agent_id || (last?.stage
+    ? (last.stage.charAt(0).toUpperCase() + last.stage.slice(1))
+    : null)
+
+  const lastDetailParts: string[] = []
+
+  if (last?.topology) {lastDetailParts.push(last.topology)}
+
+  if (last?.clone_factor && last.clone_factor > 1) {lastDetailParts.push(`×${last.clone_factor} Klon`)}
+
+  if (typeof last?.units === 'number') {lastDetailParts.push(`${last.units} Einh.`)}
+
+  if (typeof last?.latency_s === 'number') {lastDetailParts.push(`${last.latency_s.toFixed(1)}s`)}
+  const lastDetail = lastDetailParts.length > 0 ? lastDetailParts.join(' · ') : 'erfolgreich gelernt'
+  const lastSuccess = last?.success === true || last?.success === undefined
 
   // Only show when there is something real to show.
-  if (!hasLearning && !(mlx.ready && mlx.current_model)) {
+  if (!lastAgent && !hasLearning && !(mlx.ready && mlx.current_model)) {
     return null
   }
 
@@ -138,29 +170,23 @@ export const SecretaryLearning = () => {
       )}
       role="status"
     >
-      <Box title={t('secretary.title', lang)}>
-        <div className="flex items-center gap-2">
-          <span aria-hidden className="grid h-6 w-6 place-items-center rounded-full bg-sky-500/20 text-[0.7rem]">👩‍💼</span>
-          <div className="flex flex-col">
-            <span className="text-[0.65rem] font-medium text-foreground">{t('secretary.learned', lang)}</span>
-            <span className="text-[0.55rem] text-muted-foreground">{t('secretary.sub', lang)}</span>
+      <Box title={t('secretary.learned', lang)}>
+        {lastAgent ? (
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center gap-1.5">
+              <span aria-hidden className="grid h-5 w-5 place-items-center rounded-full bg-sky-500/20 text-[0.6rem]">✅</span>
+              <span className="truncate text-[0.62rem] font-medium text-foreground" title={lastAgent}>{lastAgent}</span>
+            </div>
+            <span className="text-[0.52rem] text-muted-foreground">{lastDetail}</span>
+            {!lastSuccess && (
+              <span className="text-[0.5rem] text-amber-500/80">nicht erfolgreich</span>
+            )}
           </div>
-        </div>
+        ) : (
+          <span className="text-[0.62rem] text-muted-foreground">{t('secretary.subagents', lang)}</span>
+        )}
         <MlxBadge mlx={mlx} />
       </Box>
-
-      {routingNodes.length > 0 && (
-        <Box title={t('secretary.routing', lang)}>
-          <div className="flex flex-col gap-0.5">
-            {routingNodes.map(n => (
-              <div className="flex flex-col" key={n.id}>
-                <span className="truncate text-[0.6rem] text-foreground" title={n.label}>{n.label}</span>
-                <span className="text-[0.52rem] text-muted-foreground">{n.detail}</span>
-              </div>
-            ))}
-          </div>
-        </Box>
-      )}
 
       {skillNodes.length > 0 && (
         <Box title={t('secretary.skills', lang)}>
@@ -173,19 +199,6 @@ export const SecretaryLearning = () => {
               >
                 {n.label}
               </span>
-            ))}
-          </div>
-        </Box>
-      )}
-
-      {crewNodes.length > 0 && (
-        <Box title={t('secretary.crew', lang)}>
-          <div className="flex flex-col gap-0.5">
-            {crewNodes.map(n => (
-              <div className="flex flex-col" key={n.id}>
-                <span className="truncate text-[0.6rem] text-foreground" title={n.label}>{n.label}</span>
-                <span className="text-[0.52rem] text-muted-foreground">{n.detail}</span>
-              </div>
             ))}
           </div>
         </Box>

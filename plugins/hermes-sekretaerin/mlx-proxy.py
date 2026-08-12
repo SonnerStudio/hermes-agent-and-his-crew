@@ -54,7 +54,7 @@ _load_hermes_env()
 
 LISTEN_HOST = "127.0.0.1"
 LISTEN_PORT = 1240
-VENV_PY = "/Users/m4janfriske/.hermes/hermes-agent/venv/bin/python3"
+VENV_PY = "/Users/m4janfriske/.omni-venv/bin/python3"  # mlx_lm is installed here
 OMNI_PY = "/Users/m4janfriske/.omni-venv/bin/mlx-omni-server"
 OMNI_PY3 = "/Users/m4janfriske/.omni-venv/bin/python3"  # interpreter (mlx_vlm lives here)
 STT_PY = "/Users/m4janfriske/.omni-venv/bin/python3"
@@ -667,16 +667,23 @@ async def handle_health(request):
     primary = next((m for m in running_ids
                     if not BACKENDS.get(m, {}).get("sticky")), None)
                     
-    import psutil
+    # psutil is optional; fall back to sysctl/vm_stat when it is unavailable
+    # (e.g. in the .omni-venv used by the proxy LaunchAgent, which has no
+    # psutil installed). A hard import failure here crashed /health with
+    # HTTP 500, which froze the Secretary button on "pending".
     try:
+        import psutil
         mem = psutil.virtual_memory()
+    except Exception:
+        mem = None
+    if mem is not None:
         mem_data = {
             "total_gb": mem.total / (1024 ** 3),
-            "used_gb": mem.used / (1024 ** 3),
-            "free_gb": mem.free / (1024 ** 3),
+            "used_gb": (mem.total - mem.available) / (1024 ** 3),
+            "free_gb": mem.available / (1024 ** 3),
             "percent": mem.percent
         }
-    except Exception:
+    else:
         import subprocess
         try:
             total = int(subprocess.check_output(['sysctl', '-n', 'hw.memsize']).decode().strip())
@@ -850,6 +857,32 @@ async def handle_audio_transcriptions(request):
         return err(503, f"STT unreachable: {e}", "service_unavailable")
 
 
+async def _speak_cdu_clone(text: str, out_path: str) -> bool:
+    """Eigenleistung: German TTS via cduvenhorst/f5-tts-mlx-german.
+
+    Falls Kokoro (df_eva) einen Akzent-Drift liefert, nutzen wir das
+    reine deutsche F5-TTS-Modell cduvenhorst (depth=22, MLX-native) als
+    Fallback. Siehe ~/.hermes/skills/voice_cloner/templates/cdu_clone.py.
+    """
+    CDU_PY = "/Users/m4janfriske/.omni-venv.bak/bin/python3"
+    CDU_SCRIPT = "/Users/m4janfriske/.hermes/skills/voice_cloner/templates/cdu_clone.py"
+    env = dict(os.environ, PATH=os.environ.get("PATH", "") + ":/Users/m4janfriske/.local/bin")
+    env.pop("PYTHONPATH", None)
+    ref_wav = "/Users/m4janfriske/.hermes/audio_cache/secretary/serena_warm_ref.wav"
+    CDU_REF = os.environ.get("SEKRETAERIN_REF_WAV", ref_wav)
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            CDU_PY, CDU_SCRIPT, text, out_path, CDU_REF,
+            stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.PIPE,
+            env=env,
+        )
+        await asyncio.wait_for(proc.wait(), timeout=90)  # model load + generate
+        if proc.returncode != 0:
+            err = await proc.stderr.read() if proc.stderr else b""
+            log(f"CDU TTS failed (rc={proc.returncode}): {err[:200]!r}")
+        return proc.returncode == 0 and os.path.exists(out_path) and os.path.getsize(out_path) > 1000
+    except Exception:
+        return False
 async def handle_audio_speech(request):
     """Route TTS to the right backend.
 
@@ -871,10 +904,30 @@ async def handle_audio_speech(request):
     _audio_peaks["speaker"] = 100
 
     if is_german:
-        ok = await _ensure_tts()
-        if not ok:
-            return err(503, "TTS backend (kokoro) failed to start",
-                       "service_unavailable")
+        use_cdu = os.environ.get("USE_CDU_TTS", "1") == "1"  # default ON (df_eva kokoro akzent-drift)
+        if not use_cdu:
+            ok = await _ensure_tts()
+            if not ok:
+                # Kokoro failed to start — fall back to cduvenhorst (Eigenleistung,
+                # see ~/.hermes/skills/voice_cloner). German female voice, no accent.
+                log("TTS: Kokoro down -> falling back to cduvenhorst (German F5-TTS)")
+                out_wav = "/tmp/secretary_cdu.wav"
+                ok = await _speak_cdu_clone(text, out_wav)
+                if ok:
+                    with open(out_wav, "rb") as fh:
+                        body_out = fh.read()
+                    return web.Response(status=200, body=body_out, content_type="audio/wav")
+                return err(503, "TTS backend (kokoro+cdu) failed to start",
+                           "service_unavailable")
+        else:
+            out_wav = "/tmp/secretary_cdu.wav"
+            ok = await _speak_cdu_clone(text, out_wav)
+            if ok:
+                with open(out_wav, "rb") as fh:
+                    body_out = fh.read()
+                log("TTS: German -> cduvenhorst/f5-tts-mlx-german (Eigenleistung)")
+                return web.Response(status=200, body=body_out, content_type="audio/wav")
+            return err(503, "cduvenhorst TTS failed", "service_unavailable")
         body["lang_code"] = "de"
         raw = json.dumps(body).encode()
         try:
@@ -945,7 +998,15 @@ async def handle_rpc(request):
 
     method = body.get("method")
     params = body.get("params") or {}
-    active = bool(params.get("active", False))
+
+    # If no explicit `active` param → toggle the current state (flip semantics).
+    # The desktop sends toggle calls WITHOUT an active param, so we must infer
+    # the desired new state from the current one.
+    if "active" in params:
+        active = bool(params["active"])
+    else:
+        current_active = _button_state.get(method, {}).get("active", False)
+        active = not current_active
 
     # id -> (display name, script to start when active, script to stop)
     HANDLERS = {
@@ -973,19 +1034,28 @@ async def handle_rpc(request):
 
             async def _start_and_clear():
                 try:
+                    log("RPC: _start_and_clear entered")
                     # Start the live audio monitor (mic level sampling). The
                     # speaker level is bumped when the proxy synthesizes TTS.
                     _start_audio_monitor()
+                    log("RPC: audio monitor started")
                     # Start the actual Secretary voice agent (listens + replies).
                     # This is the process that makes her ACT, not just plan.
-                    subprocess.Popen(
-                        ["/bin/bash", "-c", f"unset PYTHONPATH; exec "
-                         f"/Users/m4janfriske/.omni-venv/bin/python3 {spec['script']}"],
-                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                    )
-                    # Give both processes a moment to spawn; the real readiness
-                    # is the user hearing the Secretary's greeting. We clear
-                    # pending after spawn so the UI flips to green.
+                    # Start directly as a child process (robust fallback like
+                    # the mic monitor), only if no instance is already running.
+                    running = subprocess.run(
+                        ["pgrep", "-f", "python3.*voice_comms\\.py"],
+                        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                        check=False)
+                    if not running.stdout.strip():
+                        subprocess.Popen(
+                            ["/bin/bash", "-c", f"unset PYTHONPATH; exec "
+                             f"/Users/m4janfriske/.omni-venv.bak/bin/python3 {spec['script']} >> /tmp/voice_comms_live.log 2>&1"],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                        )
+                        log("RPC: started voice_comms.py directly")
+                    else:
+                        log("RPC: voice_comms.py already running, skipping")
                     await asyncio.sleep(2.0)
                 except Exception as e:
                     log(f"RPC: failed to start voice_comms: {e}")
@@ -1020,7 +1090,7 @@ async def handle_rpc(request):
                 try:
                     subprocess.Popen(
                         ["/bin/bash", "-c", f"unset PYTHONPATH; exec "
-                         f"/Users/m4janfriske/.omni-venv/bin/python3 {spec['script']}"],
+                         f"/Users/m4janfriske/.omni-venv.bak/bin/python3 {spec['script']} >> /tmp/voice_comms_live.log 2>&1"],
                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                     )
                     # Give the process a moment to spawn; the real readiness is
@@ -1119,10 +1189,19 @@ async def handle_secretary_learning(request):
     except Exception as exc:
         log(f"secretary-learning: scores failed: {exc}")
         scores = {}
+    # Most recent successful learning event (for the "Letzter Lernerfolg" panel).
+    try:
+        from agent.secretary_learning_graph import _get_memory as _g2
+
+        last_learning = _g2().last_learning_event()
+    except Exception as exc:
+        log(f"secretary-learning: last_learning failed: {exc}")
+        last_learning = None
     return web.json_response({
         "graph": graph,
         "mlx": mlx,
         "scores": scores,
+        "last_learning": last_learning,
         "updated_at": time.time(),
     })
 
@@ -1241,6 +1320,12 @@ def _load_buttons():
             with open(FLAGS_FILE) as f:
                 _button_state = json.load(f)
             log(f"loaded button flags from {FLAGS_FILE}: {_button_state}")
+        # Enforce Secretary <-> Sub-Agent coupling: if voice_comms is active, subagents must be active
+        if _button_state.get("voice_comms.toggle", {}).get("active"):
+            sub = _button_state.setdefault("subagent_orchestration.toggle", {})
+            sub["active"] = True
+            sub["pending"] = False
+            sub["auto_armed"] = True
     except Exception as e:
         log(f"RPC: failed to load button flags: {e}")
 
@@ -1303,7 +1388,11 @@ def _start_audio_monitor():
     The helper runs as a *user-session LaunchAgent* — NOT a launchd-daemon
     child (denied by TCC) and NOT via a visible Terminal window (slow + ugly).
     A LaunchAgent runs headless in the user session, so macOS grants microphone
-    access while staying fast and invisible."""
+    access while staying fast and invisible.
+
+    NOTE: modern macOS rejects `launchctl load` (returns EIO), so we also start
+    the helper directly as a child process as a robust fallback.
+    """
     if not os.path.isfile(MIC_AGENT_PLIST):
         try:
             _write_mic_plist()
@@ -1317,10 +1406,40 @@ def _start_audio_monitor():
         subprocess.run(["launchctl", "kickstart", "-k", f"gui/{uid}/{MIC_AGENT_LABEL}"],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
     except Exception as e:
-        log(f"audio: failed to launch mic helper: {e}")
+        log(f"audio: failed to launch mic helper via launchctl: {e}")
+    # Robust fallback: start mic-level.py directly as a child process so it
+    # does not depend on launchctl load succeeding (it fails on modern macOS).
+    # Only start if no real mic-level.py process is already running — match the
+    # script path, not the proxy (which also contains "mic-level" in its code).
+    try:
+        running = subprocess.run(
+            ["pgrep", "-f", "python3.*mic-level\\.py"],
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
+        if not running.stdout.strip():
+            subprocess.Popen(
+                ["/Users/m4janfriske/.omni-venv/bin/python3",
+                 "/Users/m4janfriske/mic-level.py"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+            log("audio: started mic-level.py directly")
+        else:
+            log("audio: mic-level.py already running, skipping duplicate start")
+    except Exception as e:
+        log(f"audio: failed to start mic-level.py directly: {e}")
     t = threading.Thread(target=_audio_monitor_loop, daemon=True)
     t.start()
     return t
+
+
+def _iter_running_procs():
+    """Yield cmdline strings of currently running processes (best-effort)."""
+    try:
+        out = subprocess.run(["pgrep", "-f", "mic-level.py"],
+                             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                             check=False)
+        return out.stdout.decode().split()
+    except Exception:
+        return []
 
 
 def _write_mic_plist():
@@ -1383,7 +1502,23 @@ async def on_shutdown(app):
 def main():
     _load_buttons()
     if _button_state.get("voice_comms.toggle", {}).get("active"):
+        # Boot autostart: bring up the Secretary if the persisted button flag
+        # was left active. Start the mic monitor AND the voice agent.
         _start_audio_monitor()
+        try:
+            running = subprocess.run(
+                ["pgrep", "-f", "python3.*voice_comms\\.py"],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
+            if not running.stdout.strip():
+                subprocess.Popen(
+                    ["/bin/bash", "-c",
+                     "unset PYTHONPATH; exec "
+                     "/Users/m4janfriske/.omni-venv.bak/bin/python3 "
+                     "/Users/m4janfriske/voice_comms.py >> /tmp/voice_comms_live.log 2>&1"],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                log("boot: started voice_comms.py (flag was active)")
+        except Exception as e:
+            log(f"boot: failed to start voice_comms: {e}")
         
     app = web.Application(client_max_size=1024 ** 3)
     app.on_shutdown.append(on_shutdown)

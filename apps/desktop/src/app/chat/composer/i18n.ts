@@ -50,7 +50,7 @@ type Dict = Record<string, string>;
 
 const DE: Dict = {
   "secretary.title": "Hermes-Sekretärin",
-  "secretary.sub": "Audio-Kommunikation",
+  "secretary.sub": "Hermes-Sekretärin Auslastung",
   "panel.subagents": "Sub-Agenten-Team",
   "panel.subagents_ready": "Bereit — Crew steht",
   "panel.clones": "Kopierte Agenten",
@@ -63,12 +63,14 @@ const DE: Dict = {
   "btn.double": "Doppel-Modus",
   "mic.unavailable": "Mikrofon nicht erreichbar",
   "mic.available": "Mikrofon aktiv",
-  "secretary.learned": "Gelernt",
+  "secretary.learned": "Letzter Lernerfolg",
   "secretary.routing": "Routing-Präferenzen",
   "secretary.skills": "Planungs-Skills",
   "secretary.crew": "Lernende Crew",
   "secretary.subagents": "Sub-Agenten",
   "secretary.graph": "Lern-Graph",
+  "secretary.last_agent": "Agent",
+  "secretary.last_detail": "Erfolg",
 };
 
 const EN: Dict = {

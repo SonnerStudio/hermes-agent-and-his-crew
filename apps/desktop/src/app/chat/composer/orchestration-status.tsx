@@ -76,7 +76,7 @@ interface BoxProps {
 
 function Box({ title, children, className }: BoxProps) {
   return (
-    <div className={cn(BOX, 'min-w-[11rem] flex-1', className)}>
+    <div className={cn(BOX, 'flex-1 min-w-0', className)}>
       <span className="text-[0.6rem] font-medium uppercase tracking-wide text-muted-foreground">
         {title}
       </span>
@@ -237,7 +237,7 @@ export const OrchestrationStatus = () => {
     <div
       aria-label="Live orchestration status"
       className={cn(
-        'flex flex-wrap items-stretch gap-2 rounded-lg border border-sky-500/40 p-2',
+        'flex items-stretch gap-2 rounded-lg border border-sky-500/40 p-2',
         'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]'
       )}
       role="status"
