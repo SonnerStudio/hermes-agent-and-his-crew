@@ -165,7 +165,10 @@ export function calendarBucket(
 }
 
 function toIntlLocale(loc?: string): string | undefined {
-  if (!loc) return undefined
+  if (!loc) {
+    return undefined
+  }
+
   const map: Record<string, string> = {
     cz: 'cs',
     za: 'af',
@@ -183,6 +186,7 @@ function toIntlLocale(loc?: string): string | undefined {
     run: 'is',
     yi: 'yi'
   }
+
   return map[loc.toLowerCase()] || loc
 }
 
@@ -190,6 +194,7 @@ function toIntlLocale(loc?: string): string | undefined {
 // Intl-formatted month / month-year for the rest.
 export function sessionBucketLabel(bucket: SessionBucket, labels: SessionBucketLabels, locale?: string): string {
   const intlLoc = toIntlLocale(locale)
+
   switch (bucket.kind) {
     case 'today':
       return labels.today

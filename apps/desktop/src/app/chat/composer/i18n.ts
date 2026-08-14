@@ -102,7 +102,7 @@ export const LANGS: { code: Lang; label: string; flag: string }[] = [
   },
   {
     "code": "run",
-    "label": "Runenschrift",
+    "label": "RUN",
     "flag": "🌐"
   },
   {
@@ -390,7 +390,7 @@ const DICT_ES: Dict = {
 };
 
 const DICT_IT: Dict = {
-  "secretary.title": "Segretaria Hermes",
+  "secretary.title": "Hermes Segretaria",
   "secretary.sub": "Carico Segretaria Hermes",
   "panel.subagents": "Team Sotto-Agenti",
   "panel.subagents_ready": "Pronto — il team è pronto",
@@ -690,7 +690,6 @@ const DICT_PT: Dict = {
 };
 
 const DICT_RU: Dict = {
-  "secretary.title": "Секретарь Hermes",
   "secretary.sub": "Нагрузка Секретаря Hermes",
   "panel.subagents": "Команда Субагентов",
   "panel.subagents_ready": "Готово — команда готова",
@@ -840,7 +839,7 @@ const DICT_YI: Dict = {
 };
 
 const DICT_RUN: Dict = {
-  "secretary.title": "ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱ",
+  "secretary.title": "ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱᛁ",
   "secretary.sub": "ᚺᛖᚱᛗᛖᛋ ᛚᚨᛋᛏ",
   "panel.subagents": "ᛋᚢᛒ-ᚨᚷᛖᚾᛏ ᚺᛁᚱᛞ",
   "panel.subagents_ready": "ᚲᛚᚨᚱ — ᚺᛁᚱᛞ ᛋᛏᚨᚱ",
@@ -849,7 +848,7 @@ const DICT_RUN: Dict = {
   "panel.harmony": "ᚺᚨᚱᛗᛟᚾᛁ",
   "panel.harmony_ready": "ᚲᛚᚨᚱ — ᚺᚨᚱᛗᛟᚾᛁ",
   "btn.subagent": "ᛋᚢᛒ-ᚨᚷᛖᚾᛏ ᚺᛁᚱᛞ",
-  "btn.voice": "ᛋᛏᛁᛗᛗᚨ",
+  "btn.voice": "ᚢᛟᛁᚲᛖ ᚲᛟᛗᛗᚢᚾᛁᚲᚨᛏᛁᛟᚾ",
   "btn.orchestration": "ᚺᛖᚱᛗᛖᛋ ᛚᚨᛋᛏ",
   "btn.double": "ᚲᛚᛟᚾᚨᚱ",
   "mic.unavailable": "Microphone unavailable",
@@ -2041,7 +2040,7 @@ export function getLang(): Lang {
     if (v && v in TABLE) {return v;}
   }
 
-  return "de";
+  return "en";
 }
 
 export function setLang(lang: Lang): void {
