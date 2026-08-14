@@ -28,23 +28,33 @@ export function useComposerPlaceholder({ disabled, reconnecting, sessionId }: Us
   )
 
   const prevSessionIdRef = useRef(sessionId)
+  const prevPlaceholdersRef = useRef({ newSessionPlaceholders, followUpPlaceholders })
 
   // eslint-disable-next-line no-restricted-syntax -- legitimate non-atom ref write (see eslint rule comment)
   useEffect(() => {
     const prev = prevSessionIdRef.current
+    const prevPlaceholders = prevPlaceholdersRef.current
     prevSessionIdRef.current = sessionId
+    prevPlaceholdersRef.current = { newSessionPlaceholders, followUpPlaceholders }
 
-    if (prev === sessionId) {
+    const placeholdersChanged =
+      prevPlaceholders.newSessionPlaceholders !== newSessionPlaceholders ||
+      prevPlaceholders.followUpPlaceholders !== followUpPlaceholders
+
+    if (prev === sessionId && !placeholdersChanged) {
       return
     }
 
-    // null → id: the new session we're already in just got persisted. Keep the
-    // starter we showed instead of swapping to a follow-up under the user.
-    if (prev == null && sessionId) {
-      return
+    if (prev !== sessionId) {
+      // null → id: the new session we're already in just got persisted. Keep the
+      // starter we showed instead of swapping to a follow-up under the user.
+      if (prev == null && sessionId && !placeholdersChanged) {
+        return
+      }
+
+      resetBrowseState(prev)
     }
 
-    resetBrowseState(prev)
     setRestingPlaceholder(pickPlaceholder(sessionId ? followUpPlaceholders : newSessionPlaceholders))
   }, [followUpPlaceholders, newSessionPlaceholders, sessionId])
 

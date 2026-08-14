@@ -1076,7 +1076,7 @@ export function ChatBar({
           {/* Aligned to the composer SURFACE, which sits inside the composer's
               5px transparent grab margin — so both strips carry the same inset
               and share one left edge with it. */}
-          <div className={cn(composerFloatingStrip, 'px-[5px] pb-1.5 empty:hidden')}>
+          <div className={cn(composerFloatingStrip, 'pb-1.5 empty:hidden')}>
             <ActionBadges sessionId={statusSessionId} />
           </div>
           {/* Session-scoped status stack (todos, subagents, background tasks,
@@ -1272,7 +1272,7 @@ export function ChatBar({
               for the same reason as the micro actions — it must not fall inside
               the pop-out drag region. Same px as the strip above, so the two
               bracket the composer on one vertical line. */}
-          <div className={cn(composerFloatingStrip, 'px-[5px] pt-1.5 empty:hidden')}>
+          <div className="flex w-full flex-col gap-1.5 pt-1.5 empty:hidden">
             {/* Language picker moved to the sidebar top (SonnerStudio fork). */}
             <OrchestrationStatus />
             <SecretaryLearning />

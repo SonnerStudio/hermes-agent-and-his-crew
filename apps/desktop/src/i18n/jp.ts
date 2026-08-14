@@ -1,7 +1,7 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const ja: Translations = defineLocale({
+export const jp: Translations = defineLocale({
   "common": {
     "apply": "適用",
     "back": "戻る",

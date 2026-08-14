@@ -1,26 +1,26 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const zh: Translations = defineLocale({
+export const ko: Translations = defineLocale({
   "common": {
-    "apply": "应用",
-    "back": "返回",
-    "save": "保存",
-    "saving": "保存…",
-    "cancel": "取消",
-    "clear": "清除搜索",
-    "close": "关闭",
+    "apply": "적용",
+    "back": "뒤로",
+    "save": "저장",
+    "saving": "저장…",
+    "cancel": "취소",
+    "clear": "검색",
+    "close": "닫기",
     "copy": "Copy",
     "copied": "Copied",
     "delete": "Delete",
     "done": "Done",
     "error": "Error",
-    "free": "可用",
+    "free": "여유",
     "loading": "Loading…",
     "refresh": "Refresh",
     "retry": "Retry",
     "run": "Run",
-    "send": "发送",
+    "send": "보내기",
     "on": "On",
     "off": "Off"
   },
@@ -28,7 +28,7 @@ export const zh: Translations = defineLocale({
     "revealFinder": "Finder",
     "revealExplorer": "Explorer",
     "revealFileManager": "Folder",
-    "revealInSidebar": "产物",
+    "revealInSidebar": "아티팩트",
     "copyPath": "Copy Path",
     "copyRelativePath": "Copy Relative Path",
     "rename": "Rename…",
@@ -41,8 +41,8 @@ export const zh: Translations = defineLocale({
   "titlebar": {
     "hideSidebar": "Sidebar",
     "showSidebar": "Sidebar",
-    "search": "搜索会话",
-    "searchTitle": "搜索会话…",
+    "search": "세션 검색",
+    "searchTitle": "세션 검색…",
     "swapSidebarSides": "Swap sidebar",
     "hideRightSidebar": "Right sidebar",
     "showRightSidebar": "Right sidebar",
@@ -62,94 +62,94 @@ export const zh: Translations = defineLocale({
   },
   "sidebar": {
     "nav": {
-      "new-session": "新建会话",
-      "skills": "功能",
-      "messaging": "消息",
-      "artifacts": "产物"
+      "new-session": "새 세션",
+      "skills": "기능",
+      "messaging": "메시지",
+      "artifacts": "아티팩트"
     },
-    "searchAria": "搜索会话",
-    "searchPlaceholder": "搜索会话…",
-    "clearSearch": "清除搜索",
-    "pinned": "已置顶",
-    "sessions": "会话",
-    "cronJobs": "定时任务",
-    "shiftClickHint": "Shift-点击以置顶",
-    "noWorkspace": "无工作区",
-    "projectEmpty": "暂无会话",
-    "noSessions": "暂无会话",
+    "searchAria": "세션 검색",
+    "searchPlaceholder": "세션 검색…",
+    "clearSearch": "검색 지우기",
+    "pinned": "고정됨",
+    "sessions": "세션",
+    "cronJobs": "예약된 작업",
+    "shiftClickHint": "Shift-클릭으로 고정",
+    "noWorkspace": "작업 영역 없음",
+    "projectEmpty": "아직 세션이 없습니다",
+    "noSessions": "아직 세션이 없습니다",
     "dateDivider": {
-      "today": "今天",
-      "yesterday": "昨天",
-      "thisWeek": "本周",
-      "lastWeek": "上周",
-      "thisMonth": "本月"
+      "today": "오늘",
+      "yesterday": "어제",
+      "thisWeek": "이번 주",
+      "lastWeek": "지난 주",
+      "thisMonth": "이번 달"
     },
     "row": {
-      "openInSplit": "在分屏中打开"
+      "openInSplit": "분할 보기로 열기"
     }
   },
   "composer": {
-    "message": "消息",
-    "placeholderStarting": "正在启动 Hermes…",
-    "placeholderReconnecting": "正在重新连接 Hermes…",
-    "placeholderFollowUp": "发送后续消息",
+    "message": "메시지",
+    "placeholderStarting": "Hermes 시작 중…",
+    "placeholderReconnecting": "Hermes에 다시 연결 중…",
+    "placeholderFollowUp": "후속 메시지 보내기",
     "newSessionPlaceholders": [
-      "我们要做什么？",
-      "给 Hermes 分配一个任务",
-      "您在想什么？",
-      "描述您的需求",
-      "我们要处理什么？",
-      "随心提问",
-      "从设定目标开始"
+      "무엇을 만들까요?",
+      "Hermes에게 작업을 할당하세요",
+      "무슨 생각을 하고 계신가요?",
+      "필요한 내용을 설명해 주세요",
+      "어떤 문제를 해결할까요?",
+      "무엇이든 물어보세요",
+      "목표부터 시작하세요"
     ],
     "followUpPlaceholders": [
-      "发送追问",
-      "补充更多背景信息",
-      "进一步细化请求",
-      "接下来做什么？",
-      "继续进行",
-      "深入探讨",
-      "调整或继续"
+      "후속 질문 보내기",
+      "추가 맥락 제공",
+      "요청 구체화",
+      "다음 단계는 무엇인가요?",
+      "계속 진행",
+      "더 깊이 파고들기",
+      "수정 또는 계속"
     ],
-    "startVoice": "开启语音对话",
-    "queueMessage": "加入消息队列",
-    "steer": "引导执行",
-    "stop": "停止",
-    "send": "发送",
-    "speaking": "正在讲话",
-    "transcribing": "正在转录",
-    "thinking": "正在思考"
+    "startVoice": "음성 대화 시작",
+    "queueMessage": "메시지 대기열에 추가",
+    "steer": "실행 제어",
+    "stop": "중지",
+    "send": "보내기",
+    "speaking": "말하는 중",
+    "transcribing": "텍스트 변환 중",
+    "thinking": "생각 중"
   },
   "skills": {
-    "tabSkills": "功能",
+    "tabSkills": "기능",
     "tabToolsets": "Tools",
     "tabMcp": "MCP",
     "tabHub": "Hub",
     "all": "All",
-    "searchSkills": "功能…",
+    "searchSkills": "기능…",
     "searchToolsets": "Tools…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…"
   },
   "artifacts": {
-    "search": "产物…",
+    "search": "아티팩트…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…",
     "tabAll": "All",
     "tabImages": "Images",
     "tabFiles": "Files",
     "tabLinks": "Links",
-    "noArtifactsTitle": "产物 -"
+    "noArtifactsTitle": "아티팩트 -"
   },
   "commandCenter": {
     "paletteTitle": "Command palette",
-    "searchPlaceholder": "搜索会话…",
+    "searchPlaceholder": "세션 검색…",
     "branches": "Branches",
     "projects": "Projects",
     "openFolder": "Open folder…"
   },
   "settings": {
-    "closeSettings": "关闭",
+    "closeSettings": "닫기",
     "exportConfig": "Export",
     "importConfig": "Import",
     "resetToDefaults": "Reset",

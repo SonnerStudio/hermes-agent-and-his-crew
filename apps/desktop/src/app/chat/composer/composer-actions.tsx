@@ -58,10 +58,10 @@ const ICON_BUTTON = cn(
   'focus-visible:outline-none focus-visible:ring-[0.1875rem] focus-visible:ring-current/50'
 )
 
-// Inactive = red, Pending = yellow, Active = green.
-const BTN_INACTIVE = 'border-red-500/70 text-red-400 hover:bg-red-500/10'
-const BTN_PENDING = 'border-yellow-500/70 text-yellow-400 hover:bg-yellow-500/10'
-const BTN_ACTIVE = 'border-green-500/70 bg-green-500/15 text-green-400 hover:bg-green-500/20'
+// Inactive = rot ("Aus"), Pending = gelb ("Bereitschaft herstellen"), Active = grün ("Bereit").
+const BTN_INACTIVE = 'border-red-500/70 bg-red-500/10 text-red-400 hover:border-red-500/90 hover:bg-red-500/20 hover:text-red-300'
+const BTN_PENDING = 'border-yellow-500/70 bg-yellow-500/20 text-yellow-300 hover:border-yellow-500/90 hover:bg-yellow-500/30 hover:text-yellow-200 animate-pulse'
+const BTN_ACTIVE = 'border-green-500/70 bg-green-500/20 text-green-400 hover:border-green-500/90 hover:bg-green-500/30 hover:text-green-300'
 
 // Pure decision: pending (yellow) > active (green) > inactive (red).
 // Exported for tests; the button color must follow the real function state.
@@ -86,7 +86,7 @@ const TOGGLES: ToggleSpec[] = [
     icon: 'type-hierarchy',
     id: 'subagent-orchestration',
     label: 'Sub-Agenten',
-    tip: 'Sub-Agenten — spezialisierte Unteragenten scharf schalten (grün = aktiv)',
+    tip: 'Sub-Agenten — spezialisierte Unteragenten scharf schalten (grün = bereit, gelb = in Bereitschaft, rot = aus)',
     method: 'subagent_orchestration.toggle'
   },
   {
@@ -95,7 +95,7 @@ const TOGGLES: ToggleSpec[] = [
     icon: 'mic',
     id: 'voice-comms',
     label: 'Sekretärin',
-    tip: 'Sekretärin — Managerin der Agenten und Sprachschnittstelle (grün = aktiv)',
+    tip: 'Sekretärin — Managerin der Agenten und Sprachschnittstelle (grün = bereit, gelb = in Bereitschaft, rot = aus)',
     method: 'voice_comms.toggle'
   },
   {
@@ -104,7 +104,7 @@ const TOGGLES: ToggleSpec[] = [
     icon: 'copy',
     id: 'orchestration',
     label: 'Temporäres Klonen',
-    tip: 'Temporäres Klonen — Agenten für die Dauer einer Aufgabe vervielfältigen (grün = aktiv)',
+    tip: 'Temporäres Klonen — Agenten für die Dauer einer Aufgabe vervielfältigen (grün = bereit, gelb = in Bereitschaft, rot = aus)',
     method: 'orchestration.toggle'
   },
   {
@@ -113,7 +113,7 @@ const TOGGLES: ToggleSpec[] = [
     icon: 'git-merge',
     id: 'double-mode',
     label: 'Harmonisierte Orchestrierung',
-    tip: 'Harmonisierte Orchestrierung — Agenten synchronisieren und gemeinsam steuern (grün = aktiv)',
+    tip: 'Harmonisierte Orchestrierung — Agenten synchronisieren und gemeinsam steuern (grün = bereit, gelb = in Bereitschaft, rot = aus)',
     method: 'double_mode.toggle'
   }
 ]
@@ -123,11 +123,11 @@ function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (sp
   const pending = useStore(spec.pendingAtom)
 
   // Color follows the function state: pending (yellow) > active (green) > inactive (red).
-  const colorClass = buttonColorClass(pending, active)
+  const colorClass = buttonColorClass(pending || busy, active)
 
   return (
     <button
-      aria-busy={busy}
+      aria-busy={busy || pending}
       aria-label={spec.label}
       aria-pressed={active}
       className={cn(ICON_BUTTON, colorClass)}
@@ -138,7 +138,7 @@ function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (sp
       title={spec.tip}
       type="button"
     >
-      <Codicon className="shrink-0" name={busy ? 'loading' : spec.icon} size="0.85rem" spinning={busy} />
+      <Codicon className="shrink-0" name={(busy || pending) ? 'loading' : spec.icon} size="0.85rem" spinning={busy || pending} />
     </button>
   )
 }
@@ -189,14 +189,6 @@ export const ComposerActions = memo(function ComposerActions() {
 
         for (const [method, atom] of Object.entries(METHOD_ATOMS)) {
           if (method in buttons) {
-            // Guard against the past: while this button is mid-RPC (pending),
-            // the optimistic flip is the newer intent — don't let a slower
-            // /health poll clobber it back to red. The poll only reconciles
-            // once the round-trip has settled (pending === false).
-            if (atom.pending.get()) {
-              continue
-            }
-
             const b = buttons[method]
 
             // New format: { active, pending }. Legacy format: bare bool.
@@ -215,7 +207,7 @@ export const ComposerActions = memo(function ComposerActions() {
     }
 
     void sync()
-    const id = setInterval(sync, 2000)
+    const id = setInterval(sync, 1500)
 
     return () => {
       alive = false
@@ -235,7 +227,6 @@ export const ComposerActions = memo(function ComposerActions() {
 
     // Instant feedback: flip optimistically and go yellow (pending) in the
     // same tick as the click, before the RPC round-trip.
-    spec.atom.set(next)
     spec.pendingAtom.set(true)
     setRunningIds(prev => new Set(prev).add(spec.id))
 
@@ -251,9 +242,10 @@ export const ComposerActions = memo(function ComposerActions() {
           const detail = await res.json().catch(() => ({}))
           throw new Error(detail?.error?.message || `RPC ${res.status}`)
         }
-        // Success: leave pending as-is. The /health poll is authoritative for
-        // clearing it (the proxy reports pending:true during its own boot work,
-        // e.g. starting voice_comms.py). Only a failure rolls back hard.
+
+        const data = await res.json().catch(() => ({}))
+        spec.atom.set(typeof data.active === 'boolean' ? data.active : next)
+        spec.pendingAtom.set(Boolean(data.pending))
       } catch (error) {
         spec.atom.set(previous)
         spec.pendingAtom.set(false)

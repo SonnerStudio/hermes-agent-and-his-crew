@@ -1,26 +1,26 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const zh: Translations = defineLocale({
+export const vn: Translations = defineLocale({
   "common": {
-    "apply": "应用",
-    "back": "返回",
-    "save": "保存",
-    "saving": "保存…",
-    "cancel": "取消",
-    "clear": "清除搜索",
-    "close": "关闭",
+    "apply": "Áp dụng",
+    "back": "Quay lại",
+    "save": "Lưu",
+    "saving": "Lưu…",
+    "cancel": "Hủy",
+    "clear": "Xóa",
+    "close": "Đóng",
     "copy": "Copy",
     "copied": "Copied",
     "delete": "Delete",
     "done": "Done",
     "error": "Error",
-    "free": "可用",
+    "free": "Trống",
     "loading": "Loading…",
     "refresh": "Refresh",
     "retry": "Retry",
     "run": "Run",
-    "send": "发送",
+    "send": "Gửi",
     "on": "On",
     "off": "Off"
   },
@@ -28,7 +28,7 @@ export const zh: Translations = defineLocale({
     "revealFinder": "Finder",
     "revealExplorer": "Explorer",
     "revealFileManager": "Folder",
-    "revealInSidebar": "产物",
+    "revealInSidebar": "Tạo phẩm",
     "copyPath": "Copy Path",
     "copyRelativePath": "Copy Relative Path",
     "rename": "Rename…",
@@ -41,8 +41,8 @@ export const zh: Translations = defineLocale({
   "titlebar": {
     "hideSidebar": "Sidebar",
     "showSidebar": "Sidebar",
-    "search": "搜索会话",
-    "searchTitle": "搜索会话…",
+    "search": "Tìm kiếm phiên",
+    "searchTitle": "Tìm kiếm phiên…",
     "swapSidebarSides": "Swap sidebar",
     "hideRightSidebar": "Right sidebar",
     "showRightSidebar": "Right sidebar",
@@ -62,94 +62,94 @@ export const zh: Translations = defineLocale({
   },
   "sidebar": {
     "nav": {
-      "new-session": "新建会话",
-      "skills": "功能",
-      "messaging": "消息",
-      "artifacts": "产物"
+      "new-session": "Phiên mới",
+      "skills": "Kỹ năng",
+      "messaging": "Tin nhắn",
+      "artifacts": "Tạo phẩm"
     },
-    "searchAria": "搜索会话",
-    "searchPlaceholder": "搜索会话…",
-    "clearSearch": "清除搜索",
-    "pinned": "已置顶",
-    "sessions": "会话",
-    "cronJobs": "定时任务",
-    "shiftClickHint": "Shift-点击以置顶",
-    "noWorkspace": "无工作区",
-    "projectEmpty": "暂无会话",
-    "noSessions": "暂无会话",
+    "searchAria": "Tìm kiếm phiên",
+    "searchPlaceholder": "Tìm kiếm phiên…",
+    "clearSearch": "Xóa tìm kiếm",
+    "pinned": "Đã ghim",
+    "sessions": "Phiên",
+    "cronJobs": "Tác vụ Cron",
+    "shiftClickHint": "Shift-nhấp để ghim",
+    "noWorkspace": "Không có không gian làm việc",
+    "projectEmpty": "Chưa có phiên nào",
+    "noSessions": "Chưa có phiên nào",
     "dateDivider": {
-      "today": "今天",
-      "yesterday": "昨天",
-      "thisWeek": "本周",
-      "lastWeek": "上周",
-      "thisMonth": "本月"
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "thisWeek": "Tuần này",
+      "lastWeek": "Tuần trước",
+      "thisMonth": "Tháng này"
     },
     "row": {
-      "openInSplit": "在分屏中打开"
+      "openInSplit": "Mở ở chế độ chia đôi"
     }
   },
   "composer": {
-    "message": "消息",
-    "placeholderStarting": "正在启动 Hermes…",
-    "placeholderReconnecting": "正在重新连接 Hermes…",
-    "placeholderFollowUp": "发送后续消息",
+    "message": "Tin nhắn",
+    "placeholderStarting": "Đang khởi động Hermes…",
+    "placeholderReconnecting": "Đang kết nối lại với Hermes…",
+    "placeholderFollowUp": "Gửi tin nhắn tiếp theo",
     "newSessionPlaceholders": [
-      "我们要做什么？",
-      "给 Hermes 分配一个任务",
-      "您在想什么？",
-      "描述您的需求",
-      "我们要处理什么？",
-      "随心提问",
-      "从设定目标开始"
+      "Chúng ta đang xây dựng gì?",
+      "Giao nhiệm vụ cho Hermes",
+      "Bạn đang nghĩ gì?",
+      "Mô tả những gì bạn cần",
+      "Chúng ta nên giải quyết việc gì?",
+      "Hỏi bất cứ điều gì",
+      "Bắt đầu với một mục tiêu"
     ],
     "followUpPlaceholders": [
-      "发送追问",
-      "补充更多背景信息",
-      "进一步细化请求",
-      "接下来做什么？",
-      "继续进行",
-      "深入探讨",
-      "调整或继续"
+      "Gửi phản hồi tiếp theo",
+      "Thêm bối cảnh",
+      "Tinh chỉnh yêu cầu",
+      "Tiếp theo là gì?",
+      "Tiếp tục",
+      "Đi sâu hơn",
+      "Điều chỉnh hoặc tiếp tục"
     ],
-    "startVoice": "开启语音对话",
-    "queueMessage": "加入消息队列",
-    "steer": "引导执行",
-    "stop": "停止",
-    "send": "发送",
-    "speaking": "正在讲话",
-    "transcribing": "正在转录",
-    "thinking": "正在思考"
+    "startVoice": "Bắt đầu trò chuyện bằng giọng nói",
+    "queueMessage": "Xếp hàng tin nhắn",
+    "steer": "Điều hướng thực thi",
+    "stop": "Dừng",
+    "send": "Gửi",
+    "speaking": "Đang nói",
+    "transcribing": "Đang phiên âm",
+    "thinking": "Đang suy nghĩ"
   },
   "skills": {
-    "tabSkills": "功能",
+    "tabSkills": "Kỹ năng",
     "tabToolsets": "Tools",
     "tabMcp": "MCP",
     "tabHub": "Hub",
     "all": "All",
-    "searchSkills": "功能…",
+    "searchSkills": "Kỹ năng…",
     "searchToolsets": "Tools…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…"
   },
   "artifacts": {
-    "search": "产物…",
+    "search": "Tạo phẩm…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…",
     "tabAll": "All",
     "tabImages": "Images",
     "tabFiles": "Files",
     "tabLinks": "Links",
-    "noArtifactsTitle": "产物 -"
+    "noArtifactsTitle": "Tạo phẩm -"
   },
   "commandCenter": {
     "paletteTitle": "Command palette",
-    "searchPlaceholder": "搜索会话…",
+    "searchPlaceholder": "Tìm kiếm phiên…",
     "branches": "Branches",
     "projects": "Projects",
     "openFolder": "Open folder…"
   },
   "settings": {
-    "closeSettings": "关闭",
+    "closeSettings": "Đóng",
     "exportConfig": "Export",
     "importConfig": "Import",
     "resetToDefaults": "Reset",

@@ -59,7 +59,7 @@ export const VirtualSessionList: FC<VirtualSessionListProps> = ({
   sortable,
   workingSessionIdSet
 }) => {
-  const { t } = useI18n()
+  const { locale, t } = useI18n()
   const dividerLabels = t.sidebar.dateDivider
   const scrollerRef = useRef<HTMLDivElement | null>(null)
 
@@ -95,7 +95,7 @@ export const VirtualSessionList: FC<VirtualSessionListProps> = ({
         <SidebarDateDivider
           data-index={virtualItem.index}
           key={row.key}
-          label={sessionBucketLabel(row.bucket, dividerLabels)}
+          label={sessionBucketLabel(row.bucket, dividerLabels, locale)}
           ref={virtualizer.measureElement}
         />
       )

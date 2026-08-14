@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import { getLang, type Lang, t } from './i18n'
+import { getLang, type Lang, localizeSpecialist, t } from './i18n'
 
 // Live task HUD rendered BELOW the composer text field (underside strip).
 // One bordered box per active composer button, each showing that button's real
@@ -66,7 +66,7 @@ export function specialistOf(a: AgentNode): string {
 
 const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)))
 
-const BOX = 'flex flex-col gap-1.5 rounded-md border border-sky-500/40 bg-(--composer-fill) px-2.5 py-1.5'
+const BOX = 'flex flex-col gap-1.5 rounded-md border border-sky-500/40 bg-(--composer-fill) px-2 py-1.5 min-w-[9rem] flex-1'
 
 interface BoxProps {
   title: string
@@ -77,7 +77,7 @@ interface BoxProps {
 function Box({ title, children, className }: BoxProps) {
   return (
     <div className={cn(BOX, 'flex-1 min-w-0', className)}>
-      <span className="text-[0.6rem] font-medium uppercase tracking-wide text-muted-foreground">
+      <span className="text-[0.78rem] font-bold uppercase tracking-wider text-sky-400">
         {title}
       </span>
       {children}
@@ -89,10 +89,10 @@ function MiniBar({ pct, label }: { pct: number; label: string }) {
   return (
     <div className="flex flex-col gap-0.5">
       <div className="flex items-center justify-between">
-        <span className="truncate text-[0.62rem] text-muted-foreground" title={label}>{label}</span>
-        <span className="ml-1 shrink-0 font-mono text-[0.6rem] tabular-nums text-muted-foreground">{pct}%</span>
+        <span className="truncate text-[0.78rem] font-semibold text-foreground" title={label}>{label}</span>
+        <span className="ml-1 shrink-0 font-mono text-[0.78rem] font-bold tabular-nums text-foreground/90">{pct}%</span>
       </div>
-      <div className="h-1 w-full overflow-hidden rounded-full bg-muted/40">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-muted/40">
         <div className="h-full rounded-full bg-sky-500 transition-[width] duration-500" style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -105,10 +105,10 @@ function AudioBar({ label, pct, tone }: { label: string; pct: number; tone: 'gre
   return (
     <div className="flex flex-col gap-0.5">
       <div className="flex items-center justify-between">
-        <span className="text-[0.58rem] text-muted-foreground">{label}</span>
-        <span className="ml-1 shrink-0 font-mono text-[0.58rem] tabular-nums text-muted-foreground">{pct}%</span>
+        <span className="text-[0.75rem] font-medium text-foreground">{label}</span>
+        <span className="ml-1 shrink-0 font-mono text-[0.75rem] font-bold tabular-nums text-foreground/90">{pct}%</span>
       </div>
-      <div className="h-1 w-full overflow-hidden rounded-full bg-muted/40">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-muted/40">
         <div className={cn('h-full rounded-full transition-[width] duration-150', bar)} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -119,10 +119,10 @@ function BigBar({ pct, hint }: { pct: number; hint?: string }) {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[0.7rem] tabular-nums text-muted-foreground">{pct}%</span>
-        {hint && <span className="truncate text-[0.55rem] text-muted-foreground/70" title={hint}>{hint}</span>}
+        <span className="font-mono text-[0.88rem] font-bold tabular-nums text-foreground">{pct}%</span>
+        {hint && <span className="truncate text-[0.75rem] font-medium text-muted-foreground" title={hint}>{hint}</span>}
       </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-muted/40">
         <div className="h-full rounded-full bg-sky-500 transition-[width] duration-500" style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -221,25 +221,26 @@ export const OrchestrationStatus = () => {
     return { utilization: util, harmony: clampPct(mean), runningAgents: running }
   }, [agents])
 
-  // Show the strip only while something is genuinely active. Each box appears
-  // as soon as its OWN button is armed (real state from /health), not only
-  // mid-action — so every activated button shows a box, per requirement.
+  // Show the strip only while at least one orchestration feature is active.
+  // Each button gets EXACTLY ONE box. The Sub-Agenten-Team box shows the
+  // running agents when present, otherwise a "Bereit — Crew steht" placeholder
+  // (Jan's requirement: the box for Button 1 must always be visible when the
+  // button is armed, even before any agent is running). All four boxes share
+  // the full available width equally (flex-1, no wrap) so they form one even row.
+  const anyActive = subagentActive || voiceActive || cloneActive || harmonyActive
   const showTeam = subagentActive
   const showVoice = voiceActive
   const showClones = cloneActive
   const showHarmony = harmonyActive
 
-  if (!showTeam && !showVoice && !showClones && !showHarmony) {
+  if (!anyActive) {
     return null
   }
 
   return (
     <div
       aria-label="Live orchestration status"
-      className={cn(
-        'flex items-stretch gap-2 rounded-lg border border-sky-500/40 p-2',
-        'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]'
-      )}
+      className={cn('flex w-full items-stretch gap-1.5')}
       role="status"
     >
       {showTeam && (
@@ -247,10 +248,10 @@ export const OrchestrationStatus = () => {
           <div className="flex flex-col gap-1">
             {runningAgents.length > 0 ? (
               runningAgents.map(a => (
-                <MiniBar key={a.id} label={specialistOf(a)} pct={clampPct(Number(a.progress) || 0)} />
+                <MiniBar key={a.id} label={localizeSpecialist(specialistOf(a), lang)} pct={clampPct(Number(a.progress) || 0)} />
               ))
             ) : (
-              <span className="text-[0.62rem] text-muted-foreground">
+              <span className="text-[0.78rem] font-medium text-muted-foreground">
                 {t('panel.subagents_ready', lang)}
               </span>
             )}
@@ -261,19 +262,19 @@ export const OrchestrationStatus = () => {
       {showVoice && (
         <Box title={t('secretary.sub', lang)}>
           <div className="flex items-center gap-2">
-            <span aria-hidden className="grid h-6 w-6 place-items-center rounded-full bg-sky-500/20 text-[0.7rem]">
+            <span aria-hidden className="grid h-6 w-6 place-items-center rounded-full bg-sky-500/20 text-[0.85rem]">
               🔊
             </span>
             <div className="flex flex-col">
-              <span className="text-[0.65rem] font-medium text-foreground">{t('secretary.title', lang)}</span>
-              <span className="text-[0.55rem] text-muted-foreground">{voiceState}</span>
+              <span className="text-[0.85rem] font-bold text-foreground">{t('secretary.title', lang)}</span>
+              <span className="text-[0.75rem] font-medium text-muted-foreground">{voiceState}</span>
             </div>
           </div>
           <div className="mt-1 flex flex-col gap-1 border-t border-muted/20 pt-1">
-            <AudioBar label={t('panel.subagents', lang)} pct={audio.speaker} tone="green" />
-            <AudioBar label="Mikrofon" pct={audio.mic} tone="blue" />
+            <AudioBar label={t('audio.speaker', lang) || (lang === 'de' ? 'Sprecher-Auslastung' : 'Speaker Load')} pct={audio.speaker} tone="green" />
+            <AudioBar label={t('audio.mic', lang) || (lang === 'de' ? 'Mikrofon-Pegel' : 'Microphone Level')} pct={audio.mic} tone="blue" />
             {!audio.mic_available && (
-              <span className="text-[0.5rem] text-amber-500/80">{t('mic.unavailable', lang)}</span>
+              <span className="text-[0.75rem] text-amber-500/80">{t('mic.unavailable', lang)}</span>
             )}
           </div>
         </Box>
@@ -286,13 +287,13 @@ export const OrchestrationStatus = () => {
               Object.entries(clones)
                 .filter(([, n]) => n > 1)
                 .map(([id, n]) => (
-                  <div className="flex items-center justify-between text-[0.62rem]" key={id}>
-                    <span className="truncate text-muted-foreground" title={id}>{id}</span>
-                    <span className="ml-1 shrink-0 font-mono tabular-nums text-muted-foreground">×{n}</span>
+                  <div className="flex items-center justify-between text-[0.8rem]" key={id}>
+                    <span className="truncate font-medium text-foreground" title={id}>{id}</span>
+                    <span className="ml-1 shrink-0 font-mono font-bold tabular-nums text-foreground/90">×{n}</span>
                   </div>
                 ))
             ) : (
-              <span className="text-[0.62rem] text-muted-foreground">{t('panel.clones_ready', lang)}</span>
+              <span className="text-[0.78rem] font-medium text-muted-foreground">{t('panel.clones_ready', lang)}</span>
             )}
           </div>
         </Box>
@@ -302,10 +303,10 @@ export const OrchestrationStatus = () => {
         <Box title={t('panel.harmony', lang)}>
           <BigBar hint={modelLoaded ? `Modell: ${currentModel}` : 'kein Modell geladen'} pct={harmony} />
           <div className="mt-1 flex items-center justify-between border-t border-muted/20 pt-1">
-            <span className="text-[0.6rem] text-muted-foreground">
+            <span className="text-[0.78rem] font-medium text-muted-foreground">
               {runningAgents.length > 0 ? t('panel.harmony', lang) : t('panel.harmony_ready', lang)}
             </span>
-            <span className="font-mono text-[0.65rem] tabular-nums text-muted-foreground">
+            <span className="font-mono text-[0.82rem] font-bold tabular-nums text-foreground">
               {runningAgents.length}/{MAX_AGENTS} · {utilization}%
             </span>
           </div>

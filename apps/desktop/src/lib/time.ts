@@ -164,9 +164,32 @@ export function calendarBucket(
   return sameYear ? { at: nominal, key: `m-${ym}`, kind: 'month' } : { at: nominal, key: `my-${ym}`, kind: 'monthYear' }
 }
 
+function toIntlLocale(loc?: string): string | undefined {
+  if (!loc) return undefined
+  const map: Record<string, string> = {
+    cz: 'cs',
+    za: 'af',
+    dk: 'da',
+    se: 'sv',
+    no: 'nb',
+    il: 'he',
+    in: 'hi',
+    sa: 'ar',
+    jp: 'ja',
+    vn: 'vi',
+    ua: 'uk',
+    cn: 'zh-CN',
+    tw: 'zh-TW',
+    run: 'is',
+    yi: 'yi'
+  }
+  return map[loc.toLowerCase()] || loc
+}
+
 // Localized divider label for a bucket: fixed relative strings from i18n,
 // Intl-formatted month / month-year for the rest.
-export function sessionBucketLabel(bucket: SessionBucket, labels: SessionBucketLabels): string {
+export function sessionBucketLabel(bucket: SessionBucket, labels: SessionBucketLabels, locale?: string): string {
+  const intlLoc = toIntlLocale(locale)
   switch (bucket.kind) {
     case 'today':
       return labels.today
@@ -184,10 +207,10 @@ export function sessionBucketLabel(bucket: SessionBucket, labels: SessionBucketL
       return labels.thisMonth
 
     case 'month':
-      return fmtMonth.format(bucket.at)
+      return new Intl.DateTimeFormat(intlLoc, { month: 'long' }).format(bucket.at)
 
     case 'monthYear':
-      return fmtMonthYear.format(bucket.at)
+      return new Intl.DateTimeFormat(intlLoc, { month: 'long', year: 'numeric' }).format(bucket.at)
   }
 }
 

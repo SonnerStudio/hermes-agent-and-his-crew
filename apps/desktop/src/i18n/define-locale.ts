@@ -37,5 +37,29 @@ function mergeTranslations<T>(base: T, overrides: TranslationOverride<T> | undef
 }
 
 export function defineLocale(overrides: TranslationOverrides): Translations {
-  return mergeTranslations<Translations>(en, overrides)
+  let cached: Translations | null = null
+
+  const getTarget = (): Translations => {
+    if (!cached) {
+      cached = mergeTranslations<Translations>(en, overrides)
+    }
+    return cached
+  }
+
+  return new Proxy({} as Translations, {
+    get(_target, prop, receiver) {
+      const target = getTarget()
+      const val = Reflect.get(target, prop, receiver)
+      return val
+    },
+    has(_target, prop) {
+      return Reflect.has(getTarget(), prop)
+    },
+    ownKeys(_target) {
+      return Reflect.ownKeys(getTarget())
+    },
+    getOwnPropertyDescriptor(_target, prop) {
+      return Reflect.getOwnPropertyDescriptor(getTarget(), prop)
+    }
+  })
 }

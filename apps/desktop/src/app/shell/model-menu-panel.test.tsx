@@ -411,6 +411,7 @@ describe('ModelMenuPanel provider collapse', () => {
         'groq-mixtral-8x7b': { input: '$0.20', output: '$0.20', cache: null, free: false }
       }
     }
+
     getGlobalModelOptions.mockResolvedValueOnce({ providers: [FREE_PROVIDER] })
     const panel = renderPanel()
     await panel.content.findByText('Groq')

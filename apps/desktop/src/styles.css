@@ -1367,7 +1367,7 @@ text-* variant utilities. */ .btn-arc {
 
 [data-slot='composer-root'] {
   width: 100%;
-  padding-inline: 5px;
+  padding-inline: 0;
 }
 
 /* Popped-out (floating) composer: compact width + an even 5px transparent grab

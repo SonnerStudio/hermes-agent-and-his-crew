@@ -1,26 +1,26 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const zh: Translations = defineLocale({
+export const se: Translations = defineLocale({
   "common": {
-    "apply": "应用",
-    "back": "返回",
-    "save": "保存",
-    "saving": "保存…",
-    "cancel": "取消",
-    "clear": "清除搜索",
-    "close": "关闭",
+    "apply": "Tillämpa",
+    "back": "Tillbaka",
+    "save": "Spara",
+    "saving": "Spara…",
+    "cancel": "Avbryt",
+    "clear": "Rensa",
+    "close": "Stäng",
     "copy": "Copy",
     "copied": "Copied",
     "delete": "Delete",
     "done": "Done",
     "error": "Error",
-    "free": "可用",
+    "free": "Ledigt",
     "loading": "Loading…",
     "refresh": "Refresh",
     "retry": "Retry",
     "run": "Run",
-    "send": "发送",
+    "send": "Skicka",
     "on": "On",
     "off": "Off"
   },
@@ -28,7 +28,7 @@ export const zh: Translations = defineLocale({
     "revealFinder": "Finder",
     "revealExplorer": "Explorer",
     "revealFileManager": "Folder",
-    "revealInSidebar": "产物",
+    "revealInSidebar": "Artefakter",
     "copyPath": "Copy Path",
     "copyRelativePath": "Copy Relative Path",
     "rename": "Rename…",
@@ -41,8 +41,8 @@ export const zh: Translations = defineLocale({
   "titlebar": {
     "hideSidebar": "Sidebar",
     "showSidebar": "Sidebar",
-    "search": "搜索会话",
-    "searchTitle": "搜索会话…",
+    "search": "Sök sessioner",
+    "searchTitle": "Sök sessioner…",
     "swapSidebarSides": "Swap sidebar",
     "hideRightSidebar": "Right sidebar",
     "showRightSidebar": "Right sidebar",
@@ -62,94 +62,94 @@ export const zh: Translations = defineLocale({
   },
   "sidebar": {
     "nav": {
-      "new-session": "新建会话",
-      "skills": "功能",
-      "messaging": "消息",
-      "artifacts": "产物"
+      "new-session": "Ny session",
+      "skills": "Färdigheter",
+      "messaging": "Meddelanden",
+      "artifacts": "Artefakter"
     },
-    "searchAria": "搜索会话",
-    "searchPlaceholder": "搜索会话…",
-    "clearSearch": "清除搜索",
-    "pinned": "已置顶",
-    "sessions": "会话",
-    "cronJobs": "定时任务",
-    "shiftClickHint": "Shift-点击以置顶",
-    "noWorkspace": "无工作区",
-    "projectEmpty": "暂无会话",
-    "noSessions": "暂无会话",
+    "searchAria": "Sök sessioner",
+    "searchPlaceholder": "Sök sessioner…",
+    "clearSearch": "Rensa sökning",
+    "pinned": "Fäst",
+    "sessions": "Sessioner",
+    "cronJobs": "Cron-jobb",
+    "shiftClickHint": "Shift-klicka för att fästa",
+    "noWorkspace": "Ingen arbetsyta",
+    "projectEmpty": "Inga sessioner ännu",
+    "noSessions": "Inga sessioner ännu",
     "dateDivider": {
-      "today": "今天",
-      "yesterday": "昨天",
-      "thisWeek": "本周",
-      "lastWeek": "上周",
-      "thisMonth": "本月"
+      "today": "Idag",
+      "yesterday": "Igår",
+      "thisWeek": "Denna vecka",
+      "lastWeek": "Förra veckan",
+      "thisMonth": "Denna månad"
     },
     "row": {
-      "openInSplit": "在分屏中打开"
+      "openInSplit": "Öppna i delad vy"
     }
   },
   "composer": {
-    "message": "消息",
-    "placeholderStarting": "正在启动 Hermes…",
-    "placeholderReconnecting": "正在重新连接 Hermes…",
-    "placeholderFollowUp": "发送后续消息",
+    "message": "Meddelande",
+    "placeholderStarting": "Hermes startar…",
+    "placeholderReconnecting": "Återansluter till Hermes…",
+    "placeholderFollowUp": "Skicka uppföljningsmeddelande",
     "newSessionPlaceholders": [
-      "我们要做什么？",
-      "给 Hermes 分配一个任务",
-      "您在想什么？",
-      "描述您的需求",
-      "我们要处理什么？",
-      "随心提问",
-      "从设定目标开始"
+      "Vad bygger vi?",
+      "Ge Hermes en uppgift",
+      "Vad tänker du på?",
+      "Beskriv vad du behöver",
+      "Vad ska vi ta itu med?",
+      "Fråga vad som helst",
+      "Börja med ett mål"
     ],
     "followUpPlaceholders": [
-      "发送追问",
-      "补充更多背景信息",
-      "进一步细化请求",
-      "接下来做什么？",
-      "继续进行",
-      "深入探讨",
-      "调整或继续"
+      "Skicka uppföljning",
+      "Lägg till mer kontext",
+      "Förfina förfrågan",
+      "Vad är nästa steg?",
+      "Fortsätt",
+      "Gå djupare",
+      "Justera eller fortsätt"
     ],
-    "startVoice": "开启语音对话",
-    "queueMessage": "加入消息队列",
-    "steer": "引导执行",
-    "stop": "停止",
-    "send": "发送",
-    "speaking": "正在讲话",
-    "transcribing": "正在转录",
-    "thinking": "正在思考"
+    "startVoice": "Starta röstkonversation",
+    "queueMessage": "Köa meddelande",
+    "steer": "Styr körning",
+    "stop": "Stoppa",
+    "send": "Skicka",
+    "speaking": "Talar",
+    "transcribing": "Transkriberar",
+    "thinking": "Tänker"
   },
   "skills": {
-    "tabSkills": "功能",
+    "tabSkills": "Färdigheter",
     "tabToolsets": "Tools",
     "tabMcp": "MCP",
     "tabHub": "Hub",
     "all": "All",
-    "searchSkills": "功能…",
+    "searchSkills": "Färdigheter…",
     "searchToolsets": "Tools…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…"
   },
   "artifacts": {
-    "search": "产物…",
+    "search": "Artefakter…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…",
     "tabAll": "All",
     "tabImages": "Images",
     "tabFiles": "Files",
     "tabLinks": "Links",
-    "noArtifactsTitle": "产物 -"
+    "noArtifactsTitle": "Artefakter -"
   },
   "commandCenter": {
     "paletteTitle": "Command palette",
-    "searchPlaceholder": "搜索会话…",
+    "searchPlaceholder": "Sök sessioner…",
     "branches": "Branches",
     "projects": "Projects",
     "openFolder": "Open folder…"
   },
   "settings": {
-    "closeSettings": "关闭",
+    "closeSettings": "Stäng",
     "exportConfig": "Export",
     "importConfig": "Import",
     "resetToDefaults": "Reset",

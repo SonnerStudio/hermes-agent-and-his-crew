@@ -5,7 +5,6 @@ import type * as React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { LanguagePicker } from '@/app/chat/composer/LanguagePicker'
 import { PlatformAvatar } from '@/app/messaging/platform-icon'
 import { Button } from '@/components/ui/button'
 import { Codicon } from '@/components/ui/codicon'
@@ -136,6 +135,7 @@ import { buildSessionByAnyId } from './session-index'
 import { SidebarSessionsSection, VIRTUALIZE_THRESHOLD } from './sessions-section'
 import { SidebarLanguagePicker } from './SidebarLanguagePicker'
 import { CONTEXT_SPLIT_KIT, SplitSubmenu } from './split-submenu'
+import { SystemRamStatus } from './SystemRamStatus'
 
 // Non-session groups (messaging platforms) stay compact: show a few rows up
 // front, reveal more in larger steps on demand. Keeps a busy platform from
@@ -1130,6 +1130,7 @@ export function ChatSidebar({
           <SidebarGroupContent>
             {/* SonnerStudio: language picker with flags, top of sidebar (above New Session). */}
             <SidebarLanguagePicker />
+            <SystemRamStatus />
             <SidebarMenu className="gap-px">
               {[...SIDEBAR_NAV, ...contributedNav].map(item => {
                 const isInteractive = Boolean(item.action) || Boolean(item.route)
@@ -1225,12 +1226,7 @@ export function ChatSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* SonnerStudio: language picker (🌐 + flags) pinned to the top of the sidebar */}
-        <SidebarGroup className="shrink-0 p-0 pb-1 pt-1">
-          <SidebarGroupContent>
-            <LanguagePicker />
-          </SidebarGroupContent>
-        </SidebarGroup>
+
 
         {showSessionSections && (
           <div className="shrink-0 px-2 pb-1 pt-1">

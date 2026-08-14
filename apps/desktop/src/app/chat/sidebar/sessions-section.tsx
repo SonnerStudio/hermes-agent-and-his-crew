@@ -192,7 +192,7 @@ export function SidebarSessionsSection({
   showProfileTags = false,
   dateGrouped = false
 }: SidebarSessionsSectionProps) {
-  const { t } = useI18n()
+  const { locale, t } = useI18n()
   const dividerLabels = t.sidebar.dateDivider
   const sectionOpen = collapsible ? open : true
   const hasGroupedSessions = Boolean(groups?.some(group => group.sessions.length > 0))
@@ -251,7 +251,7 @@ export function SidebarSessionsSection({
   // A single flat/virtual/lane list row — either a date divider or a session.
   const renderListRow = (row: SidebarListRow, draggable: boolean) =>
     row.kind === 'divider' ? (
-      <SidebarDateDivider key={row.key} label={sessionBucketLabel(row.bucket, dividerLabels)} />
+      <SidebarDateDivider key={row.key} label={sessionBucketLabel(row.bucket, dividerLabels, locale)} />
     ) : (
       renderRow(row.entry.session, draggable, row.entry.branchStem)
     )

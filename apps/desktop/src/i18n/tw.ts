@@ -1,15 +1,15 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const zh: Translations = defineLocale({
+export const tw: Translations = defineLocale({
   "common": {
-    "apply": "应用",
+    "apply": "套用",
     "back": "返回",
-    "save": "保存",
-    "saving": "保存…",
+    "save": "儲存",
+    "saving": "儲存…",
     "cancel": "取消",
-    "clear": "清除搜索",
-    "close": "关闭",
+    "clear": "清除搜尋",
+    "close": "關閉",
     "copy": "Copy",
     "copied": "Copied",
     "delete": "Delete",
@@ -20,7 +20,7 @@ export const zh: Translations = defineLocale({
     "refresh": "Refresh",
     "retry": "Retry",
     "run": "Run",
-    "send": "发送",
+    "send": "發送",
     "on": "On",
     "off": "Off"
   },
@@ -28,7 +28,7 @@ export const zh: Translations = defineLocale({
     "revealFinder": "Finder",
     "revealExplorer": "Explorer",
     "revealFileManager": "Folder",
-    "revealInSidebar": "产物",
+    "revealInSidebar": "產物",
     "copyPath": "Copy Path",
     "copyRelativePath": "Copy Relative Path",
     "rename": "Rename…",
@@ -41,8 +41,8 @@ export const zh: Translations = defineLocale({
   "titlebar": {
     "hideSidebar": "Sidebar",
     "showSidebar": "Sidebar",
-    "search": "搜索会话",
-    "searchTitle": "搜索会话…",
+    "search": "搜尋對話",
+    "searchTitle": "搜尋對話…",
     "swapSidebarSides": "Swap sidebar",
     "hideRightSidebar": "Right sidebar",
     "showRightSidebar": "Right sidebar",
@@ -62,62 +62,62 @@ export const zh: Translations = defineLocale({
   },
   "sidebar": {
     "nav": {
-      "new-session": "新建会话",
+      "new-session": "新增對話",
       "skills": "功能",
-      "messaging": "消息",
-      "artifacts": "产物"
+      "messaging": "訊息",
+      "artifacts": "產物"
     },
-    "searchAria": "搜索会话",
-    "searchPlaceholder": "搜索会话…",
-    "clearSearch": "清除搜索",
-    "pinned": "已置顶",
-    "sessions": "会话",
-    "cronJobs": "定时任务",
-    "shiftClickHint": "Shift-点击以置顶",
-    "noWorkspace": "无工作区",
-    "projectEmpty": "暂无会话",
-    "noSessions": "暂无会话",
+    "searchAria": "搜尋對話",
+    "searchPlaceholder": "搜尋對話…",
+    "clearSearch": "清除搜尋",
+    "pinned": "已釘選",
+    "sessions": "對話",
+    "cronJobs": "排程任務",
+    "shiftClickHint": "Shift-點擊以釘選",
+    "noWorkspace": "無工作區",
+    "projectEmpty": "尚無對話",
+    "noSessions": "尚無對話",
     "dateDivider": {
       "today": "今天",
       "yesterday": "昨天",
-      "thisWeek": "本周",
-      "lastWeek": "上周",
+      "thisWeek": "本週",
+      "lastWeek": "上週",
       "thisMonth": "本月"
     },
     "row": {
-      "openInSplit": "在分屏中打开"
+      "openInSplit": "在分割視窗中開啟"
     }
   },
   "composer": {
-    "message": "消息",
-    "placeholderStarting": "正在启动 Hermes…",
-    "placeholderReconnecting": "正在重新连接 Hermes…",
-    "placeholderFollowUp": "发送后续消息",
+    "message": "訊息",
+    "placeholderStarting": "正在啟動 Hermes…",
+    "placeholderReconnecting": "正在重新連線 Hermes…",
+    "placeholderFollowUp": "發送後續訊息",
     "newSessionPlaceholders": [
-      "我们要做什么？",
-      "给 Hermes 分配一个任务",
-      "您在想什么？",
+      "我們要做什麼？",
+      "給 Hermes 分派一個任務",
+      "您在想什麼？",
       "描述您的需求",
-      "我们要处理什么？",
-      "随心提问",
-      "从设定目标开始"
+      "我們要處理什麼？",
+      "隨心提問",
+      "從設定目標開始"
     ],
     "followUpPlaceholders": [
-      "发送追问",
-      "补充更多背景信息",
-      "进一步细化请求",
-      "接下来做什么？",
-      "继续进行",
-      "深入探讨",
-      "调整或继续"
+      "發送追問",
+      "補充更多背景資訊",
+      "進一步細化請求",
+      "接下來做什麼？",
+      "繼續進行",
+      "深入探討",
+      "調整或繼續"
     ],
-    "startVoice": "开启语音对话",
-    "queueMessage": "加入消息队列",
-    "steer": "引导执行",
+    "startVoice": "開啟語音對話",
+    "queueMessage": "加入訊息佇列",
+    "steer": "引導執行",
     "stop": "停止",
-    "send": "发送",
-    "speaking": "正在讲话",
-    "transcribing": "正在转录",
+    "send": "發送",
+    "speaking": "正在講話",
+    "transcribing": "正在轉錄",
     "thinking": "正在思考"
   },
   "skills": {
@@ -132,24 +132,24 @@ export const zh: Translations = defineLocale({
     "refreshing": "Refreshing…"
   },
   "artifacts": {
-    "search": "产物…",
+    "search": "產物…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…",
     "tabAll": "All",
     "tabImages": "Images",
     "tabFiles": "Files",
     "tabLinks": "Links",
-    "noArtifactsTitle": "产物 -"
+    "noArtifactsTitle": "產物 -"
   },
   "commandCenter": {
     "paletteTitle": "Command palette",
-    "searchPlaceholder": "搜索会话…",
+    "searchPlaceholder": "搜尋對話…",
     "branches": "Branches",
     "projects": "Projects",
     "openFolder": "Open folder…"
   },
   "settings": {
-    "closeSettings": "关闭",
+    "closeSettings": "關閉",
     "exportConfig": "Export",
     "importConfig": "Import",
     "resetToDefaults": "Reset",

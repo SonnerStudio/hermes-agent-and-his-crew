@@ -1,26 +1,26 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const zh: Translations = defineLocale({
+export const fr: Translations = defineLocale({
   "common": {
-    "apply": "应用",
-    "back": "返回",
-    "save": "保存",
-    "saving": "保存…",
-    "cancel": "取消",
-    "clear": "清除搜索",
-    "close": "关闭",
+    "apply": "Appliquer",
+    "back": "Retour",
+    "save": "Enregistrer",
+    "saving": "Enregistrer…",
+    "cancel": "Annuler",
+    "clear": "Effacer",
+    "close": "Fermer",
     "copy": "Copy",
     "copied": "Copied",
     "delete": "Delete",
     "done": "Done",
     "error": "Error",
-    "free": "可用",
+    "free": "Libre",
     "loading": "Loading…",
     "refresh": "Refresh",
     "retry": "Retry",
     "run": "Run",
-    "send": "发送",
+    "send": "Envoyer",
     "on": "On",
     "off": "Off"
   },
@@ -28,7 +28,7 @@ export const zh: Translations = defineLocale({
     "revealFinder": "Finder",
     "revealExplorer": "Explorer",
     "revealFileManager": "Folder",
-    "revealInSidebar": "产物",
+    "revealInSidebar": "Artefacts",
     "copyPath": "Copy Path",
     "copyRelativePath": "Copy Relative Path",
     "rename": "Rename…",
@@ -41,8 +41,8 @@ export const zh: Translations = defineLocale({
   "titlebar": {
     "hideSidebar": "Sidebar",
     "showSidebar": "Sidebar",
-    "search": "搜索会话",
-    "searchTitle": "搜索会话…",
+    "search": "Rechercher des sessions",
+    "searchTitle": "Rechercher des sessions…",
     "swapSidebarSides": "Swap sidebar",
     "hideRightSidebar": "Right sidebar",
     "showRightSidebar": "Right sidebar",
@@ -62,94 +62,94 @@ export const zh: Translations = defineLocale({
   },
   "sidebar": {
     "nav": {
-      "new-session": "新建会话",
-      "skills": "功能",
-      "messaging": "消息",
-      "artifacts": "产物"
+      "new-session": "Nouvelle session",
+      "skills": "Compétences",
+      "messaging": "Messagerie",
+      "artifacts": "Artefacts"
     },
-    "searchAria": "搜索会话",
-    "searchPlaceholder": "搜索会话…",
-    "clearSearch": "清除搜索",
-    "pinned": "已置顶",
-    "sessions": "会话",
-    "cronJobs": "定时任务",
-    "shiftClickHint": "Shift-点击以置顶",
-    "noWorkspace": "无工作区",
-    "projectEmpty": "暂无会话",
-    "noSessions": "暂无会话",
+    "searchAria": "Rechercher des sessions",
+    "searchPlaceholder": "Rechercher des sessions…",
+    "clearSearch": "Effacer la recherche",
+    "pinned": "Épinglé",
+    "sessions": "Sessions",
+    "cronJobs": "Tâches Cron",
+    "shiftClickHint": "Maj-clic pour épingler",
+    "noWorkspace": "Aucun espace de travail",
+    "projectEmpty": "Aucune session pour le moment",
+    "noSessions": "Aucune session pour le moment",
     "dateDivider": {
-      "today": "今天",
-      "yesterday": "昨天",
-      "thisWeek": "本周",
-      "lastWeek": "上周",
-      "thisMonth": "本月"
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "thisWeek": "Cette semaine",
+      "lastWeek": "La semaine dernière",
+      "thisMonth": "Ce mois-ci"
     },
     "row": {
-      "openInSplit": "在分屏中打开"
+      "openInSplit": "Ouvrir en vue divisée"
     }
   },
   "composer": {
-    "message": "消息",
-    "placeholderStarting": "正在启动 Hermes…",
-    "placeholderReconnecting": "正在重新连接 Hermes…",
-    "placeholderFollowUp": "发送后续消息",
+    "message": "Message",
+    "placeholderStarting": "Démarrage d'Hermes…",
+    "placeholderReconnecting": "Reconnexion à Hermes…",
+    "placeholderFollowUp": "Envoyer un suivi",
     "newSessionPlaceholders": [
-      "我们要做什么？",
-      "给 Hermes 分配一个任务",
-      "您在想什么？",
-      "描述您的需求",
-      "我们要处理什么？",
-      "随心提问",
-      "从设定目标开始"
+      "Que construisons-nous ?",
+      "Donnez une tâche à Hermes",
+      "À quoi pensez-vous ?",
+      "Décrivez ce dont vous avez besoin",
+      "Que devrions-nous aborder ?",
+      "Posez n'importe quelle question",
+      "Commencez par un objectif"
     ],
     "followUpPlaceholders": [
-      "发送追问",
-      "补充更多背景信息",
-      "进一步细化请求",
-      "接下来做什么？",
-      "继续进行",
-      "深入探讨",
-      "调整或继续"
+      "Envoyer un suivi",
+      "Ajouter plus de contexte",
+      "Affiner la demande",
+      "Quelle est la suite ?",
+      "Continuer",
+      "Aller plus loin",
+      "Ajuster ou continuer"
     ],
-    "startVoice": "开启语音对话",
-    "queueMessage": "加入消息队列",
-    "steer": "引导执行",
-    "stop": "停止",
-    "send": "发送",
-    "speaking": "正在讲话",
-    "transcribing": "正在转录",
-    "thinking": "正在思考"
+    "startVoice": "Démarrer la voix",
+    "queueMessage": "Mettre en file d'attente",
+    "steer": "Diriger l'exécution",
+    "stop": "Arrêter",
+    "send": "Envoyer",
+    "speaking": "Parle",
+    "transcribing": "Transcription",
+    "thinking": "Réflexion"
   },
   "skills": {
-    "tabSkills": "功能",
+    "tabSkills": "Compétences",
     "tabToolsets": "Tools",
     "tabMcp": "MCP",
     "tabHub": "Hub",
     "all": "All",
-    "searchSkills": "功能…",
+    "searchSkills": "Compétences…",
     "searchToolsets": "Tools…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…"
   },
   "artifacts": {
-    "search": "产物…",
+    "search": "Artefacts…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…",
     "tabAll": "All",
     "tabImages": "Images",
     "tabFiles": "Files",
     "tabLinks": "Links",
-    "noArtifactsTitle": "产物 -"
+    "noArtifactsTitle": "Artefacts -"
   },
   "commandCenter": {
     "paletteTitle": "Command palette",
-    "searchPlaceholder": "搜索会话…",
+    "searchPlaceholder": "Rechercher des sessions…",
     "branches": "Branches",
     "projects": "Projects",
     "openFolder": "Open folder…"
   },
   "settings": {
-    "closeSettings": "关闭",
+    "closeSettings": "Fermer",
     "exportConfig": "Export",
     "importConfig": "Import",
     "resetToDefaults": "Reset",

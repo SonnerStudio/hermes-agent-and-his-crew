@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import { getLang, type Lang, t } from './i18n'
+import { getLang, type Lang, localizeSpecialist, t } from './i18n'
 
 // Secretary learning HUD — shows the Secretary's self-learned journey (her
 // routing preferences + private planning skills as a graph) AND the native
@@ -51,42 +51,59 @@ interface SecretaryLearningData {
   updated_at: number
 }
 
+function MlxBadge({ mlx, lang }: { mlx: MlxStatus; lang: Lang }) {
+  const state = mlx.loading_model
+    ? `${t('status.loading', lang)} ${mlx.loading_model}…`
+    : mlx.ready && mlx.current_model
+      ? mlx.current_model
+      : t('status.ready', lang)
+
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-1.5 rounded-md px-2.5 py-1 font-mono text-[0.72rem] font-semibold',
+        mlx.ready
+          ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+          : 'bg-muted/40 text-muted-foreground border border-border/40',
+      )}
+      title={mlx.ready ? `MLX Server ${t('status.active', lang)}: ${mlx.current_model || t('status.ready', lang)}` : `MLX Server ${t('status.ready', lang)}`}
+    >
+      <span
+        className={cn(
+          'h-2 w-2 rounded-full',
+          mlx.ready ? 'bg-emerald-400 animate-pulse' : 'bg-muted-foreground',
+        )}
+      />
+      <span className="font-bold">MLX</span>
+      <span className="opacity-90 truncate max-w-[14rem]">{state}</span>
+    </div>
+  )
+}
+
 const BOX = 'flex flex-col gap-1.5 rounded-md border border-sky-500/40 bg-(--composer-fill) px-2.5 py-1.5'
 
-function Box({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
+interface BoxProps {
+  title: string
+  right?: React.ReactNode
+  children: React.ReactNode
+}
+
+function Box({ title, right, children }: BoxProps) {
   return (
-    <div className={cn(BOX, 'min-w-[11rem] flex-1', className)}>
-      <span className="text-[0.6rem] font-medium uppercase tracking-wide text-muted-foreground">
-        {title}
-      </span>
+    <div className={BOX}>
+      <div className="flex items-center justify-between">
+        <span className="text-[0.78rem] font-bold uppercase tracking-wider text-sky-400">
+          {title}
+        </span>
+        {right}
+      </div>
       {children}
     </div>
   )
 }
 
-function MlxBadge({ mlx }: { mlx: MlxStatus }) {
-  const state = mlx.loading_model
-    ? `lädt ${mlx.loading_model}…`
-    : mlx.ready && mlx.current_model
-      ? mlx.current_model
-      : 'kein Modell'
-
-  const tone = mlx.ready && mlx.current_model
-    ? 'bg-sky-500/20 text-sky-300'
-    : 'bg-muted/30 text-muted-foreground'
-
-  return (
-    <div className="mt-0.5 flex items-center gap-1.5">
-      <span aria-hidden className="grid h-5 w-5 place-items-center rounded-full bg-sky-500/20 text-[0.6rem]">🧠</span>
-      <span className={cn('rounded px-1.5 py-0.5 text-[0.58rem] font-medium', tone)} title={state}>{state}</span>
-    </div>
-  )
-}
-
 /**
- * Secretary learning strip BELOW the composer. Shows her learned routing
- * preferences + skills (graph) and the native MLX runtime powering her.
- * Hidden when the Secretary has learned nothing yet and no model is loaded.
+ * Learning graph + MLX runtime status strip for the composer.
  */
 export const SecretaryLearning = () => {
   const [data, setData] = useState<SecretaryLearningData | null>(null)
@@ -137,63 +154,93 @@ export const SecretaryLearning = () => {
   const skillNodes = nodes.filter(n => n.kind === 'skill')
   const hasLearning = nodes.length > 0
   const mlx = data.mlx
-  const last = data.last_learning
+  const last = data.last_learning ?? null
 
-  // Format the last learning success: which agent + what was achieved.
-  const lastAgent = last?.agent_name || last?.agent_id || (last?.stage
-    ? (last.stage.charAt(0).toUpperCase() + last.stage.slice(1))
-    : null)
+  const AGENT_LABELS: Record<string, string> = {
+    subagent: t('agent.hermes', lang),
+    planner: t('agent.hermes', lang),
+    secretary: t('secretary.title', lang),
+  }
 
-  const lastDetailParts: string[] = []
+  function agentLabel(ev: NonNullable<typeof last>): string {
+    if (ev.agent_name) {return localizeSpecialist(ev.agent_name, lang)}
 
-  if (last?.topology) {lastDetailParts.push(last.topology)}
+    if (ev.agent_id && AGENT_LABELS[ev.agent_id]) {return AGENT_LABELS[ev.agent_id]}
 
-  if (last?.clone_factor && last.clone_factor > 1) {lastDetailParts.push(`×${last.clone_factor} Klon`)}
+    if (ev.stage && AGENT_LABELS[ev.stage]) {return AGENT_LABELS[ev.stage]}
 
-  if (typeof last?.units === 'number') {lastDetailParts.push(`${last.units} Einh.`)}
+    if (ev.agent_id) {return localizeSpecialist(ev.agent_id, lang)}
 
-  if (typeof last?.latency_s === 'number') {lastDetailParts.push(`${last.latency_s.toFixed(1)}s`)}
-  const lastDetail = lastDetailParts.length > 0 ? lastDetailParts.join(' · ') : 'erfolgreich gelernt'
-  const lastSuccess = last?.success === true || last?.success === undefined
+    return ev.stage ? localizeSpecialist(ev.stage, lang) : t('agent.hermes', lang)
+  }
 
   // Only show when there is something real to show.
-  if (!lastAgent && !hasLearning && !(mlx.ready && mlx.current_model)) {
+  if (!hasLearning && !(mlx.ready && mlx.current_model) && !last) {
     return null
   }
+
+  const lastAgent = last ? agentLabel(last) : null
+  const lastDetailParts: string[] = []
+
+  if (last?.topology) {
+    lastDetailParts.push(last.topology === 'peer' ? t('topology.peer', lang) : t('topology.managed', lang))
+  }
+
+  if (last?.clone_factor && last.clone_factor > 1) {
+    lastDetailParts.push(`${last.clone_factor}× ${t('unit.clone', lang)}`)
+  }
+
+  if (typeof last?.units === 'number' && last.units > 1) {
+    lastDetailParts.push(`${last.units} ${t('unit.units', lang)}`)
+  }
+
+  if (typeof last?.latency_s === 'number' && last.latency_s > 0) {
+    lastDetailParts.push(`${last.latency_s.toFixed(1)}s`)
+  }
+
+  const lastDetail = lastDetailParts.length > 0
+    ? lastDetailParts.join(' · ')
+    : (t('secretary.last_detail', lang) || 'erfolgreich gelernt')
+  const lastSuccess = last?.success === true || last?.success === undefined
 
   return (
     <div
       aria-label="Secretary learning & MLX runtime"
-      className={cn(
-        'flex flex-wrap items-stretch gap-2 rounded-lg border border-sky-500/40 p-2',
-        'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]'
-      )}
+      className={cn('flex w-full flex-col gap-1.5')}
       role="status"
     >
+      {/* ── Field 1: Letzter Lernerfolg (single compact horizontal line) ── */}
       <Box title={t('secretary.learned', lang)}>
         {lastAgent ? (
-          <div className="flex flex-col gap-0.5">
-            <div className="flex items-center gap-1.5">
-              <span aria-hidden className="grid h-5 w-5 place-items-center rounded-full bg-sky-500/20 text-[0.6rem]">✅</span>
-              <span className="truncate text-[0.62rem] font-medium text-foreground" title={lastAgent}>{lastAgent}</span>
+          <div className="flex min-w-0 items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2 truncate">
+              <span aria-hidden className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-sky-500/20 text-[0.75rem]">
+                {lastSuccess ? '✅' : '⚠️'}
+              </span>
+              <span className="shrink-0 text-[0.85rem] font-bold text-foreground" title={localizeSpecialist(lastAgent, lang)}>
+                {localizeSpecialist(lastAgent, lang)}
+              </span>
+              <span className="text-muted-foreground/60 font-bold">·</span>
+              <span className="truncate text-[0.78rem] font-medium text-muted-foreground" title={lastDetail}>
+                {lastDetail}
+              </span>
             </div>
-            <span className="text-[0.52rem] text-muted-foreground">{lastDetail}</span>
-            {!lastSuccess && (
-              <span className="text-[0.5rem] text-amber-500/80">nicht erfolgreich</span>
-            )}
+            <MlxBadge lang={lang} mlx={mlx} />
           </div>
         ) : (
-          <span className="text-[0.62rem] text-muted-foreground">{t('secretary.subagents', lang)}</span>
+          <div className="flex items-center justify-between">
+            <span className="text-[0.78rem] font-medium text-muted-foreground">{t('panel.subagents_ready', lang)}</span>
+            <MlxBadge lang={lang} mlx={mlx} />
+          </div>
         )}
-        <MlxBadge mlx={mlx} />
       </Box>
 
       {skillNodes.length > 0 && (
         <Box title={t('secretary.skills', lang)}>
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1.5">
             {skillNodes.map(n => (
               <span
-                className="rounded bg-muted/30 px-1.5 py-0.5 text-[0.55rem] text-muted-foreground"
+                className="rounded bg-muted/40 px-2 py-0.5 text-[0.72rem] font-medium text-foreground"
                 key={n.id}
                 title={n.detail}
               >
@@ -206,8 +253,8 @@ export const SecretaryLearning = () => {
 
       {edges.length > 0 && (
         <Box title={t('secretary.graph', lang)}>
-          <span className="font-mono text-[0.6rem] tabular-nums text-muted-foreground">
-            {nodes.length} Knoten · {edges.length} Kanten
+          <span className="font-mono text-[0.75rem] font-semibold tabular-nums text-foreground/90">
+            {nodes.length} Nodes · {edges.length} Edges
           </span>
         </Box>
       )}

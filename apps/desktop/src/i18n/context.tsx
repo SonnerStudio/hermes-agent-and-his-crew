@@ -143,10 +143,11 @@ export function I18nProvider({ children, configClient = defaultConfigClient, ini
 
   const setLocale = useCallback(
     async (next: Locale) => {
+      const normalized = normalizeLocale(next)
       const previousLocale = localeRef.current
 
       setSaveError(null)
-      setLocaleState(next)
+      setLocaleState(normalized)
 
       if (!configClient) {
         return
@@ -156,7 +157,7 @@ export function I18nProvider({ children, configClient = defaultConfigClient, ini
 
       try {
         const latestConfig = await configClient.getConfig()
-        const result = await configClient.saveConfig(withConfigDisplayLanguage(latestConfig, next))
+        const result = await configClient.saveConfig(withConfigDisplayLanguage(latestConfig, normalized))
 
         if (!result.ok) {
           throw new Error('Failed to save language')
@@ -183,7 +184,7 @@ export function I18nProvider({ children, configClient = defaultConfigClient, ini
       locale,
       saveError,
       setLocale,
-      t: TRANSLATIONS[locale]
+      t: TRANSLATIONS[locale] ?? TRANSLATIONS[normalizeLocale(locale)] ?? TRANSLATIONS[DEFAULT_LOCALE]
     }),
     [configLoadError, isLoadingConfig, isSavingLocale, locale, saveError, setLocale]
   )

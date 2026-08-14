@@ -1,26 +1,26 @@
 import { defineLocale } from './define-locale'
 import type { Translations } from './types'
 
-export const zh: Translations = defineLocale({
+export const il: Translations = defineLocale({
   "common": {
-    "apply": "应用",
-    "back": "返回",
-    "save": "保存",
-    "saving": "保存…",
-    "cancel": "取消",
-    "clear": "清除搜索",
-    "close": "关闭",
+    "apply": "החל",
+    "back": "חזרה",
+    "save": "שמור",
+    "saving": "שמור…",
+    "cancel": "ביטול",
+    "clear": "נקה",
+    "close": "סגור",
     "copy": "Copy",
     "copied": "Copied",
     "delete": "Delete",
     "done": "Done",
     "error": "Error",
-    "free": "可用",
+    "free": "פנוי",
     "loading": "Loading…",
     "refresh": "Refresh",
     "retry": "Retry",
     "run": "Run",
-    "send": "发送",
+    "send": "שלח",
     "on": "On",
     "off": "Off"
   },
@@ -28,7 +28,7 @@ export const zh: Translations = defineLocale({
     "revealFinder": "Finder",
     "revealExplorer": "Explorer",
     "revealFileManager": "Folder",
-    "revealInSidebar": "产物",
+    "revealInSidebar": "ארטיפקטים",
     "copyPath": "Copy Path",
     "copyRelativePath": "Copy Relative Path",
     "rename": "Rename…",
@@ -41,8 +41,8 @@ export const zh: Translations = defineLocale({
   "titlebar": {
     "hideSidebar": "Sidebar",
     "showSidebar": "Sidebar",
-    "search": "搜索会话",
-    "searchTitle": "搜索会话…",
+    "search": "חיפוש הפעלות",
+    "searchTitle": "חיפוש הפעלות…",
     "swapSidebarSides": "Swap sidebar",
     "hideRightSidebar": "Right sidebar",
     "showRightSidebar": "Right sidebar",
@@ -62,94 +62,94 @@ export const zh: Translations = defineLocale({
   },
   "sidebar": {
     "nav": {
-      "new-session": "新建会话",
-      "skills": "功能",
-      "messaging": "消息",
-      "artifacts": "产物"
+      "new-session": "הפעלה חדשה",
+      "skills": "כישורים",
+      "messaging": "הודעות",
+      "artifacts": "ארטיפקטים"
     },
-    "searchAria": "搜索会话",
-    "searchPlaceholder": "搜索会话…",
-    "clearSearch": "清除搜索",
-    "pinned": "已置顶",
-    "sessions": "会话",
-    "cronJobs": "定时任务",
-    "shiftClickHint": "Shift-点击以置顶",
-    "noWorkspace": "无工作区",
-    "projectEmpty": "暂无会话",
-    "noSessions": "暂无会话",
+    "searchAria": "חיפוש הפעלות",
+    "searchPlaceholder": "חיפוש הפעלות…",
+    "clearSearch": "נקה חיפוש",
+    "pinned": "נעוץ",
+    "sessions": "הפעלות",
+    "cronJobs": "משימות Cron",
+    "shiftClickHint": "Shift-לחיצה כדי לנעוץ",
+    "noWorkspace": "אין סביבת עבודה",
+    "projectEmpty": "אין עדיין הפעלות",
+    "noSessions": "אין עדיין הפעלות",
     "dateDivider": {
-      "today": "今天",
-      "yesterday": "昨天",
-      "thisWeek": "本周",
-      "lastWeek": "上周",
-      "thisMonth": "本月"
+      "today": "היום",
+      "yesterday": "אתמול",
+      "thisWeek": "השבוע",
+      "lastWeek": "שבוע שעבר",
+      "thisMonth": "החודש"
     },
     "row": {
-      "openInSplit": "在分屏中打开"
+      "openInSplit": "פתח בתצוגה מפוצלת"
     }
   },
   "composer": {
-    "message": "消息",
-    "placeholderStarting": "正在启动 Hermes…",
-    "placeholderReconnecting": "正在重新连接 Hermes…",
-    "placeholderFollowUp": "发送后续消息",
+    "message": "הודעה",
+    "placeholderStarting": "Hermes מתחיל…",
+    "placeholderReconnecting": "מתחבר מחדש ל-Hermes…",
+    "placeholderFollowUp": "שלח הודעת המשך",
     "newSessionPlaceholders": [
-      "我们要做什么？",
-      "给 Hermes 分配一个任务",
-      "您在想什么？",
-      "描述您的需求",
-      "我们要处理什么？",
-      "随心提问",
-      "从设定目标开始"
+      "מה אנחנו בונים?",
+      "תן משימה ל-Hermes",
+      "על מה אתה חושב?",
+      "תאר מה אתה צריך",
+      "במה נטפל?",
+      "שאל כל דבר",
+      "התחל עם מטרה"
     ],
     "followUpPlaceholders": [
-      "发送追问",
-      "补充更多背景信息",
-      "进一步细化请求",
-      "接下来做什么？",
-      "继续进行",
-      "深入探讨",
-      "调整或继续"
+      "שלח הודעת המשך",
+      "הוסף עוד הקשר",
+      "דייק את הבקשה",
+      "מה הלאה?",
+      "המשך כך",
+      "העמק עוד",
+      "התאם או המשך"
     ],
-    "startVoice": "开启语音对话",
-    "queueMessage": "加入消息队列",
-    "steer": "引导执行",
-    "stop": "停止",
-    "send": "发送",
-    "speaking": "正在讲话",
-    "transcribing": "正在转录",
-    "thinking": "正在思考"
+    "startVoice": "התחל שיחה קולית",
+    "queueMessage": "הוסף הודעה לתור",
+    "steer": "כוון ביצוע",
+    "stop": "עצור",
+    "send": "שלח",
+    "speaking": "מדבר",
+    "transcribing": "מתמלל",
+    "thinking": "חושב"
   },
   "skills": {
-    "tabSkills": "功能",
+    "tabSkills": "כישורים",
     "tabToolsets": "Tools",
     "tabMcp": "MCP",
     "tabHub": "Hub",
     "all": "All",
-    "searchSkills": "功能…",
+    "searchSkills": "כישורים…",
     "searchToolsets": "Tools…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…"
   },
   "artifacts": {
-    "search": "产物…",
+    "search": "ארטיפקטים…",
     "refresh": "Refresh",
     "refreshing": "Refreshing…",
     "tabAll": "All",
     "tabImages": "Images",
     "tabFiles": "Files",
     "tabLinks": "Links",
-    "noArtifactsTitle": "产物 -"
+    "noArtifactsTitle": "ארטיפקטים -"
   },
   "commandCenter": {
     "paletteTitle": "Command palette",
-    "searchPlaceholder": "搜索会话…",
+    "searchPlaceholder": "חיפוש הפעלות…",
     "branches": "Branches",
     "projects": "Projects",
     "openFolder": "Open folder…"
   },
   "settings": {
-    "closeSettings": "关闭",
+    "closeSettings": "סגור",
     "exportConfig": "Export",
     "importConfig": "Import",
     "resetToDefaults": "Reset",

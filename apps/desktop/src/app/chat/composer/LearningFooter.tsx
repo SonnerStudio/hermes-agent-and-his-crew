@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import { getLang, type Lang, t } from './i18n'
+import { getLang, type Lang, localizeModule, localizeSpecialist, localizeTrend, t } from './i18n'
 
 // Live learning-score footer for the crew modules + every Sub-Agent. Shows a
 // 0-100 self-improvement score per module/agent, computed by the Secretary's
@@ -43,13 +43,6 @@ interface SecretaryLearning {
   }
 }
 
-// Fixed module labels (crew roles). Sub-Agent names come from the data.
-const MODULE_LABELS: Record<string, string> = {
-  subagent: 'Sub-Agenten',
-  planner: 'Planer',
-  secretary: 'Sekretärin',
-}
-
 const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)))
 
 function ScoreBar({ name, score, decisions, trend, lang }: {
@@ -61,20 +54,27 @@ function ScoreBar({ name, score, decisions, trend, lang }: {
 }) {
   const pct = clampPct(score)
   const tone = pct >= 70 ? 'bg-green-500' : pct >= 40 ? 'bg-sky-500' : 'bg-amber-500'
-  const trendGlyph = trend === 'steigend' ? '▲' : trend === 'fallend' ? '▼' : '▬'
+  const trendGlyph = /steig|ris|styg|haus|aument|cresc|stijg|rosn|alta|раст|yüks|rost|rast|növek|creșt|nous|stig|ανοδ|상승|เพิ่ม|tăng|зрост|עלייה|बढ़|上升|上昇|ارتفاع/.test(trend)
+    ? '▲'
+    : /fall|dal|baiss|desc|calo|spad|qued|сниж|düş|kles|csökk|scăd|lask|fald|πτωτ|하락|ลด|giảm|спад|ירידה|घट|下降|انخفاض/.test(trend)
+      ? '▼'
+      : '▬'
+
+  const localizedName = localizeSpecialist(name, lang)
+  const decSuffix = t('secretary.decisions_abbr', lang) || 'dec.'
 
   return (
-    <div className="flex min-w-[8rem] flex-1 flex-col gap-0.5">
+    <div className="flex min-w-[8.5rem] flex-1 flex-col gap-1">
       <div className="flex items-center justify-between">
-        <span className="truncate text-[0.58rem] text-muted-foreground" title={name}>{name}</span>
-        <span className="ml-1 shrink-0 font-mono text-[0.58rem] tabular-nums text-muted-foreground">
+        <span className="truncate text-[0.75rem] font-semibold text-foreground" title={localizedName}>{localizedName}</span>
+        <span className="ml-1 shrink-0 font-mono text-[0.75rem] font-bold tabular-nums text-foreground/90">
           {pct} {trendGlyph}
         </span>
       </div>
-      <div className="h-1 w-full overflow-hidden rounded-full bg-muted/40">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
         <div className={cn('h-full rounded-full transition-[width] duration-500', tone)} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-[0.5rem] text-muted-foreground/70">{decisions} Entsch.</span>
+      <span className="text-[0.65rem] font-medium text-muted-foreground">{decisions} {decSuffix}</span>
     </div>
   )
 }
@@ -122,15 +122,43 @@ export const LearningFooter = () => {
     }
   }, [])
 
+  // Build the ordered bar list: Hermes Agent → Planer → Sekretärin, with the
+  // specialists packed into at most two rows UNDER that line (never one row
+  // per specialist — the crew would push the composer off-screen).
   const modules = scores ? Object.keys(scores).filter(k => ['subagent', 'planner', 'secretary'].includes(k)) : []
   const agentList = scores?.agents ? Object.entries(scores.agents) : []
-  const specialistLines = scores?.agent_lines ?? []
+  const agentLines = scores?.agent_lines ?? []
 
-  // Build the data groups:
-  //   A. Hermes Agent (core, own area)
-  //   B. Sub-Agenten (each its own bar, vertically stacked)
-  //   C. Sekretärin (own area)
-  // Rendered as THREE stacked sections (never all side-by-side).
+  // Resolve specialists into exactly 2 compact rows
+  const resolvedLines: AgentScore[][] = (() => {
+    if (agentLines && agentLines.length > 0) {
+      return agentLines
+    }
+
+    if (agentList.length > 0) {
+      const all: AgentScore[] = agentList.map(([id, a]) => ({
+        id,
+        name: a.name ?? id,
+        score: a.score,
+        decisions: a.decisions,
+        trend: a.trend,
+      }))
+
+      if (all.length <= 4) {
+        return [all]
+      }
+
+      const mid = Math.ceil(all.length / 2)
+
+      return [all.slice(0, mid), all.slice(mid)]
+    }
+
+    return []
+  })()
+
+  if (!scores || (modules.length === 0 && agentList.length === 0 && resolvedLines.length === 0)) {
+    return null
+  }
 
   const hermesScore = scores ? clampPct(
     ((scores.subagent?.score ?? 0) +
@@ -146,88 +174,61 @@ export const LearningFooter = () => {
       agentList.reduce((s, [, a]) => s + (a.decisions ?? 0), 0),
   ) : 0
 
-  if (!scores || (modules.length === 0 && agentList.length === 0 && specialistLines.length === 0)) {
-    return null
-  }
-
   return (
     <div
       aria-label="Live learning scores"
       className={cn(
-        'flex flex-col gap-1.5 rounded-lg border border-sky-500/40 px-3 py-1.5',
+        'flex w-full flex-col gap-1.5 rounded-lg border border-sky-500/40 px-3 py-1.5',
         'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]',
       )}
       role="status"
     >
-      {/* ── A. Hermes Agent (own area) ── */}
-      <div className="flex flex-col gap-0.5">
-        <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
+      {/* ── Top Row: Crew (Hermes Agent, Planer, Sekretärin) ── */}
+      <div className="flex items-stretch gap-3">
+        <span className="flex shrink-0 items-center text-[0.72rem] font-bold uppercase tracking-wider text-sky-400">
           {t('secretary.crew', lang)}
         </span>
         <ScoreBar
           decisions={hermesDecisions}
           key="hermes-agent"
           lang={lang}
-          name="Hermes Agent"
+          name={localizeSpecialist('Hermes Agent', lang)}
           score={hermesScore}
-          trend="steigend"
+          trend={localizeTrend('steigend', lang)}
         />
+        {(['planner', 'secretary'] as const).map(k => {
+          const m = scores[k]
+
+          if (!m || m.decisions === 0) {return null}
+
+          return (
+            <ScoreBar
+              decisions={m.decisions}
+              key={k}
+              lang={lang}
+              name={localizeModule(k, lang)}
+              score={m.score}
+              trend={localizeTrend(m.trend, lang)}
+            />
+          )
+        })}
       </div>
 
-      {/* ── B. Sub-Agenten (JEDER einzeln mit Spezialisierung, vertikal gestapelt) ── */}
-      {agentList.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
-            {t('secretary.subagents', lang)}
-          </span>
-          {agentList.map(([id, a]) => (
-            <ScoreBar
-              decisions={a.decisions}
-              key={`agent-${id}`}
-              lang={lang}
-              name={a.name ?? id}
-              score={a.score}
-              trend={a.trend}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Specialist summary lines (fallback if backend sends packed lines) */}
-      {specialistLines.length > 0 && agentList.length === 0 && specialistLines.map((line, i) => (
-        <div className="flex flex-col gap-1" key={`spec-line-${i}`}>
-          <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
-            {t('secretary.subagents', lang)}
-          </span>
+      {/* ── Specialists: 2 compact rows side-by-side beneath the crew line ── */}
+      {resolvedLines.map((line, i) => (
+        <div className="flex items-stretch gap-3 pl-2" key={`agent-line-${i}`}>
           {line.map(a => (
             <ScoreBar
               decisions={a.decisions}
-              key={`spec-${a.id}`}
+              key={`agent-${a.id}`}
               lang={lang}
               name={a.name}
               score={a.score}
-              trend={a.trend}
+              trend={localizeTrend(a.trend, lang)}
             />
           ))}
         </div>
       ))}
-
-      {/* ── C. Sekretärin (own area) ── */}
-      {scores.secretary && scores.secretary.decisions > 0 && (
-        <div className="flex flex-col gap-0.5">
-          <span className="text-[0.55rem] font-medium uppercase tracking-wide text-muted-foreground">
-            {t('secretary.title', lang)}
-          </span>
-          <ScoreBar
-            decisions={scores.secretary.decisions}
-            key="secretary"
-            lang={lang}
-            name={MODULE_LABELS.secretary}
-            score={scores.secretary.score}
-            trend={scores.secretary.trend}
-          />
-        </div>
-      )}
     </div>
   )
 }
