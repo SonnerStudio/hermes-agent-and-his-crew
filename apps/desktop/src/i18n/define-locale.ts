@@ -43,6 +43,7 @@ export function defineLocale(overrides: TranslationOverrides): Translations {
     if (!cached) {
       cached = mergeTranslations<Translations>(en, overrides)
     }
+
     return cached
   }
 
@@ -50,6 +51,7 @@ export function defineLocale(overrides: TranslationOverrides): Translations {
     get(_target, prop, receiver) {
       const target = getTarget()
       const val = Reflect.get(target, prop, receiver)
+
       return val
     },
     has(_target, prop) {

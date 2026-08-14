@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { getLang, type Lang, t as tComposer } from '@/app/chat/composer/i18n'
 import { useI18n } from '@/i18n'
-import { getLang, t as tComposer, type Lang } from '@/app/chat/composer/i18n'
 
 const HEALTH_URL = 'http://127.0.0.1:1240/health'
 
@@ -13,6 +13,7 @@ export function SystemRamStatus() {
   useEffect(() => {
     const onLang = (e: Event) => setLangState((e as CustomEvent<Lang>).detail)
     window.addEventListener('sonnerstudio:lang', onLang as EventListener)
+
     return () => window.removeEventListener('sonnerstudio:lang', onLang as EventListener)
   }, [])
 

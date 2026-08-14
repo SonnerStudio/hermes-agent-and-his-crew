@@ -1,144 +1,145 @@
-<ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
-  <ᛁᛗᚷ ᛋᚱᚲ="ᚨᛋᛋᛖᛏᛋ/ᛒᚨᚾᚾᛖᚱ.ᛈᚾᚷ" ᚨᛚᛏ="ᛋᛟᚾᚾᛖᚱᛋᛏᚢᛞᛁᛟ — ᚺᛖᚱᛗᛖᛋ ᚨᚷᛖᚾᛏ ᚨᚾᛞ ᚺᛁᛋ ᚲᚱᛖᚹ" ᚹᛁᛞᛏᚺ="100%">
-</ᛈ>
+<p align="center">
+  <img src="assets/banner.png" alt="SonnerStudio — Hermes Agent and his Crew" width="100%">
+</p>
 
-# ᚺᛖᚱᛗᛖᛋ ᚨᚷᛖᚾᛏ ᚨᚾᛞ ᚺᛁᛋ ᚲᚱᛖᚹ (ᚹᛁᛏᚺ ᛋᚢᛒ-ᚨᚷᛖᚾᛏᛋ) ☤
+# Hermes Agent and his Crew (with Sub-Agents) ☤
 
-<ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
-  <ᚨ ᚺᚱᛖᚠ="https://www.sonnerstudio.net">SonnerStudio</a> | <ᚨ ᚺᚱᛖᚠ="https://hermes-agent.nousresearch.com/">Hermes ᚨᚷᛖᚾᛏ (ᚢᛈᛋᛏᚱᛖᚨᛗ)</ᚨ>
+<p align="center">
+  <a href="https://www.sonnerstudio.net">SonnerStudio</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Agent (Upstream)</a>
 * **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
 * **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
 * **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
 
-</ᛈ>
-<ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
-  <ᚨ ᚺᚱᛖᚠ="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img ᛋᚱᚲ="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" ᚨᛚᛏ="ᛚᛁᚲᛖᚾᛋᛖ: ᛗᛁᛏ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="https://github.com/NousResearch/hermes-agent"><img ᛋᚱᚲ="https://img.shields.io/badge/Upstream-NousResearch/hermes--agent-blueviolet?style=for-the-badge" ᚨᛚᛏ="ᚢᛈᛋᛏᚱᛖᚨᛗ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="https://www.sonnerstudio.net"><img ᛋᚱᚲ="https://img.shields.io/badge/Built%20by-SonnerStudio-orange?style=for-the-badge" ᚨᛚᛏ="ᛒᚢᛁᛚᛏ ᛒᛁ ᛋᛟᚾᚾᛖᚱᛋᛏᚢᛞᛁᛟ"></ᚨ>
-</ᛈ>
+</p>
+<p align="center">
+  <a href="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/NousResearch/hermes-agent"><img src="https://img.shields.io/badge/Upstream-NousResearch/hermes--agent-blueviolet?style=for-the-badge" alt="Upstream"></a>
+  <a href="https://www.sonnerstudio.net"><img src="https://img.shields.io/badge/Built%20by-SonnerStudio-orange?style=for-the-badge" alt="Built by SonnerStudio"></a>
+</p>
 
-<ᛈ ᚨᛚᛁᚷᚾ="ᚲᛖᚾᛏᛖᚱ">
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛞᛖ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Deutsch-red?style=for-the-badge" ᚨᛚᛏ="ᛞᛖᚢᛏᛋᚲᚺ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛖᚾ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-English-lightgrey?style=for-the-badge" ᚨᛚᛏ="ᛖᚾᚷᛚᛁᛋᚺ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚠᚱ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Fran%C3%A7ais-blue?style=for-the-badge" ᚨᛚᛏ="ᚠᚱᚨᚾçᚨᛁᛋ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛖᛋ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Espa%C3%B1ol-orange?style=for-the-badge" ᚨᛚᛏ="ᛖᛋᛈᚨñᛟᛚ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛁᛏ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Italiano-yellow?style=for-the-badge" ᚨᛚᛏ="ᛁᛏᚨᛚᛁᚨᚾᛟ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚾᛚ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Nederlands-green?style=for-the-badge" ᚨᛚᛏ="ᚾᛖᛞᛖᚱᛚᚨᚾᛞᛋ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛈᛚ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Polski-purple?style=for-the-badge" ᚨᛚᛏ="ᛈᛟᛚᛋᚲᛁ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛈᛏ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Portugu%C3%AAs-green?style=for-the-badge" ᚨᛚᛏ="ᛈᛟᚱᛏᚢᚷᚢêᛋ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚱᚢ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-lightgrey?style=for-the-badge" ᚨᛚᛏ="Русский"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛏᚱ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-T%C3%BCrk%C3%A7e-blue?style=for-the-badge" ᚨᛚᛏ="ᛏüᚱᚲçᛖ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛖᛚ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC-orange?style=for-the-badge" ᚨᛚᛏ="Ελληνικά"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚲᛟ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%ED%95%9C%EA%B5%AD%EC%96%B4-red?style=for-the-badge" ᚨᛚᛏ="한국어"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛃᚨ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%E6%97%A5%E6%9C%AC%E8%AA%9E-blue?style=for-the-badge" ᚨᛚᛏ="日本語"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛋᚺ-ᚲᚾ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%E4%B8%AD%E6%96%87-red?style=for-the-badge" ᚨᛚᛏ="中文"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛏᚹ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-blue?style=for-the-badge" ᚨᛚᛏ="繁體中文"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛏᚺ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%E0%B9%84%E0%B8%97%E0%B8%A2-green?style=for-the-badge" ᚨᛚᛏ="ไทย"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚢᚾ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Ti%E1%BA%BFng%20Vi%E1%BB%87t-red?style=for-the-badge" ᚨᛚᛏ="ᛏᛁếᚾᚷ ᚢᛁệᛏ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚲᛋ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%C4%8Ce%C5%A1tina-blue?style=for-the-badge" ᚨᛚᛏ="Čᛖšᛏᛁᚾᚨ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛋᚲ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Sloven%C4%8Dina-purple?style=for-the-badge" ᚨᛚᛏ="ᛋᛚᛟᚢᛖᚾčᛁᚾᚨ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚺᚢ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Magyar-orange?style=for-the-badge" ᚨᛚᛏ="ᛗᚨᚷᛁᚨᚱ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚱᛟ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Rom%C3%A2n%C4%83-blue?style=for-the-badge" ᚨᛚᛏ="ᚱᛟᛗâᚾă"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚠᛁ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Suomi-green?style=for-the-badge" ᚨᛚᛏ="ᛋᚢᛟᛗᛁ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛞᚲ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Dansk-red?style=for-the-badge" ᚨᛚᛏ="ᛞᚨᚾᛋᚲ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚾᛟ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Norsk-blue?style=for-the-badge" ᚨᛚᛏ="ᚾᛟᚱᛋᚲ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛋᛖ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-Svenska-yellow?style=for-the-badge" ᚨᛚᛏ="ᛋᚢᛖᚾᛋᚲᚨ"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛁᛚ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%D7%A2%D7%91%D7%A8%D7%99%D7%AA-blue?style=for-the-badge" ᚨᛚᛏ="עברית"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛁᚾ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80-orange?style=for-the-badge" ᚨᛚᛏ="हिन्दी"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛋᚨ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-green?style=for-the-badge" ᚨᛚᛏ="العربية"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚢᚨ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0-yellow?style=for-the-badge" ᚨᛚᛏ="Українська"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚨᚢ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-English%20%28AU%29-lightgrey?style=for-the-badge" ᚨᛚᛏ="ᛖᚾᚷᛚᛁᛋᚺ (ᚨᚢ)"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚲᚨ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-English%20%28CA%29-lightgrey?style=for-the-badge" ᚨᛚᛏ="ᛖᚾᚷᛚᛁᛋᚺ (ᚲᚨ)"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚷᛒ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-English%20%28UK%29-lightgrey?style=for-the-badge" ᚨᛚᛏ="ᛖᚾᚷᛚᛁᛋᚺ (ᚢᚲ)"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚢᛋ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-English%20%28US%29-lightgrey?style=for-the-badge" ᚨᛚᛏ="ᛖᚾᚷᛚᛁᛋᚺ (ᚢᛋ)"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᛋᚨ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-English%20%28ZA%29-lightgrey?style=for-the-badge" ᚨᛚᛏ="ᛖᚾᚷᛚᛁᛋᚺ (ᛋᚨ)"></ᚨ>
-  <ᚨ ᚺᚱᛖᚠ="ᚱᛖᚨᛞᛗᛖ.ᚢᚱ-ᛈᚲ.ᛗᛞ"><ᛁᛗᚷ ᛋᚱᚲ="https://img.shields.io/badge/Lang-%D8%A7%D8%B1%D8%AF%D9%88-purple?style=for-the-badge" ᚨᛚᛏ="اردو"></ᚨ>
-</ᛈ>
+<p align="center">
+  <a href="README.de.md"><img src="https://img.shields.io/badge/Lang-Deutsch-red?style=for-the-badge" alt="Deutsch"></a>
+  <a href="README.en.md"><img src="https://img.shields.io/badge/Lang-English-lightgrey?style=for-the-badge" alt="English"></a>
+  <a href="README.fr.md"><img src="https://img.shields.io/badge/Lang-Fran%C3%A7ais-blue?style=for-the-badge" alt="Français"></a>
+  <a href="README.es.md"><img src="https://img.shields.io/badge/Lang-Espa%C3%B1ol-orange?style=for-the-badge" alt="Español"></a>
+  <a href="README.it.md"><img src="https://img.shields.io/badge/Lang-Italiano-yellow?style=for-the-badge" alt="Italiano"></a>
+  <a href="README.nl.md"><img src="https://img.shields.io/badge/Lang-Nederlands-green?style=for-the-badge" alt="Nederlands"></a>
+  <a href="README.pl.md"><img src="https://img.shields.io/badge/Lang-Polski-purple?style=for-the-badge" alt="Polski"></a>
+  <a href="README.pt.md"><img src="https://img.shields.io/badge/Lang-Portugu%C3%AAs-green?style=for-the-badge" alt="Português"></a>
+  <a href="README.ru.md"><img src="https://img.shields.io/badge/Lang-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-lightgrey?style=for-the-badge" alt="Русский"></a>
+  <a href="README.tr.md"><img src="https://img.shields.io/badge/Lang-T%C3%BCrk%C3%A7e-blue?style=for-the-badge" alt="Türkçe"></a>
+  <a href="README.el.md"><img src="https://img.shields.io/badge/Lang-%CE%95%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC-orange?style=for-the-badge" alt="Ελληνικά"></a>
+  <a href="README.ko.md"><img src="https://img.shields.io/badge/Lang-%ED%95%9C%EA%B5%AD%EC%96%B4-red?style=for-the-badge" alt="한국어"></a>
+  <a href="README.ja.md"><img src="https://img.shields.io/badge/Lang-%E6%97%A5%E6%9C%AC%E8%AA%9E-blue?style=for-the-badge" alt="日本語"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/Lang-%E4%B8%AD%E6%96%87-red?style=for-the-badge" alt="中文"></a>
+  <a href="README.tw.md"><img src="https://img.shields.io/badge/Lang-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-blue?style=for-the-badge" alt="繁體中文"></a>
+  <a href="README.th.md"><img src="https://img.shields.io/badge/Lang-%E0%B9%84%E0%B8%97%E0%B8%A2-green?style=for-the-badge" alt="ไทย"></a>
+  <a href="README.vn.md"><img src="https://img.shields.io/badge/Lang-Ti%E1%BA%BFng%20Vi%E1%BB%87t-red?style=for-the-badge" alt="Tiếng Việt"></a>
+  <a href="README.cz.md"><img src="https://img.shields.io/badge/Lang-%C4%8Ce%C5%A1tina-blue?style=for-the-badge" alt="Čeština"></a>
+  <a href="README.sk.md"><img src="https://img.shields.io/badge/Lang-Sloven%C4%8Dina-purple?style=for-the-badge" alt="Slovenčina"></a>
+  <a href="README.hu.md"><img src="https://img.shields.io/badge/Lang-Magyar-orange?style=for-the-badge" alt="Magyar"></a>
+  <a href="README.ro.md"><img src="https://img.shields.io/badge/Lang-Rom%C3%A2n%C4%83-blue?style=for-the-badge" alt="Română"></a>
+  <a href="README.fi.md"><img src="https://img.shields.io/badge/Lang-Suomi-green?style=for-the-badge" alt="Suomi"></a>
+  <a href="README.dk.md"><img src="https://img.shields.io/badge/Lang-Dansk-red?style=for-the-badge" alt="Dansk"></a>
+  <a href="README.no.md"><img src="https://img.shields.io/badge/Lang-Norsk-blue?style=for-the-badge" alt="Norsk"></a>
+  <a href="README.se.md"><img src="https://img.shields.io/badge/Lang-Svenska-yellow?style=for-the-badge" alt="Svenska"></a>
+  <a href="README.il.md"><img src="https://img.shields.io/badge/Lang-%D7%A2%D7%91%D7%A8%D7%99%D7%AA-blue?style=for-the-badge" alt="עברית"></a>
+  <a href="README.in.md"><img src="https://img.shields.io/badge/Lang-%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80-orange?style=for-the-badge" alt="हिन्दी"></a>
+  <a href="README.sa.md"><img src="https://img.shields.io/badge/Lang-%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-green?style=for-the-badge" alt="العربية"></a>
+  <a href="README.ua.md"><img src="https://img.shields.io/badge/Lang-%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0-yellow?style=for-the-badge" alt="Українська"></a>
+  <a href="README.au.md"><img src="https://img.shields.io/badge/Lang-English%20%28AU%29-lightgrey?style=for-the-badge" alt="English (AU)"></a>
+  <a href="README.ca.md"><img src="https://img.shields.io/badge/Lang-English%20%28CA%29-lightgrey?style=for-the-badge" alt="English (CA)"></a>
+  <a href="README.gb.md"><img src="https://img.shields.io/badge/Lang-English%20%28UK%29-lightgrey?style=for-the-badge" alt="English (UK)"></a>
+  <a href="README.us.md"><img src="https://img.shields.io/badge/Lang-English%20%28US%29-lightgrey?style=for-the-badge" alt="English (US)"></a>
+  <a href="README.za.md"><img src="https://img.shields.io/badge/Lang-English%20%28ZA%29-lightgrey?style=for-the-badge" alt="English (ZA)"></a>
+  <a href="README.ur-pk.md"><img src="https://img.shields.io/badge/Lang-%D8%A7%D8%B1%D8%AF%D9%88-purple?style=for-the-badge" alt="اردو"></a>
+  <a href="README.run.md"><img src="https://img.shields.io/badge/Lang-RUN-blue?style=for-the-badge" alt="RUN (Runic)"></a>
+</p>
 
-> **ᛚᚨᚾᚷᚢᚨᚷᛖᛋ:** ᛏᚺᛁᛋ ᚱᛖᚨᛞᛗᛖ ᛁᛋ ᚨᚢᚨᛁᛚᚨᛒᛚᛖ ᛁᚾ 32 ᛚᚨᚾᚷᚢᚨᚷᛖᛋ — [Deutsch](README.de.md), [English](README.en.md), [Français](README.fr.md), [Español](README.es.md), [Italiano](README.it.md), [Nederlands](README.nl.md), [Polski](README.pl.md), [Português](README.pt.md), [Русский](README.ru.md), [Türkçe](README.tr.md), [Ελληνικά](README.el.md), [한국어](README.ko.md), [日本語](README.ja.md), [中文](README.zh-CN.md), [繁體中文](README.tw.md), [ไทย](README.th.md), [Tiếng Việt](README.vn.md), [Čeština](README.cz.md), [Slovenčina](README.sk.md), [Magyar](README.hu.md), [Română](README.ro.md), [Suomi](README.fi.md), [Dansk](README.dk.md), [Norsk](README.no.md), [Svenska](README.se.md), [עברית](README.il.md), [हिन्दी](README.in.md), [العربية](README.sa.md), [Українська](README.ua.md), ᛈᛚᚢᛋ ᛖᚾᚷᛚᛁᛋᚺ ᚢᚨᚱᛁᚨᚾᛏᛋ ᚨᚢ/ᚲᚨ/ᚢᚲ/ᚢᛋ/ᛋᚨ ᚨᚾᛞ [اردو](README.ur-pk.md). ᛏᚺᛖ ᛞᛖᛋᚲᛏᛟᛈ ᚨᛈᛈ ᚺᚨᛋ ᚨ ᛒᚢᛁᛚᛏ-ᛁᚾ ᛚᚨᚾᚷᚢᚨᚷᛖ ᛈᛁᚲᚲᛖᚱ (🌐) ᚹᛁᛏᚺ ᚨᛚᛚ ᛟᚠ ᛏᚺᛖᛋᛖ.
+> **Languages:** This README is available in 32 languages — [Deutsch](README.de.md), [English](README.en.md), [Français](README.fr.md), [Español](README.es.md), [Italiano](README.it.md), [Nederlands](README.nl.md), [Polski](README.pl.md), [Português](README.pt.md), [Русский](README.ru.md), [Türkçe](README.tr.md), [Ελληνικά](README.el.md), [한국어](README.ko.md), [日本語](README.ja.md), [中文](README.zh-CN.md), [繁體中文](README.tw.md), [ไทย](README.th.md), [Tiếng Việt](README.vn.md), [Čeština](README.cz.md), [Slovenčina](README.sk.md), [Magyar](README.hu.md), [Română](README.ro.md), [Suomi](README.fi.md), [Dansk](README.dk.md), [Norsk](README.no.md), [Svenska](README.se.md), [עברית](README.il.md), [हिन्दी](README.in.md), [العربية](README.sa.md), [Українська](README.ua.md), plus English variants AU/CA/UK/US/ZA, [اردو](README.ur-pk.md), and [RUN (Runic / Elder Futhark)](README.run.md). The desktop app has a built-in language picker (🌐) with all of these.
 
-**ᚨ ᛋᛟᚾᚾᛖᚱᛋᛏᚢᛞᛁᛟ ᚠᛟᚱᚲ ᛟᚠ [Hermes Agent](https://hermes-agent.nousresearch.com/) ᛒᛁ ᚾᛟᚢᛋ ᚱᛖᛋᛖᚨᚱᚲᚺ** — ᛏᚺᛖ ᛋᛖᛚᚠ-ᛁᛗᛈᚱᛟᚢᛁᚾᚷ ᚨᛁ ᚨᚷᛖᚾᛏ, ᛖᚲᛏᛖᚾᛞᛖᛞ ᚹᛁᛏᚺ ᚨ ᚢᛟᛁᚲᛖ-ᛞᚱᛁᚢᛖᚾ **ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱᛁ** ᚨᚾᛞ ᚨ ᚢᛁᛋᚢᚨᛚ **ᚲᛟᛗᛈᛟᛋᛖᚱ-ᚲᛟᚾᛏᚱᛟᛚ-ᚺᚢᛞ** ᚠᛟᚱ ᛟᚱᚲᚺᛖᛋᛏᚱᚨᛏᛁᚾᚷ ᛋᚢᛒ-ᚨᚷᛖᚾᛏᛋ.
+**A SonnerStudio fork of [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research** — the self-improving AI agent, extended with a voice-driven **Hermes Secretary** and a visual **Composer-Control-HUD** for orchestrating sub-agents.
 
-ᛏᚺᛁᛋ ᚠᛟᚱᚲ ᚨᛞᛞᛋ:
+This fork adds:
 
-- **ᚲᛟᛗᛈᛟᛋᛖᚱ ᚲᛟᚾᛏᚱᛟᛚ ᛒᚢᛏᛏᛟᚾᛋ** — ᚠᛟᚢᚱ ᛏᛟᚷᚷᛚᛖ ᛒᚢᛏᛏᛟᚾᛋ ᛁᚾ ᛏᚺᛖ ᛞᛖᛋᚲᛏᛟᛈ ᚲᛟᛗᛈᛟᛋᛖᚱ (ᛋᚢᛒ-ᚨᚷᛖᚾᛏ ᛟᚱᚲᚺᛖᛋᛏᚱᚨᛏᛁᛟᚾ, ᚢᛟᛁᚲᛖ ᚲᛟᛗᛗᚢᚾᛁᚲᚨᛏᛁᛟᚾ, ᛟᚱᚲᚺᛖᛋᛏᚱᚨᛏᛁᛟᚾ ᛗᛟᛞᛖ, ᛞᛟᚢᛒᛚᛖ ᛗᛟᛞᛖ) ᚹᛁᛏᚺ ᛚᛁᚢᛖ ᛋᛏᚨᛏᛖ ᚲᛟᛚᛟᚱᛋ (ᚱᛖᛞ = ᛁᚾᚨᚲᛏᛁᚢᛖ, ᛁᛖᛚᛚᛟᚹ = ᛈᚱᛟᚢᛁᛋᛁᛟᚾᛁᚾᚷ, ᚷᚱᛖᛖᚾ = ᚨᚲᛏᛁᚢᛖ).
-- **ᛟᚱᚲᚺᛖᛋᛏᚱᚨᛏᛁᛟᚾ ᚺᚢᛞ** — ᚠᛟᚢᚱ ᛒᛚᚢᛖ-ᛒᛟᚱᛞᛖᚱᛖᛞ ᛚᛁᚢᛖ ᛈᚨᚾᛖᛚᛋ ᚢᚾᛞᛖᚱ ᛏᚺᛖ ᚲᛟᛗᛈᛟᛋᛖᚱ ᛁᚾᛈᚢᛏ: *ᛋᚢᛒ-ᚨᚷᛖᚾᛏ ᛏᛖᚨᛗ*, *ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱᛁ (ᚨᚢᛞᛁᛟ-ᚲᛟᛗᛗᚢᚾᛁᚲᚨᛏᛁᛟᚾ)*, *ᚲᛟᛈᛁᛖᚱᛏᛖ ᚨᚷᛖᚾᛏᛖᚾ (ᚲᛚᛟᚾᛖᛞ ᚨᚷᛖᚾᛏᛋ)*, ᚨᚾᛞ *ᚺᚨᚱᛗᛟᚾᛁᛋᛁᛖᚱᚢᚾᚷ & ᚨᚷᛖᚾᛏᛖᚾᚨᚢᛋᛚᚨᛋᛏᚢᚾᚷ*. ᛈᚨᚾᛖᛚᛋ ᛟᚾᛚᛁ ᚨᛈᛈᛖᚨᚱ ᚹᚺᛖᚾ ᚨ ᚱᛖᚨᛚ ᛏᚨᛋᚲ ᛁᛋ ᚱᚢᚾᚾᛁᚾᚷ — ᚾᛟ ᛞᛖᛗᛟ ᛈᛚᚨᚲᛖᚺᛟᛚᛞᛖᚱᛋ.
-- **ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱᛁ** — ᚨ ᚢᛟᛁᚲᛖ ᛚᚨᛁᛖᚱ ᛏᚺᚨᛏ ᛚᛖᛏᛋ ᛁᛟᚢ ᛏᚨᛚᚲ ᛏᛟ ᛏᚺᛖ ᚨᚷᛖᚾᛏ. ᚷᛖᚱᛗᚨᚾ ᛏᛏᛋ ᚢᛁᚨ **ᚲᛟᚲᛟᚱᛟ** (`df_eva`, ᚠᛖᛗᚨᛚᛖ, ᚠᛁᛚᛗᚱᛖᛁᚠ ᛋᛈᛖᛖᛞ 0.9), ᛋᛏᛏ ᚢᛁᚨ ᚹᚺᛁᛋᛈᛖᚱ, ᚨᚾᛞ ᚨ ᚺᛖᚨᛞᛚᛖᛋᛋ ᛗᛁᚲᚱᛟᛈᚺᛟᚾᛖ-ᛚᛖᚢᛖᛚ ᛗᛟᚾᛁᛏᛟᚱ (ᚾᛟ ᚢᛁᛋᛁᛒᛚᛖ ᛏᛖᚱᛗᛁᚾᚨᛚ ᛈᛟᛈᚢᛈ). ᛏᚺᛖ ᚨᚷᛖᚾᛏ ᚲᚨᚾ ᛞᛖᛚᛖᚷᚨᛏᛖ ᛋᚢᛒ-ᚨᚷᛖᚾᛏᛋ ᛏᛟ ᚲᚨᚱᚱᛁ ᛟᚢᛏ ᛋᛈᛟᚲᛖᚾ ᚱᛖᚲᚢᛖᛋᛏᛋ.
-- **ᛗᛚᚲ ᚱᚢᚾᛏᛁᛗᛖ ᛈᚱᛟᚲᛁ** — ᚨ ᛚᛟᚲᚨᛚ ᛚᚨᛋᛁ ᛈᚱᛟᚲᛁ (`:1240`) ᛏᚺᚨᛏ ᛋᛖᚱᚢᛖᛋ ᛏᚺᛖ ᚲᛟᚲᛟᚱᛟ ᛏᛏᛋ, ᚹᚺᛁᛋᛈᛖᚱ ᛋᛏᛏ, ᚨᚾᛞ ᛗᛚᚲ ᚲᚺᚨᛏ ᛗᛟᛞᛖᛚᛋ ᛟᚾᛖ ᚨᛏ ᚨ ᛏᛁᛗᛖ, ᛋᛟ ᛏᚺᛖ 16 ᚷᛒ ᛗᚨᚲ ᛗᛁᚾᛁ ᛋᛏᚨᛁᛋ ᚹᛁᛏᚺᛁᚾ ᚱᚨᛗ ᛚᛁᛗᛁᛏᛋ.
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time (like Hermes Agent itself).
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks to the agents, and as communicator provides a speech mode for programming via voice input and voice output, with film-quality audio output (Kokoro `df_eva`, speed 0.9). She is also the **communication interface** between the multi-agent system and the human user. Switching her on auto-arms her crew (Button 1); switching her off keeps a **manually** armed crew running.
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her as an orchestrated whole.
+- **Orchestration HUD** — four blue-bordered live panels under the composer input: *Sub-Agent Team*, *Hermes Secretary load* (`Hermes-Sekretärin Auslastung`), *Kopierte Agenten (Cloned Agents)*, and *Harmonisierung & Agentenauslastung*. Panels only appear when a real task is running — no demo placeholders.
+- **Hermes Secretary** — a voice layer that lets you talk to the agent. German TTS via **Kokoro** (`df_eva`, female, filmreif speed 0.9), STT via Whisper, and a headless microphone-level monitor (no visible terminal popup). The agent can delegate sub-agents to carry out spoken requests.
+- **Last learning success** — a compact line under the composer shows the Secretary's most recent successful learning outcome (which agent improved, topology, clone factor, units, latency) plus a **live MLX badge** displaying the model currently served by the local runtime on `:1240`. Values are real, polled from `/secretary-learning` — without real activity the panel stays empty.
+- **System RAM status** — a live strip (polls `/health` on `:1240`) shows total / free RAM and usage percent, so you can see the 16 GB Mac mini's headroom while models load. Hidden until the first reading arrives.
+- **Full-width composer** — the composer input now spans the full window width (`--composer-width: 100%`), giving long prompts and the live HUD panels more room.
+- **Model picker** — the dropdown groups the Nous models, **OpenRouter** and the category **MLX-Runtime native** with the MLX models available locally on the system's drives. Switching is instant and safe: only one backend ever runs (RAM protection on the 16 GB Mac mini); on rapid switching the **last** selected entry always wins and superseded loads abort cleanly.
+- **MLX Runtime Proxy** — a local lazy proxy (`:1240`) that serves the Kokoro TTS, Whisper STT, and MLX chat models one at a time, so the 16 GB Mac mini stays within RAM limits.
 
-> **ᚾᛟᛏᛖ:** ᛏᚺᛖ ᛗᛚᚲ ᚱᚢᚾᛏᛁᛗᛖ, ᚲᛟᚲᛟᚱᛟ ᚷᛖᚱᛗᚨᚾ ᛏᛏᛋ, ᚨᚾᛞ ᛏᚺᛖ ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱᛁ ᚢᛟᛁᚲᛖ ᛈᛁᛈᛖᛚᛁᚾᛖ ᚨᚱᛖ ᛏᚢᚾᛖᛞ ᚠᛟᚱ ᚨᛈᛈᛚᛖ ᛋᛁᛚᛁᚲᛟᚾ (ᛗᚨᚲᛟᛋ). ᛋᛖᛖ `plugins/hermes-sekretaerin/` ᚠᛟᚱ ᛋᛖᛏᚢᛈ.
+> **Note:** The MLX runtime, Kokoro German TTS, and the Hermes Secretary voice pipeline are tuned for Apple Silicon (macOS). See `plugins/hermes-sekretaerin/` for setup.
 
 ---
 
-- **ᚲᛟᛗᛈᛟᛋᛖᚱ ᚲᛟᚾᛏᚱᛟᛚ ᛒᚢᛏᛏᛟᚾᛋ** ⟶ ᚢᛁᛖᚱ ᛋᚲᚺᚨᛚᛏᚲᚾᛟᛈᚠᛖ ᛁᛗ ᛞᛖᛋᚲᛏᛟᛈ-ᚲᛟᛗᛈᛟᛋᛖᚱ ᛗᛁᛏ ᛖᚲᚺᛏᛋᛖᛁᛏ-ᛋᛏᚨᛏᚢᛋᚠᚨᚱᛒᛖᚾ [ᚱᛟᛏ = ᛁᚾᚨᚲᛏᛁᚢ• ᚷᛖᛚᛒ = ᛒᛖᚱᛖᛁᛏᛋᛏᛖᛚᛚᚢᚾᚷ• ᚷᚱᚢᚾ = ᚨᚲᛏᛁᚢ] •
-  1• **ᛋᚢᛒ-ᚨᚷᛖᚾᛏᛖᚾ ᚨᚲᛏᛁᚢᛁᛖᚱᛖᚾ** ⟶ ᚨᚲᛏᛁᚢᛁᛖᚱᛏ ᛞᛁᛖ ᛋᛈᛖᛋᛁᚨᛚᛁᛋᛁᛖᚱᛏᛖᚾ ᚲᛁ-ᛋᚢᛒ-ᚨᚷᛖᚾᛏᛖᚾ• ᛞᛁᛖ ᛋᛁᚲᚺ ᛖᛁᚷᛖᚾᛋᛏᛇᚾᛞᛁᚷ ᛏᛖᛁᛚᚨᚢᚠᚷᚨᛒᛖᚾ ᚢᛟᚱᚾᛖᚺᛗᛖᚾ• ᛃᛖᚹᛖᛁᛚᛋ ᛗᛁᛏ ᛖᛁᚷᛖᚾᛖᚾ ᛋᛈᛖᛋᛁᚨᛚᚠᛇᚺᛁᚷᚲᛖᛁᛏᛖᚾ• ᚢᚾᛞ ᚲᛟᚾᛏᛁᚾᚢᛁᛖᚱᛚᛁᚲᚺ ᚨᚢᛋ ᚨᚢᚠᚷᚨᛒᛖᚾ ᚢᚾᛞ ᚢᛒᛖᚱ ᛞᛁᛖ ᛋᛖᛁᛏ ᛚᛖᚱᚾᛖᚾ•
-  2• **ᛋᛖᚲᚱᛖᛏᚨᚱᛁ ⟋ ᛋᛖᚲᚱᛖᛏᛇᚱᛁᚾ** ⟶ ᛞᛁᛖ ᛗᚨᚾᚨᚷᛖᚱᛁᚾ ᛞᛖᚱ ᚨᚷᛖᚾᛏᛖᚾ• ᛈᛚᚨᚾᛏ ᚢᚾᛞ ᛏᛖᛁᛚᛏ ᚨᚢᚠᚷᚨᛒᛖᚾ ᛋᚢ ᚢᚾᛞ ᛋᛏᛖᛚᛚᛏ ᚨᛚᛋ ᚲᛟᛗᛗᚢᚾᛁᚲᚨᛏᛟᚱᛁᚾ ᛖᛁᚾᛖᚾ ᛋᛈᚱᚨᚲᚺᛗᛟᛞᚢᛋ [ᛋᛈᚱᚨᚲᚺᛖᛁᚾᚷᚨᛒᛖ⟋-ᚨᚢᛋᚷᚨᛒᛖ] ᛗᛁᛏ ᚨᚢᛞᛁᛟ ᛁᚾ ᚠᛁᛚᛗᚲᚢᚨᛚᛁᛏᛇᛏ ᛒᛖᚱᛖᛁᛏ [ᚲᛟᚲᛟᚱᛟ ᛞᚠ_ᛖᚢᚨ• ᛋᛈᛖᛖᛞ 0•9]• ᛋᛁᛖ ᛁᛋᛏ ᛋᚢᚷᛚᛖᛁᚲᚺ ᛞᛁᛖ ᚲᛟᛗᛗᚢᚾᛁᚲᚨᛏᛁᛟᚾᛋᛋᚲᚺᚾᛁᛏᛏᛋᛏᛖᛚᛚᛖ ᛋᚹᛁᛋᚲᚺᛖᚾ ᛞᛖᛗ ᛗᚢᛚᛏᛁ⟶ᚨᚷᛖᚾᛏᛖᚾ⟶ᛋᛁᛋᛏᛖᛗ ᚢᚾᛞ ᛞᛖᛗ ᛗᛖᚾᛋᚲᚺᛚᛁᚲᚺᛖᚾ ᚨᚾᚹᛖᚾᛞᛖᚱ• ᚹᛁᚱᛞ ᛋᛁᛖ ᛖᛁᚾᚷᛖᛋᚲᚺᚨᛚᛏᛖᛏ• ᚨᚲᛏᛁᚢᛁᛖᚱᛏ ᛋᛁᛖ ᛁᚺᚱᛖ ᚲᚱᛖᚹ ᛗᛁᛏ• ᛋᚲᚺᚨᛚᛏᛖᛏ ᛗᚨᚾ ᛋᛁᛖ ᚨᚢᛋ• ᛒᛚᛖᛁᛒᛏ ᛖᛁᚾᛖ ᛗᚨᚾᚢᛖᛚᛚ ᚨᚲᛏᛁᚢᛁᛖᚱᛏᛖ ᚲᚱᛖᚹ ᛖᚱᚺᚨᛚᛏᛖᚾ•
-  3• **ᛏᛖᛗᛈᛟᚱᛇᚱᛖᛋ ᚲᛚᛟᚾᛖᚾ** ⟶ ᛚᛇᛋᛋᛏ ᚨᚷᛖᚾᛏᛖᚾ ᛋᛁᚲᚺ ᚠᚢᚱ ᛞᛁᛖ ᛞᚨᚢᛖᚱ ᛖᛁᚾᛖᚱ ᚨᚢᚠᚷᚨᛒᛖ ᛏᛖᛗᛈᛟᚱᛇᚱ ᚢᛖᚱᚢᛁᛖᛚᚠᛇᛚᛏᛁᚷᛖᚾ• ᚢᛗ ᚷᛚᛖᛁᚲᚺᚨᚱᛏᛁᚷᛖ ᚨᚢᚠᚷᚨᛒᛖᚾ ᚷᛚᛖᛁᚲᚺᛋᛖᛁᛏᛁᚷ ᛋᚢ ᛒᛖᚨᚱᛒᛖᛁᛏᛖᚾ•
-  4• **ᚺᚨᚱᛗᛟᚾᛁᛋᛁᛖᚱᚢᚾᚷ & ᛟᚱᚲᚺᛖᛋᛏᚱᛁᛖᚱᚢᚾᚷ** ⟶ ᚺᚨᚱᛗᛟᚾᛁᛋᛁᛖᚱᛏ⟋ᛋᛁᚾᚲᚺᚱᛟᚾᛁᛋᛁᛖᚱᛏ ᛖᚾᛏᚹᛖᛞᛖᚱ ᛞᛁᛖ ᚨᚷᛖᚾᛏᛖᚾ ᛁᚾᚾᛖᚱᚺᚨᛚᛒ ᛞᛖᚱ ᚨᚢᚠᚷᚨᛒᛖᚾ [ᛟᚺᚾᛖ ᛞᛁᛖ ᛋᛖᚲᚱᛖᛏᛇᚱᛁᚾ]• ᛟᛞᛖᚱ• ᚹᛖᚾᚾ ᛞᛁᛖ ᛋᛖᚲᚱᛖᛏᛇᚱᛁᚾ ᚨᚾ ᛁᛋᛏ• ᚹᛖᚱᛞᛖᚾ ᛞᛁᛖ ᚨᚷᛖᚾᛏᛖᚾ ᚢᛟᚾ ᛁᚺᚱ ᚷᛖᛋᛏᛖᚢᛖᚱᛏ ᚢᚾᛞ ᛗᛁᛏ ᛁᚺᚱ ᚷᛖᛗᛖᛁᚾᛋᚨᛗ ᚺᚨᚱᛗᛟᚾᛁᛋᛁᛖᚱᛏ⟋ᛋᛁᚾᚲᚺᚱᛟᚾᛁᛋᛁᛖᚱᛏ•
-- **ᛚᛖᚱᚾᛖᚾᛞᛖ ᚲᚱᛖᚹ** ⟶ ᛚᛖᚱᚾᛖᚾᛞᛖ ᚲᚱᛖᚹ• ᛖᛁᚾᛖ ᛚᛖᛁᛋᛏᛖ ᚢᚾᛏᛖᚱ ᛞᛖᛗ ᚲᛟᛗᛈᛟᛋᛖᚱ ᛋᛖᛁᚷᛏ ᛞᛖᚾ ᛚᛖᚱᚾᚠᛟᚱᛏᛋᚲᚺᚱᛁᛏᛏ• ᛟᛒᛖᚱᛖ ᛋᛖᛁᛚᛖ ᚺᛖᚱᛗᛖᛋ ᚨᚷᛖᚾᛏ• ᛈᛚᚨᚾᛖᚱ ᚢᚾᛞ ᛋᛖᚲᚱᛖᛏᛇᚱᛁᚾ• ᛞᚨᚱᚢᚾᛏᛖᚱ ᛞᛁᛖ ᛋᛈᛖᛋᛁᚨᛚᛁᛋᛏᛖᚾ ᛁᚾ ᚺᛟᛖᚲᚺᛋᛏᛖᚾᛋ ᛋᚹᛖᛁ ᚲᛟᛗᛈᚨᚲᛏᛖᚾ ᛋᛖᛁᛚᛖᚾ• ᚾᛁᛖ ᛖᛁᚾᛖ ᛋᛖᛁᛚᛖ ᛈᚱᛟ ᛋᛈᛖᛋᛁᚨᛚᛁᛋᛏ• ᚾᚢᚱ ᛖᚲᚺᛏᛖ ᚹᛖᚱᛏᛖ ᚹᛖᚱᛞᛖᚾ ᚨᚾᚷᛖᛋᛖᛁᚷᛏ•
-- **ᛗᛟᛞᛖᛚᛚᚨᚢᛋᚹᚨᚺᛚ** ⟶ ᛗᛟᛞᛖᛚᛚᚨᚢᛋᚹᚨᚺᛚ• ᛞᚨᛋ ᛞᚱᛟᛈᛞᛟᚹᚾ ᛒᚢᛖᚾᛞᛖᛚᛏ ᛞᛁᛖ ᚾᛟᚢᛋ⟶ᛗᛟᛞᛖᛚᛚᛖ• ᛟᛈᛖᚾᚱᛟᚢᛏᛖᚱ ᚢᚾᛞ ᛞᛁᛖ ᚲᚨᛏᛖᚷᛟᚱᛁᛖ ᛗᛚᚲᛋ⟶ᚱᚢᚾᛏᛁᛗᛖ ᚾᚨᛏᛁᚢ ᛗᛁᛏ ᛞᛖᚾ ᛚᛟᚲᚨᛚ ᚢᛟᚱᚺᚨᚾᛞᛖᚾᛖᚾ ᛗᛚᚲᛋ⟶ᛗᛟᛞᛖᛚᛚᛖᚾ• ᛞᛖᚱ ᚹᛖᚲᚺᛋᛖᛚ ᛁᛋᛏ ᛋᛟᚠᛟᚱᛏ ᚢᚾᛞ ᛋᛁᚲᚺᛖᚱ• ᛖᛋ ᛚᚨᛖᚢᚠᛏ ᛁᛗᛗᛖᚱ ᚾᚢᚱ ᛖᛁᚾ ᛒᚨᚲᚲᛖᚾᛞ• ᚢᚾᛞ ᛒᛖᛁ ᛋᚲᚺᚾᛖᛚᛚᛖᛗ ᚢᛗᛋᚲᚺᚨᛚᛏᛖᚾ ᚷᛖᚹᛁᚾᚾᛏ ᛋᛏᛖᛏᛋ ᛞᛖᚱ ᛋᚢᛚᛖᛏᛋᛏ ᚷᛖᚹᚨᛖᚺᛚᛏᛖ ᛖᛁᚾᛏᚱᚨᚷ•
+## Quick Install
 
-## ᚲᚢᛁᚲᚲ ᛁᚾᛋᛏᚨᛚᛚ
-
-### ᛚᛁᚾᚢᚲ, ᛗᚨᚲᛟᛋ, ᚹᛋᛚ2, ᛏᛖᚱᛗᚢᚲ
+### Linux, macOS, WSL2, Termux
 
 ```bash
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 ```
 
-### ᚹᛁᚾᛞᛟᚹᛋ (ᚾᚨᛏᛁᚢᛖ, ᛈᛟᚹᛖᚱᛋᚺᛖᛚᛚ)
+### Windows (native, PowerShell)
 
-> **ᚺᛖᚨᛞᛋ ᚢᛈ:** ᚾᚨᛏᛁᚢᛖ ᚹᛁᚾᛞᛟᚹᛋ ᚱᚢᚾᛋ ᚺᛖᚱᛗᛖᛋ ᚹᛁᛏᚺᛟᚢᛏ ᚹᛋᛚ — ᚲᛚᛁ, ᚷᚨᛏᛖᚹᚨᛁ, ᛏᚢᛁ, ᚨᚾᛞ ᛏᛟᛟᛚᛋ ᚨᛚᛚ ᚹᛟᚱᚲ ᚾᚨᛏᛁᚢᛖᛚᛁ. ᛁᚠ ᛁᛟᚢ'ᛞ ᚱᚨᛏᚺᛖᚱ ᚢᛋᛖ ᚹᛋᛚ2, ᛏᚺᛖ ᛚᛁᚾᚢᚲ/ᛗᚨᚲᛟᛋ ᛟᚾᛖ-ᛚᛁᚾᛖᚱ ᚨᛒᛟᚢᛖ ᚹᛟᚱᚲᛋ ᛏᚺᛖᚱᛖ ᛏᛟᛟ. ᚠᛟᚢᚾᛞ ᚨ ᛒᚢᚷ? ᛈᛚᛖᚨᛋᛖ [file issues](https://github.com/NousResearch/hermes-agent/issues).
+> **Heads up:** Native Windows runs Hermes without WSL — CLI, gateway, TUI, and tools all work natively. If you'd rather use WSL2, the Linux/macOS one-liner above works there too. Found a bug? Please [file issues](https://github.com/NousResearch/hermes-agent/issues).
 
-ᚱᚢᚾ ᛏᚺᛁᛋ ᛁᚾ ᛈᛟᚹᛖᚱᛋᚺᛖᛚᛚ:
+Run this in PowerShell:
 
 ```powershell
 iex (irm https://hermes-agent.nousresearch.com/install.ps1)
 ```
 
-ᛏᚺᛖ ᛁᚾᛋᛏᚨᛚᛚᛖᚱ ᚺᚨᚾᛞᛚᛖᛋ ᛖᚢᛖᚱᛁᛏᚺᛁᚾᚷ: ᚢᚢ, ᛈᛁᛏᚺᛟᚾ 3.11, ᚾᛟᛞᛖ.ᛃᛋ, ᚱᛁᛈᚷᚱᛖᛈ, ᚠᚠᛗᛈᛖᚷ, **ᚨᚾᛞ ᚨ ᛈᛟᚱᛏᚨᛒᛚᛖ ᚷᛁᛏ ᛒᚨᛋᚺ** (ᛗᛁᚾᚷᛁᛏ, ᚢᚾᛈᚨᚲᚲᛖᛞ ᛏᛟ `%LOCALAPPDATA%\hermes\git` — ᚾᛟ ᚨᛞᛗᛁᚾ ᚱᛖᚲᚢᛁᚱᛖᛞ, ᚲᛟᛗᛈᛚᛖᛏᛖᛚᛁ ᛁᛋᛟᛚᚨᛏᛖᛞ ᚠᚱᛟᛗ ᚨᚾᛁ ᛋᛁᛋᛏᛖᛗ ᚷᛁᛏ ᛁᚾᛋᛏᚨᛚᛚ). ᚺᛖᚱᛗᛖᛋ ᚢᛋᛖᛋ ᛏᚺᛁᛋ ᛒᚢᚾᛞᛚᛖᛞ ᚷᛁᛏ ᛒᚨᛋᚺ ᛏᛟ ᚱᚢᚾ ᛋᚺᛖᛚᛚ ᚲᛟᛗᛗᚨᚾᛞᛋ.
+The installer handles everything: uv, Python 3.11, Node.js, ripgrep, ffmpeg, **and a portable Git Bash** (MinGit, unpacked to `%LOCALAPPDATA%\hermes\git` — no admin required, completely isolated from any system Git install). Hermes uses this bundled Git Bash to run shell commands.
 
-ᛁᚠ ᛁᛟᚢ ᚨᛚᚱᛖᚨᛞᛁ ᚺᚨᚢᛖ ᚷᛁᛏ ᛁᚾᛋᛏᚨᛚᛚᛖᛞ, ᛏᚺᛖ ᛁᚾᛋᛏᚨᛚᛚᛖᚱ ᛞᛖᛏᛖᚲᛏᛋ ᛁᛏ ᚨᚾᛞ ᚢᛋᛖᛋ ᛏᚺᚨᛏ ᛁᚾᛋᛏᛖᚨᛞ. ᛟᛏᚺᛖᚱᚹᛁᛋᛖ ᚨ ~45ᛗᛒ ᛗᛁᚾᚷᛁᛏ ᛞᛟᚹᚾᛚᛟᚨᛞ ᛁᛋ ᚨᛚᛚ ᛁᛟᚢ ᚾᛖᛖᛞ — ᛁᛏ ᚹᛟᚾ'ᛏ ᛏᛟᚢᚲᚺ ᛟᚱ ᛁᚾᛏᛖᚱᚠᛖᚱᛖ ᚹᛁᛏᚺ ᚨᚾᛁ ᛋᛁᛋᛏᛖᛗ ᚷᛁᛏ.
+If you already have Git installed, the installer detects it and uses that instead. Otherwise a ~45MB MinGit download is all you need — it won't touch or interfere with any system Git.
 
-> **ᚨᚾᛞᚱᛟᛁᛞ / ᛏᛖᚱᛗᚢᚲ:** ᛏᚺᛖ ᛏᛖᛋᛏᛖᛞ ᛗᚨᚾᚢᚨᛚ ᛈᚨᛏᚺ ᛁᛋ ᛞᛟᚲᚢᛗᛖᚾᛏᛖᛞ ᛁᚾ ᛏᚺᛖ [Termux guide](https://hermes-agent.nousresearch.com/docs/getting-started/termux). ᛟᚾ ᛏᛖᚱᛗᚢᚲ, ᚺᛖᚱᛗᛖᛋ ᛁᚾᛋᛏᚨᛚᛚᛋ ᚨ ᚲᚢᚱᚨᛏᛖᛞ `.[termux]` ᛖᚲᛏᚱᚨ ᛒᛖᚲᚨᚢᛋᛖ ᛏᚺᛖ ᚠᚢᛚᛚ `.[all]` ᛖᚲᛏᚱᚨ ᚲᚢᚱᚱᛖᚾᛏᛚᛁ ᛈᚢᛚᛚᛋ ᚨᚾᛞᚱᛟᛁᛞ-ᛁᚾᚲᛟᛗᛈᚨᛏᛁᛒᛚᛖ ᚢᛟᛁᚲᛖ ᛞᛖᛈᛖᚾᛞᛖᚾᚲᛁᛖᛋ.
+> **Android / Termux:** The tested manual path is documented in the [Termux guide](https://hermes-agent.nousresearch.com/docs/getting-started/termux). On Termux, Hermes installs a curated `.[termux]` extra because the full `.[all]` extra currently pulls Android-incompatible voice dependencies.
 >
-> **ᚹᛁᚾᛞᛟᚹᛋ:** ᚾᚨᛏᛁᚢᛖ ᚹᛁᚾᛞᛟᚹᛋ ᛁᛋ ᚠᚢᛚᛚᛁ ᛋᚢᛈᛈᛟᚱᛏᛖᛞ — ᛏᚺᛖ ᛈᛟᚹᛖᚱᛋᚺᛖᛚᛚ ᛟᚾᛖ-ᛚᛁᚾᛖᚱ ᚨᛒᛟᚢᛖ ᛁᚾᛋᛏᚨᛚᛚᛋ ᛖᚢᛖᚱᛁᛏᚺᛁᚾᚷ. ᛁᚠ ᛁᛟᚢ'ᛞ ᚱᚨᛏᚺᛖᚱ ᚢᛋᛖ ᚹᛋᛚ2, ᛏᚺᛖ ᛚᛁᚾᚢᚲ ᚲᛟᛗᛗᚨᚾᛞ ᚹᛟᚱᚲᛋ ᛏᚺᛖᚱᛖ ᛏᛟᛟ. ᚾᚨᛏᛁᚢᛖ ᚹᛁᚾᛞᛟᚹᛋ ᛁᚾᛋᛏᚨᛚᛚ ᛚᛁᚢᛖᛋ ᚢᚾᛞᛖᚱ `%LOCALAPPDATA%\hermes`; ᚹᛋᛚ2 ᛁᚾᛋᛏᚨᛚᛚᛋ ᚢᚾᛞᛖᚱ `~/.hermes` ᚨᛋ ᛟᚾ ᛚᛁᚾᚢᚲ.
+> **Windows:** Native Windows is fully supported — the PowerShell one-liner above installs everything. If you'd rather use WSL2, the Linux command works there too. Native Windows install lives under `%LOCALAPPDATA%\hermes`; WSL2 installs under `~/.hermes` as on Linux.
 
 ---
 
-## ᚺᛖᚱᛗᛖᛋ ᛋᛖᚲᚱᛖᛏᚨᚱᛁ ᛋᛖᛏᚢᛈ (ᛋᛟᚾᚾᛖᚱᛋᛏᚢᛞᛁᛟ ᛖᚲᛏᛖᚾᛋᛁᛟᚾ)
+## Hermes Secretary Setup (SonnerStudio extension)
 
-ᛏᚺᛖ ᚢᛟᛁᚲᛖ ᛚᚨᛁᛖᚱ ᛚᛁᚢᛖᛋ ᛁᚾ `plugins/hermes-sekretaerin/`:
+The voice layer lives in `plugins/hermes-sekretaerin/`:
 
 ```bash
 bash plugins/hermes-sekretaerin/setup.sh
 ```
 
-ᛏᚺᛁᛋ ᛁᚾᛋᛏᚨᛚᛚᛋ:
-- `mlx-proxy.py` ᚨᛋ ᚨ ᛚᚨᚢᚾᚲᚺᛞ ᛞᚨᛖᛗᛟᚾ (ᛋᛖᚱᚢᛖᛋ ᛏᛏᛋ/ᛋᛏᛏ/ᛗᛚᚲ ᛗᛟᛞᛖᛚᛋ ᛟᚾ `:1240`)
-- `mic-level.py` ᚨᛋ ᚨ ᚺᛖᚨᛞᛚᛖᛋᛋ ᛚᚨᚢᚾᚲᚺᚨᚷᛖᚾᛏ (ᛗᛁᚲᚱᛟᛈᚺᛟᚾᛖ ᛚᛖᚢᛖᛚ ᛗᛟᚾᛁᛏᛟᚱ, ᚾᛟ ᛏᛖᚱᛗᛁᚾᚨᛚ ᚹᛁᚾᛞᛟᚹ)
-- `kokoro-tts-server.py` (ᚲᛟᚲᛟᚱᛟ ᚷᛖᚱᛗᚨᚾ ᛏᛏᛋ, `df_eva`)
+This installs:
+- `mlx-proxy.py` as a launchd daemon (serves TTS/STT/MLX models on `:1240`)
+- `mic-level.py` as a headless LaunchAgent (microphone level monitor, no terminal window)
+- `kokoro-tts-server.py` (Kokoro German TTS, `df_eva`)
 
-**ᛒᚢᛁᛚᛞ ᚲᛟᚲᛟᚱᛟ (ᛟᚾᛖ-ᛏᛁᛗᛖ):** ᛋᛖᛖ `plugins/hermes-sekretaerin/BUILD_kokoro.md`. ᚱᛖᚲᚢᛁᚱᛖᛋ `cmake`, `espeak-ng` ᚺᛖᚨᛞᛖᚱᛋ, ᚨᚾᛞ ᛏᚺᛖ `ggml`/`highway` ᛋᚢᛒᛗᛟᛞᚢᛚᛖᛋ.
+**Build Kokoro (one-time):** see `plugins/hermes-sekretaerin/BUILD_kokoro.md`. Requires `cmake`, `espeak-ng` headers, and the `ggml`/`highway` submodules.
 
-**ᛗᛁᚲᚱᛟᛈᚺᛟᚾᛖ ᛈᛖᚱᛗᛁᛋᛋᛁᛟᚾ:** ᚷᚱᚨᚾᛏ ᛗᚨᚲᛟᛋ *ᛋᛁᛋᛏᛖᛗ ᛋᛖᛏᛏᛁᚾᚷᛋ → ᛈᚱᛁᚢᚨᚲᛁ & ᛋᛖᚲᚢᚱᛁᛏᛁ → ᛗᛁᚲᚱᛟᛈᚺᛟᚾᛖ* ᚨᚲᚲᛖᛋᛋ ᛏᛟ ᛏᚺᛖ ᚺᛖᛚᛈᛖᚱ ᛟᚾᚲᛖ.
+**Microphone permission:** grant macOS *System Settings → Privacy & Security → Microphone* access to the helper once.
 
 ---
 
-ᚨᚠᛏᛖᚱ ᛁᚾᛋᛏᚨᛚᛚᚨᛏᛁᛟᚾ:
+After installation:
 
 ```bash
 source ~/.bashrc    # reload shell (or: source ~/.zshrc)
 hermes              # start chatting!
 ```
 
-### ᛏᚱᛟᚢᛒᛚᛖᛋᚺᛟᛟᛏᛁᚾᚷ
+### Troubleshooting
 
-#### ᚹᛁᚾᛞᛟᚹᛋ ᛞᛖᚠᛖᚾᛞᛖᚱ ᛟᚱ ᚨᚾᛏᛁᚢᛁᚱᚢᛋ ᚠᛚᚨᚷᛋ `uv.exe` ᚨᛋ ᛗᚨᛚᚹᚨᚱᛖ
+#### Windows Defender or antivirus flags `uv.exe` as malware
 
-ᛁᚠ ᛁᛟᚢᚱ ᚨᚾᛏᛁᚢᛁᚱᚢᛋ (ᛒᛁᛏᛞᛖᚠᛖᚾᛞᛖᚱ, ᚹᛁᚾᛞᛟᚹᛋ ᛞᛖᚠᛖᚾᛞᛖᚱ, ᛖᛏᚲ.) ᚲᚢᚨᚱᚨᚾᛏᛁᚾᛖᛋ `uv.exe` ᚠᚱᛟᛗ ᛏᚺᛖ ᚺᛖᚱᛗᛖᛋ `bin` ᚠᛟᛚᛞᛖᚱ (`%LOCALAPPDATA%\hermes\bin\uv.exe`), ᛏᚺᛁᛋ ᛁᛋ ᚨ **ᚠᚨᛚᛋᛖ ᛈᛟᛋᛁᛏᛁᚢᛖ**. ᛏᚺᛖ ᚠᛁᛚᛖ ᛁᛋ ᚨᛋᛏᚱᚨᛚ'ᛋ `uv` — ᛏᚺᛖ ᚱᚢᛋᛏ ᛈᛁᛏᚺᛟᚾ ᛈᚨᚲᚲᚨᚷᛖ ᛗᚨᚾᚨᚷᛖᚱ ᚺᛖᚱᛗᛖᛋ ᛒᚢᚾᛞᛚᛖᛋ ᛏᛟ ᛗᚨᚾᚨᚷᛖ ᛁᛏᛋ ᛈᛁᛏᚺᛟᚾ ᛖᚾᚢᛁᚱᛟᚾᛗᛖᚾᛏ. ᛗᛚ-ᛒᚨᛋᛖᛞ ᚨᚾᛏᛁᚢᛁᚱᚢᛋ ᛖᚾᚷᛁᚾᛖᛋ ᚲᛟᛗᛗᛟᚾᛚᛁ ᚠᛚᚨᚷ ᚢᚾᛋᛁᚷᚾᛖᛞ ᚱᚢᛋᛏ ᛒᛁᚾᚨᚱᛁᛖᛋ ᛏᚺᚨᛏ ᛞᛟᚹᚾᛚᛟᚨᛞ ᚨᚾᛞ ᛁᚾᛋᛏᚨᛚᛚ ᛈᚨᚲᚲᚨᚷᛖᛋ.
+If your antivirus (Bitdefender, Windows Defender, etc.) quarantines `uv.exe` from the Hermes `bin` folder (`%LOCALAPPDATA%\hermes\bin\uv.exe`), this is a **false positive**. The file is Astral's `uv` — the Rust Python package manager Hermes bundles to manage its Python environment. ML-based antivirus engines commonly flag unsigned Rust binaries that download and install packages.
 
-**ᛏᛟ ᚢᛖᚱᛁᚠᛁ ᛁᛟᚢᚱ ᚲᛟᛈᛁ ᛁᛋ ᚨᚢᛏᚺᛖᚾᛏᛁᚲ:**
+**To verify your copy is authentic:**
 
 ```powershell
 # Install GitHub CLI if needed
@@ -158,18 +159,18 @@ Expand-Archive $zip "$env:TEMP\uv_x" -Force
 (Get-FileHash "$env:TEMP\uv_x\uv.exe").Hash -eq (Get-FileHash $uv).Hash
 ```
 
-ᛁᚠ ᚨᛏᛏᛖᛋᛏᚨᛏᛁᛟᚾ ᛋᚨᛁᛋ "ᚢᛖᚱᛁᚠᛁᚲᚨᛏᛁᛟᚾ ᛋᚢᚲᚲᛖᛖᛞᛖᛞ" ᚨᚾᛞ ᛏᚺᛖ ᛚᚨᛋᛏ ᛚᛁᚾᛖ ᛈᚱᛁᚾᛏᛋ `True`, ᛁᛟᚢ'ᚱᛖ ᚷᛟᛟᛞ.
+If attestation says "Verification succeeded" and the last line prints `True`, you're good.
 
-**ᛏᛟ ᚹᚺᛁᛏᛖᛚᛁᛋᛏ ᚺᛖᚱᛗᛖᛋ:**
-- **ᚹᛁᚾᛞᛟᚹᛋ ᛞᛖᚠᛖᚾᛞᛖᚱ:** ᚱᚢᚾ ᛈᛟᚹᛖᚱᛋᚺᛖᛚᛚ ᚨᛋ ᚨᛞᛗᛁᚾ → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
-- **ᛒᛁᛏᛞᛖᚠᛖᚾᛞᛖᚱ:** ᚨᛞᛞ ᚨᚾ ᛖᚲᚲᛖᛈᛏᛁᛟᚾ ᛁᚾ ᛏᚺᛖ ᛒᛁᛏᛞᛖᚠᛖᚾᛞᛖᚱ ᚲᛟᚾᛋᛟᛚᛖ (ᛈᚱᛟᛏᛖᚲᛏᛁᛟᚾ > ᚨᚾᛏᛁᚢᛁᚱᚢᛋ > ᛋᛖᛏᛏᛁᚾᚷᛋ > ᛗᚨᚾᚨᚷᛖ ᛖᚲᚲᛖᛈᛏᛁᛟᚾᛋ)
-- ᚹᚺᛁᛏᛖᛚᛁᛋᛏ ᛏᚺᛖ **ᚠᛟᛚᛞᛖᚱ**, ᚾᛟᛏ ᛏᚺᛖ ᚠᛁᛚᛖ ᚺᚨᛋᚺ — ᚺᛖᚱᛗᛖᛋ ᚢᛈᛞᚨᛏᛖᛋ `uv` ᚨᚾᛞ ᛏᚺᛖ ᚺᚨᛋᚺ ᚲᚺᚨᚾᚷᛖᛋ ᛖᚢᛖᚱᛁ ᚢᛖᚱᛋᛁᛟᚾ
+**To whitelist Hermes:**
+- **Windows Defender:** Run PowerShell as Admin → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
+- **Bitdefender:** Add an exception in the Bitdefender console (Protection > Antivirus > Settings > Manage Exceptions)
+- Whitelist the **folder**, not the file hash — Hermes updates `uv` and the hash changes every version
 
-ᚠᛟᚱ ᛗᛟᚱᛖ ᚲᛟᚾᛏᛖᚲᛏ, ᛋᛖᛖ ᛏᚺᛖ ᚢᛈᛋᛏᚱᛖᚨᛗ ᚨᛋᛏᚱᚨᛚ ᚱᛖᛈᛟᚱᛏᛋ: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
+For more context, see the upstream Astral reports: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
 
 ---
 
-## ᚷᛖᛏᛏᛁᚾᚷ ᛋᛏᚨᚱᛏᛖᛞ
+## Getting Started
 
 ```bash
 hermes              # Interactive CLI — start a conversation
@@ -188,76 +189,76 @@ hermes doctor       # Diagnose any issues
 
 ---
 
-## ᛋᚲᛁᛈ ᛏᚺᛖ ᚨᛈᛁ-ᚲᛖᛁ ᚲᛟᛚᛚᛖᚲᛏᛁᛟᚾ — ᚾᛟᚢᛋ ᛈᛟᚱᛏᚨᛚ
+## Skip the API-key collection — Nous Portal
 
-ᚺᛖᚱᛗᛖᛋ ᚹᛟᚱᚲᛋ ᚹᛁᛏᚺ ᚹᚺᚨᛏᛖᚢᛖᚱ ᛈᚱᛟᚢᛁᛞᛖᚱ ᛁᛟᚢ ᚹᚨᚾᛏ — ᛏᚺᚨᛏ'ᛋ ᚾᛟᛏ ᚲᚺᚨᚾᚷᛁᚾᚷ. ᛒᚢᛏ ᛁᚠ ᛁᛟᚢ'ᛞ ᚱᚨᛏᚺᛖᚱ ᚾᛟᛏ ᚲᛟᛚᛚᛖᚲᛏ ᚠᛁᚢᛖ ᛋᛖᛈᚨᚱᚨᛏᛖ ᚨᛈᛁ ᚲᛖᛁᛋ ᚠᛟᚱ ᛏᚺᛖ ᛗᛟᛞᛖᛚ, ᚹᛖᛒ ᛋᛖᚨᚱᚲᚺ, ᛁᛗᚨᚷᛖ ᚷᛖᚾᛖᚱᚨᛏᛁᛟᚾ, ᛏᛏᛋ, ᚨᚾᛞ ᚨ ᚲᛚᛟᚢᛞ ᛒᚱᛟᚹᛋᛖᚱ, **[Nous Portal](https://portal.nousresearch.com)** ᚲᛟᚢᛖᚱᛋ ᚨᛚᛚ ᛟᚠ ᛏᚺᛖᛗ ᚢᚾᛞᛖᚱ ᛟᚾᛖ ᛋᚢᛒᛋᚲᚱᛁᛈᛏᛁᛟᚾ:
+Hermes works with whatever provider you want — that's not changing. But if you'd rather not collect five separate API keys for the model, web search, image generation, TTS, and a cloud browser, **[Nous Portal](https://portal.nousresearch.com)** covers all of them under one subscription:
 
-- **300+ ᛗᛟᛞᛖᛚᛋ** — ᛈᛁᚲᚲ ᚨᚾᛁ ᛟᚠ ᛏᚺᛖᛗ ᚹᛁᛏᚺ `/model <name>`
-- **ᛏᛟᛟᛚ ᚷᚨᛏᛖᚹᚨᛁ** — ᚹᛖᛒ ᛋᛖᚨᚱᚲᚺ (ᚠᛁᚱᛖᚲᚱᚨᚹᛚ), ᛁᛗᚨᚷᛖ ᚷᛖᚾᛖᚱᚨᛏᛁᛟᚾ (ᚠᚨᛚ), ᛏᛖᚲᛏ-ᛏᛟ-ᛋᛈᛖᛖᚲᚺ (ᛟᛈᛖᚾᚨᛁ), ᚲᛚᛟᚢᛞ ᛒᚱᛟᚹᛋᛖᚱ (ᛒᚱᛟᚹᛋᛖᚱ ᚢᛋᛖ), ᚨᛚᛚ ᚱᛟᚢᛏᛖᛞ ᛏᚺᚱᛟᚢᚷᚺ ᛁᛟᚢᚱ ᛋᚢᛒ. ᚾᛟ ᛖᚲᛏᚱᚨ ᚨᚲᚲᛟᚢᚾᛏᛋ.
+- **300+ models** — pick any of them with `/model <name>`
+- **Tool Gateway** — web search (Firecrawl), image generation (FAL), text-to-speech (OpenAI), cloud browser (Browser Use), all routed through your sub. No extra accounts.
 
-ᛟᚾᛖ ᚲᛟᛗᛗᚨᚾᛞ ᚠᚱᛟᛗ ᚨ ᚠᚱᛖᛋᚺ ᛁᚾᛋᛏᚨᛚᛚ:
+One command from a fresh install:
 
 ```bash
 hermes setup --portal
 ```
 
-ᛏᚺᚨᛏ ᛚᛟᚷᛋ ᛁᛟᚢ ᛁᚾ ᚢᛁᚨ ᛟᚨᚢᛏᚺ, ᛋᛖᛏᛋ ᚾᛟᚢᛋ ᚨᛋ ᛁᛟᚢᚱ ᛈᚱᛟᚢᛁᛞᛖᚱ, ᚨᚾᛞ ᛏᚢᚱᚾᛋ ᛟᚾ ᛏᚺᛖ ᛏᛟᛟᛚ ᚷᚨᛏᛖᚹᚨᛁ. ᚲᚺᛖᚲᚲ ᚹᚺᚨᛏ'ᛋ ᚹᛁᚱᛖᛞ ᚢᛈ ᚨᚾᛁ ᛏᛁᛗᛖ ᚹᛁᛏᚺ `hermes portal info`. ᚠᚢᛚᛚ ᛞᛖᛏᚨᛁᛚᛋ ᛟᚾ ᛏᚺᛖ [Tool Gateway docs page](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway).
+That logs you in via OAuth, sets Nous as your provider, and turns on the Tool Gateway. Check what's wired up any time with `hermes portal info`. Full details on the [Tool Gateway docs page](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway).
 
-ᛁᛟᚢ ᚲᚨᚾ ᛋᛏᛁᛚᛚ ᛒᚱᛁᚾᚷ ᛁᛟᚢᚱ ᛟᚹᚾ ᚲᛖᛁᛋ ᛈᛖᚱ-ᛏᛟᛟᛚ ᚹᚺᛖᚾᛖᚢᛖᚱ ᛁᛟᚢ ᚹᚨᚾᛏ — ᛏᚺᛖ ᚷᚨᛏᛖᚹᚨᛁ ᛁᛋ ᛈᛖᚱ-ᛒᚨᚲᚲᛖᚾᛞ, ᚾᛟᛏ ᚨᛚᛚ-ᛟᚱ-ᚾᛟᛏᚺᛁᚾᚷ.
+You can still bring your own keys per-tool whenever you want — the gateway is per-backend, not all-or-nothing.
 
 ---
 
-## ᚲᛚᛁ ᚢᛋ ᛗᛖᛋᛋᚨᚷᛁᚾᚷ ᚲᚢᛁᚲᚲ ᚱᛖᚠᛖᚱᛖᚾᚲᛖ
+## CLI vs Messaging Quick Reference
 
-ᚺᛖᚱᛗᛖᛋ ᚺᚨᛋ ᛏᚹᛟ ᛖᚾᛏᚱᛁ ᛈᛟᛁᚾᛏᛋ: ᛋᛏᚨᚱᛏ ᛏᚺᛖ ᛏᛖᚱᛗᛁᚾᚨᛚ ᚢᛁ ᚹᛁᛏᚺ `hermes`, ᛟᚱ ᚱᚢᚾ ᛏᚺᛖ ᚷᚨᛏᛖᚹᚨᛁ ᚨᚾᛞ ᛏᚨᛚᚲ ᛏᛟ ᛁᛏ ᚠᚱᛟᛗ ᛏᛖᛚᛖᚷᚱᚨᛗ, ᛞᛁᛋᚲᛟᚱᛞ, ᛋᛚᚨᚲᚲ, ᚹᚺᚨᛏᛋᚨᛈᛈ, ᛋᛁᚷᚾᚨᛚ, ᛟᚱ ᛖᛗᚨᛁᛚ. ᛟᚾᚲᛖ ᛁᛟᚢ'ᚱᛖ ᛁᚾ ᚨ ᚲᛟᚾᚢᛖᚱᛋᚨᛏᛁᛟᚾ, ᛗᚨᚾᛁ ᛋᛚᚨᛋᚺ ᚲᛟᛗᛗᚨᚾᛞᛋ ᚨᚱᛖ ᛋᚺᚨᚱᛖᛞ ᚨᚲᚱᛟᛋᛋ ᛒᛟᛏᚺ ᛁᚾᛏᛖᚱᚠᚨᚲᛖᛋ.
+Hermes has two entry points: start the terminal UI with `hermes`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
 
-| ᚨᚲᛏᛁᛟᚾ                         | ᚲᛚᛁ                                           | ᛗᛖᛋᛋᚨᚷᛁᚾᚷ ᛈᛚᚨᛏᚠᛟᚱᛗᛋ                                                              |
+| Action                         | CLI                                           | Messaging platforms                                                              |
 | ------------------------------ | --------------------------------------------- | -------------------------------------------------------------------------------- |
-| ᛋᛏᚨᚱᛏ ᚲᚺᚨᛏᛏᛁᚾᚷ                 | `hermes`                                      | ᚱᚢᚾ `hermes gateway setup` + `hermes gateway start`, ᛏᚺᛖᚾ ᛋᛖᚾᛞ ᛏᚺᛖ ᛒᛟᛏ ᚨ ᛗᛖᛋᛋᚨᚷᛖ |
-| ᛋᛏᚨᚱᛏ ᚠᚱᛖᛋᚺ ᚲᛟᚾᚢᛖᚱᛋᚨᛏᛁᛟᚾ       | `/new` ᛟᚱ `/reset`                            | `/new` ᛟᚱ `/reset`                                                               |
-| ᚲᚺᚨᚾᚷᛖ ᛗᛟᛞᛖᛚ                   | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
-| ᛋᛖᛏ ᚨ ᛈᛖᚱᛋᛟᚾᚨᛚᛁᛏᛁ              | `/personality [name]`                         | `/personality [name]`                                                            |
-| ᚱᛖᛏᚱᛁ ᛟᚱ ᚢᚾᛞᛟ ᛏᚺᛖ ᛚᚨᛋᛏ ᛏᚢᚱᚾ    | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
-| ᚲᛟᛗᛈᚱᛖᛋᛋ ᚲᛟᚾᛏᛖᚲᛏ / ᚲᚺᛖᚲᚲ ᚢᛋᚨᚷᛖ | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
-| ᛒᚱᛟᚹᛋᛖ ᛋᚲᛁᛚᛚᛋ                  | `/skills` ᛟᚱ `/<skill-name>`                  | `/<skill-name>`                                                                  |
-| ᛁᚾᛏᛖᚱᚱᚢᛈᛏ ᚲᚢᚱᚱᛖᚾᛏ ᚹᛟᚱᚲ         | `Ctrl+C` ᛟᚱ ᛋᛖᚾᛞ ᚨ ᚾᛖᚹ ᛗᛖᛋᛋᚨᚷᛖ                | `/stop` ᛟᚱ ᛋᛖᚾᛞ ᚨ ᚾᛖᚹ ᛗᛖᛋᛋᚨᚷᛖ                                                    |
-| ᛈᛚᚨᛏᚠᛟᚱᛗ-ᛋᛈᛖᚲᛁᚠᛁᚲ ᛋᛏᚨᛏᚢᛋ       | `/platforms`                                  | `/status`, `/sethome`                                                            |
+| Start chatting                 | `hermes`                                      | Run `hermes gateway setup` + `hermes gateway start`, then send the bot a message |
+| Start fresh conversation       | `/new` or `/reset`                            | `/new` or `/reset`                                                               |
+| Change model                   | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
+| Set a personality              | `/personality [name]`                         | `/personality [name]`                                                            |
+| Retry or undo the last turn    | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
+| Compress context / check usage | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
+| Browse skills                  | `/skills` or `/<skill-name>`                  | `/<skill-name>`                                                                  |
+| Interrupt current work         | `Ctrl+C` or send a new message                | `/stop` or send a new message                                                    |
+| Platform-specific status       | `/platforms`                                  | `/status`, `/sethome`                                                            |
 
-ᚠᛟᚱ ᛏᚺᛖ ᚠᚢᛚᛚ ᚲᛟᛗᛗᚨᚾᛞ ᛚᛁᛋᛏᛋ, ᛋᛖᛖ ᛏᚺᛖ [CLI guide](https://hermes-agent.nousresearch.com/docs/user-guide/cli) ᚨᚾᛞ ᛏᚺᛖ [Messaging Gateway guide](https://hermes-agent.nousresearch.com/docs/user-guide/messaging).
+For the full command lists, see the [CLI guide](https://hermes-agent.nousresearch.com/docs/user-guide/cli) and the [Messaging Gateway guide](https://hermes-agent.nousresearch.com/docs/user-guide/messaging).
 
 ---
 
-## ᛞᛟᚲᚢᛗᛖᚾᛏᚨᛏᛁᛟᚾ
+## Documentation
 
-ᚨᛚᛚ ᛞᛟᚲᚢᛗᛖᚾᛏᚨᛏᛁᛟᚾ ᛚᛁᚢᛖᛋ ᚨᛏ **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
+All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
 
-| ᛋᛖᚲᛏᛁᛟᚾ                                                                                             | ᚹᚺᚨᛏ'ᛋ ᚲᛟᚢᛖᚱᛖᛞ                                             |
+| Section                                                                                             | What's Covered                                             |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| [Quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)                 | ᛁᚾᛋᛏᚨᛚᛚ → ᛋᛖᛏᚢᛈ → ᚠᛁᚱᛋᛏ ᚲᛟᚾᚢᛖᚱᛋᚨᛏᛁᛟᚾ ᛁᚾ 2 ᛗᛁᚾᚢᛏᛖᛋ          |
-| [CLI Usage](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                              | ᚲᛟᛗᛗᚨᚾᛞᛋ, ᚲᛖᛁᛒᛁᚾᛞᛁᚾᚷᛋ, ᛈᛖᚱᛋᛟᚾᚨᛚᛁᛏᛁᛖᛋ, ᛋᛖᛋᛋᛁᛟᚾᛋ             |
-| [Configuration](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                | ᚲᛟᚾᚠᛁᚷ ᚠᛁᛚᛖ, ᛈᚱᛟᚢᛁᛞᛖᚱᛋ, ᛗᛟᛞᛖᛚᛋ, ᚨᛚᛚ ᛟᛈᛏᛁᛟᚾᛋ                |
-| [Messaging Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging)                | ᛏᛖᛚᛖᚷᚱᚨᛗ, ᛞᛁᛋᚲᛟᚱᛞ, ᛋᛚᚨᚲᚲ, ᚹᚺᚨᛏᛋᚨᛈᛈ, ᛋᛁᚷᚾᚨᛚ, ᚺᛟᛗᛖ ᚨᛋᛋᛁᛋᛏᚨᚾᛏ |
-| [Security](https://hermes-agent.nousresearch.com/docs/user-guide/security)                          | ᚲᛟᛗᛗᚨᚾᛞ ᚨᛈᛈᚱᛟᚢᚨᛚ, ᛞᛗ ᛈᚨᛁᚱᛁᚾᚷ, ᚲᛟᚾᛏᚨᛁᚾᛖᚱ ᛁᛋᛟᛚᚨᛏᛁᛟᚾ          |
-| [Tools & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ ᛏᛟᛟᛚᛋ, ᛏᛟᛟᛚᛋᛖᛏ ᛋᛁᛋᛏᛖᛗ, ᛏᛖᚱᛗᛁᚾᚨᛚ ᛒᚨᚲᚲᛖᚾᛞᛋ               |
-| [Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)              | ᛈᚱᛟᚲᛖᛞᚢᚱᚨᛚ ᛗᛖᛗᛟᚱᛁ, ᛋᚲᛁᛚᛚᛋ ᚺᚢᛒ, ᚲᚱᛖᚨᛏᛁᚾᚷ ᛋᚲᛁᛚᛚᛋ             |
-| [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                     | ᛈᛖᚱᛋᛁᛋᛏᛖᚾᛏ ᛗᛖᛗᛟᚱᛁ, ᚢᛋᛖᚱ ᛈᚱᛟᚠᛁᛚᛖᛋ, ᛒᛖᛋᛏ ᛈᚱᚨᚲᛏᛁᚲᛖᛋ           |
-| [MCP Integration](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | ᚲᛟᚾᚾᛖᚲᛏ ᚨᚾᛁ ᛗᚲᛈ ᛋᛖᚱᚢᛖᚱ ᚠᛟᚱ ᛖᚲᛏᛖᚾᛞᛖᛞ ᚲᚨᛈᚨᛒᛁᛚᛁᛏᛁᛖᛋ           |
-| [Cron Scheduling](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)              | ᛋᚲᚺᛖᛞᚢᛚᛖᛞ ᛏᚨᛋᚲᛋ ᚹᛁᛏᚺ ᛈᛚᚨᛏᚠᛟᚱᛗ ᛞᛖᛚᛁᚢᛖᚱᛁ                     |
-| [Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)       | ᛈᚱᛟᛃᛖᚲᛏ ᚲᛟᚾᛏᛖᚲᛏ ᛏᚺᚨᛏ ᛋᚺᚨᛈᛖᛋ ᛖᚢᛖᚱᛁ ᚲᛟᚾᚢᛖᚱᛋᚨᛏᛁᛟᚾ             |
-| [Architecture](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)             | ᛈᚱᛟᛃᛖᚲᛏ ᛋᛏᚱᚢᚲᛏᚢᚱᛖ, ᚨᚷᛖᚾᛏ ᛚᛟᛟᛈ, ᚲᛖᛁ ᚲᛚᚨᛋᛋᛖᛋ                 |
-| [Contributing](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)             | ᛞᛖᚢᛖᛚᛟᛈᛗᛖᚾᛏ ᛋᛖᛏᚢᛈ, ᛈᚱ ᛈᚱᛟᚲᛖᛋᛋ, ᚲᛟᛞᛖ ᛋᛏᛁᛚᛖ                  |
-| [CLI Reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                  | ᚨᛚᛚ ᚲᛟᛗᛗᚨᚾᛞᛋ ᚨᚾᛞ ᚠᛚᚨᚷᛋ                                     |
-| [Environment Variables](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) | ᚲᛟᛗᛈᛚᛖᛏᛖ ᛖᚾᚢ ᚢᚨᚱ ᚱᛖᚠᛖᚱᛖᚾᚲᛖ                                 |
+| [Quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)                 | Install → setup → first conversation in 2 minutes          |
+| [CLI Usage](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                              | Commands, keybindings, personalities, sessions             |
+| [Configuration](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                | Config file, providers, models, all options                |
+| [Messaging Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging)                | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant |
+| [Security](https://hermes-agent.nousresearch.com/docs/user-guide/security)                          | Command approval, DM pairing, container isolation          |
+| [Tools & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ tools, toolset system, terminal backends               |
+| [Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)              | Procedural memory, Skills Hub, creating skills             |
+| [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                     | Persistent memory, user profiles, best practices           |
+| [MCP Integration](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | Connect any MCP server for extended capabilities           |
+| [Cron Scheduling](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)              | Scheduled tasks with platform delivery                     |
+| [Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)       | Project context that shapes every conversation             |
+| [Architecture](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)             | Project structure, agent loop, key classes                 |
+| [Contributing](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)             | Development setup, PR process, code style                  |
+| [CLI Reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                  | All commands and flags                                     |
+| [Environment Variables](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) | Complete env var reference                                 |
 
 ---
 
-## ᛗᛁᚷᚱᚨᛏᛁᚾᚷ ᚠᚱᛟᛗ ᛟᛈᛖᚾᚲᛚᚨᚹ
+## Migrating from OpenClaw
 
-ᛁᚠ ᛁᛟᚢ'ᚱᛖ ᚲᛟᛗᛁᚾᚷ ᚠᚱᛟᛗ ᛟᛈᛖᚾᚲᛚᚨᚹ, ᚺᛖᚱᛗᛖᛋ ᚲᚨᚾ ᚨᚢᛏᛟᛗᚨᛏᛁᚲᚨᛚᛚᛁ ᛁᛗᛈᛟᚱᛏ ᛁᛟᚢᚱ ᛋᛖᛏᛏᛁᚾᚷᛋ, ᛗᛖᛗᛟᚱᛁᛖᛋ, ᛋᚲᛁᛚᛚᛋ, ᚨᚾᛞ ᚨᛈᛁ ᚲᛖᛁᛋ.
+If you're coming from OpenClaw, Hermes can automatically import your settings, memories, skills, and API keys.
 
-**ᛞᚢᚱᛁᚾᚷ ᚠᛁᚱᛋᛏ-ᛏᛁᛗᛖ ᛋᛖᛏᚢᛈ:** ᛏᚺᛖ ᛋᛖᛏᚢᛈ ᚹᛁᛋᚨᚱᛞ (`hermes setup`) ᚨᚢᛏᛟᛗᚨᛏᛁᚲᚨᛚᛚᛁ ᛞᛖᛏᛖᚲᛏᛋ `~/.openclaw` ᚨᚾᛞ ᛟᚠᚠᛖᚱᛋ ᛏᛟ ᛗᛁᚷᚱᚨᛏᛖ ᛒᛖᚠᛟᚱᛖ ᚲᛟᚾᚠᛁᚷᚢᚱᚨᛏᛁᛟᚾ ᛒᛖᚷᛁᚾᛋ.
+**During first-time setup:** The setup wizard (`hermes setup`) automatically detects `~/.openclaw` and offers to migrate before configuration begins.
 
-**ᚨᚾᛁᛏᛁᛗᛖ ᚨᚠᛏᛖᚱ ᛁᚾᛋᛏᚨᛚᛚ:**
+**Anytime after install:**
 
 ```bash
 hermes claw migrate              # Interactive migration (full preset)
@@ -266,29 +267,29 @@ hermes claw migrate --preset user-data   # Migrate without secrets
 hermes claw migrate --overwrite  # Overwrite existing conflicts
 ```
 
-ᚹᚺᚨᛏ ᚷᛖᛏᛋ ᛁᛗᛈᛟᚱᛏᛖᛞ:
+What gets imported:
 
-- **ᛋᛟᚢᛚ.ᛗᛞ** — ᛈᛖᚱᛋᛟᚾᚨ ᚠᛁᛚᛖ
-- **ᛗᛖᛗᛟᚱᛁᛖᛋ** — ᛗᛖᛗᛟᚱᛁ.ᛗᛞ ᚨᚾᛞ ᚢᛋᛖᚱ.ᛗᛞ ᛖᚾᛏᚱᛁᛖᛋ
-- **ᛋᚲᛁᛚᛚᛋ** — ᚢᛋᛖᚱ-ᚲᚱᛖᚨᛏᛖᛞ ᛋᚲᛁᛚᛚᛋ → `~/.hermes/skills/openclaw-imports/`
-- **ᚲᛟᛗᛗᚨᚾᛞ ᚨᛚᛚᛟᚹᛚᛁᛋᛏ** — ᚨᛈᛈᚱᛟᚢᚨᛚ ᛈᚨᛏᛏᛖᚱᚾᛋ
-- **ᛗᛖᛋᛋᚨᚷᛁᚾᚷ ᛋᛖᛏᛏᛁᚾᚷᛋ** — ᛈᛚᚨᛏᚠᛟᚱᛗ ᚲᛟᚾᚠᛁᚷᛋ, ᚨᛚᛚᛟᚹᛖᛞ ᚢᛋᛖᚱᛋ, ᚹᛟᚱᚲᛁᚾᚷ ᛞᛁᚱᛖᚲᛏᛟᚱᛁ
-- **ᚨᛈᛁ ᚲᛖᛁᛋ** — ᚨᛚᛚᛟᚹᛚᛁᛋᛏᛖᛞ ᛋᛖᚲᚱᛖᛏᛋ (ᛏᛖᛚᛖᚷᚱᚨᛗ, ᛟᛈᛖᚾᚱᛟᚢᛏᛖᚱ, ᛟᛈᛖᚾᚨᛁ, ᚨᚾᛏᚺᚱᛟᛈᛁᚲ, ᛖᛚᛖᚢᛖᚾᛚᚨᛒᛋ)
-- **ᛏᛏᛋ ᚨᛋᛋᛖᛏᛋ** — ᚹᛟᚱᚲᛋᛈᚨᚲᛖ ᚨᚢᛞᛁᛟ ᚠᛁᛚᛖᛋ
-- **ᚹᛟᚱᚲᛋᛈᚨᚲᛖ ᛁᚾᛋᛏᚱᚢᚲᛏᛁᛟᚾᛋ** — ᚨᚷᛖᚾᛏᛋ.ᛗᛞ (ᚹᛁᛏᚺ `--workspace-target`)
+- **SOUL.md** — persona file
+- **Memories** — MEMORY.md and USER.md entries
+- **Skills** — user-created skills → `~/.hermes/skills/openclaw-imports/`
+- **Command allowlist** — approval patterns
+- **Messaging settings** — platform configs, allowed users, working directory
+- **API keys** — allowlisted secrets (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
+- **TTS assets** — workspace audio files
+- **Workspace instructions** — AGENTS.md (with `--workspace-target`)
 
-ᛋᛖᛖ `hermes claw migrate --help` ᚠᛟᚱ ᚨᛚᛚ ᛟᛈᛏᛁᛟᚾᛋ, ᛟᚱ ᚢᛋᛖ ᛏᚺᛖ `openclaw-migration` ᛋᚲᛁᛚᛚ ᚠᛟᚱ ᚨᚾ ᛁᚾᛏᛖᚱᚨᚲᛏᛁᚢᛖ ᚨᚷᛖᚾᛏ-ᚷᚢᛁᛞᛖᛞ ᛗᛁᚷᚱᚨᛏᛁᛟᚾ ᚹᛁᛏᚺ ᛞᚱᛁ-ᚱᚢᚾ ᛈᚱᛖᚢᛁᛖᚹᛋ.
+See `hermes claw migrate --help` for all options, or use the `openclaw-migration` skill for an interactive agent-guided migration with dry-run previews.
 
 ---
 
-## ᚲᛟᚾᛏᚱᛁᛒᚢᛏᛁᚾᚷ
+## Contributing
 
-ᚹᛖ ᚹᛖᛚᚲᛟᛗᛖ ᚲᛟᚾᛏᚱᛁᛒᚢᛏᛁᛟᚾᛋ! ᛋᛖᛖ ᛏᚺᛖ [Contributing Guide](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) ᚠᛟᚱ ᛞᛖᚢᛖᛚᛟᛈᛗᛖᚾᛏ ᛋᛖᛏᚢᛈ, ᚲᛟᛞᛖ ᛋᛏᛁᛚᛖ, ᚨᚾᛞ ᛈᚱ ᛈᚱᛟᚲᛖᛋᛋ.
+We welcome contributions! See the [Contributing Guide](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) for development setup, code style, and PR process.
 
-ᚲᚢᛁᚲᚲ ᛋᛏᚨᚱᛏ ᚠᛟᚱ ᚲᛟᚾᛏᚱᛁᛒᚢᛏᛟᚱᛋ — ᚢᛋᛖ ᛏᚺᛖ ᛋᛏᚨᚾᛞᚨᚱᛞ ᛁᚾᛋᛏᚨᛚᛚᛖᚱ, ᛏᚺᛖᚾ ᚹᛟᚱᚲ ᚠᚱᛟᛗ ᛏᚺᛖ
-ᚠᚢᛚᛚ ᚷᛁᛏ ᚲᚺᛖᚲᚲᛟᚢᛏ ᛁᛏ ᚲᚱᛖᚨᛏᛖᛋ ᚨᛏ `$HERMES_HOME/hermes-agent` (ᚢᛋᚢᚨᛚᛚᛁ
-`~/.hermes/hermes-agent`). ᛏᚺᛁᛋ ᛗᚨᛏᚲᚺᛖᛋ ᛏᚺᛖ ᛚᚨᛁᛟᚢᛏ ᚢᛋᛖᛞ ᛒᛁ `hermes update`, ᛏᚺᛖ
-ᛗᚨᚾᚨᚷᛖᛞ ᚢᛖᚾᚢ, ᛚᚨᛋᛁ ᛞᛖᛈᛖᚾᛞᛖᚾᚲᛁᛖᛋ, ᚷᚨᛏᛖᚹᚨᛁ, ᚨᚾᛞ ᛞᛟᚲᛋ ᛏᛟᛟᛚᛁᚾᚷ.
+Quick start for contributors — use the standard installer, then work from the
+full git checkout it creates at `$HERMES_HOME/hermes-agent` (usually
+`~/.hermes/hermes-agent`). This matches the layout used by `hermes update`, the
+managed venv, lazy dependencies, gateway, and docs tooling.
 
 ```bash
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
@@ -297,12 +298,12 @@ uv pip install -e ".[all,dev]"
 scripts/run_tests.sh
 ```
 
-ᛗᚨᚾᚢᚨᛚ ᚲᛚᛟᚾᛖ ᚠᚨᛚᛚᛒᚨᚲᚲ (ᚠᛟᚱ ᛏᚺᚱᛟᚹᚨᚹᚨᛁ ᚲᛚᛟᚾᛖᛋ/ᚲᛁ ᚹᚺᛖᚱᛖ ᛁᛟᚢ ᛁᚾᛏᛖᚾᛏᛁᛟᚾᚨᛚᛚᛁ ᛞᛟ ᚾᛟᛏ
-ᚹᚨᚾᛏ ᛏᚺᛖ ᛗᚨᚾᚨᚷᛖᛞ ᛁᚾᛋᛏᚨᛚᛚ ᛚᚨᛁᛟᚢᛏ):
+Manual clone fallback (for throwaway clones/CI where you intentionally do not
+want the managed install layout):
 
-ᚲᚱᛖᚨᛏᛖ ᛏᚺᛖ ᚢᛖᚾᚢ ᛟᚢᛏᛋᛁᛞᛖ ᛏᚺᛖ ᚲᛚᛟᚾᛖᛞ ᛋᛟᚢᚱᚲᛖ ᛏᚱᛖᛖ — ᚨ ᚢᛖᚾᚢ ᛁᚾᛋᛁᛞᛖ ᛏᚺᛖ ᛞᛁᚱᛖᚲᛏᛟᚱᛁ
-ᛏᚺᛖ ᚨᚷᛖᚾᛏ ᛟᛈᛖᚱᚨᛏᛖᛋ ᚠᚱᛟᛗ ᚲᚨᚾ ᛒᛖ ᚹᛁᛈᛖᛞ ᛒᛁ ᚨ ᚱᛖᛚᚨᛏᛁᚢᛖ-ᛈᚨᛏᚺ ᚲᛟᛗᛗᚨᚾᛞ ᛏᚺᛖ ᚨᚷᛖᚾᛏ ᚱᚢᚾᛋ
-ᚨᚷᚨᛁᚾᛋᛏ ᛁᛏᛋ ᛟᚹᚾ ᚲᚺᛖᚲᚲᛟᚢᛏ, ᛞᛖᛋᛏᚱᛟᛁᛁᚾᚷ ᛏᚺᛖ ᚱᚢᚾᚾᛁᚾᚷ ᚱᚢᚾᛏᛁᛗᛖ ᛗᛁᛞ-ᛋᛖᛋᛋᛁᛟᚾ.
+Create the venv outside the cloned source tree — a venv inside the directory
+the agent operates from can be wiped by a relative-path command the agent runs
+against its own checkout, destroying the running runtime mid-session.
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -314,18 +315,18 @@ scripts/run_tests.sh
 
 ---
 
-## ᚲᛟᛗᛗᚢᚾᛁᛏᛁ
+## Community
 
 - 💬 [Discord](https://discord.gg/NousResearch)
 - 📚 [Skills Hub](https://agentskills.io)
 - 🐛 [Issues](https://github.com/NousResearch/hermes-agent/issues)
-- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — ᛚᛁᚾᚢᚲ ᛞᛖᛋᚲᛏᛟᛈ-ᚲᛟᚾᛏᚱᛟᛚ ᛗᚲᛈ ᛋᛖᚱᚢᛖᚱ ᚠᛟᚱ ᚺᛖᚱᛗᛖᛋ ᚨᚾᛞ ᛟᛏᚺᛖᚱ ᛗᚲᛈ ᚺᛟᛋᛏᛋ, ᚹᛁᛏᚺ ᚨᛏ-ᛋᛈᛁ ᚨᚲᚲᛖᛋᛋᛁᛒᛁᛚᛁᛏᛁ ᛏᚱᛖᛖᛋ, ᚹᚨᛁᛚᚨᚾᛞ/ᚲ11 ᛁᚾᛈᚢᛏ, ᛋᚲᚱᛖᛖᚾᛋᚺᛟᛏᛋ, ᚨᚾᛞ ᚲᛟᛗᛈᛟᛋᛁᛏᛟᚱ ᚹᛁᚾᛞᛟᚹ ᛏᚨᚱᚷᛖᛏᛁᚾᚷ.
-- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — ᚲᛟᛗᛗᚢᚾᛁᛏᛁ ᚹᛖᚲᚺᚨᛏ ᛒᚱᛁᛞᚷᛖ: ᚱᚢᚾ ᚺᛖᚱᛗᛖᛋ ᚨᚷᛖᚾᛏ ᚨᚾᛞ ᛟᛈᛖᚾᚲᛚᚨᚹ ᛟᚾ ᛏᚺᛖ ᛋᚨᛗᛖ ᚹᛖᚲᚺᚨᛏ ᚨᚲᚲᛟᚢᚾᛏ.
+- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — Linux desktop-control MCP server for Hermes and other MCP hosts, with AT-SPI accessibility trees, Wayland/X11 input, screenshots, and compositor window targeting.
+- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Community WeChat bridge: Run Hermes Agent and OpenClaw on the same WeChat account.
 
 ---
 
-## ᛚᛁᚲᛖᚾᛋᛖ
+## License
 
-ᛗᛁᛏ — ᛋᛖᛖ [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
 
-ᛒᚢᛁᛚᛏ ᛒᛁ [Nous Research](https://nousresearch.com).
+Built by [Nous Research](https://nousresearch.com).

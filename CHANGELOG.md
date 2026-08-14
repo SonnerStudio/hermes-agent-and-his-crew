@@ -19,9 +19,16 @@ from upstream.
   Live state colors: red = inactive, yellow = provisioning, green = active.
   Focus ring uses `ring-current` (status color), never the theme accent.
 - **Orchestration HUD** — four blue-bordered live panels under the composer:
-  *Sub-Agent Team*, *Hermes Secretary (Audio-Kommunikation)*, *Kopierte Agenten
+  *Sub-Agent Team*, *Hermes-Sekretärin Auslastung* (Hermes Secretary load), *Kopierte Agenten
   (Cloned Agents)*, *Harmonisierung & Agentenauslastung*. Panels only appear
   when a real task is running — no demo placeholders.
+- **Last learning success** — a compact line under the composer shows the
+  Secretary's most recent successful learning outcome plus a live MLX badge
+  (model served on `:1240`, polled from `/secretary-learning`).
+- **System RAM status** — a live strip (polls `/health` on `:1240`) showing
+  total / free RAM and usage percent.
+- **Full-width composer** — composer input spans the full window width
+  (`--composer-width: 100%`).
 - **Language Picker (🌐)** — built-in language switcher in the left sidebar
   (top) and under the composer. Mirrors sonnerstudio.net: 32 languages with
   national-flag emojis. Selection persisted in `localStorage`

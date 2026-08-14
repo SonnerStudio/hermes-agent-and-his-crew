@@ -4,6 +4,20 @@
 
 # Hermes Agent and his Crew (with Sub-Agents) ☤
 
+<p align="center">
+  <a href="https://www.sonnerstudio.net">SonnerStudio</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Agent (Upstream)</a>
+* **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
+* **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
+* **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
+
+</p>
+<p align="center">
+  <a href="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/NousResearch/hermes-agent"><img src="https://img.shields.io/badge/Upstream-NousResearch/hermes--agent-blueviolet?style=for-the-badge" alt="Upstream"></a>
+  <a href="https://www.sonnerstudio.net"><img src="https://img.shields.io/badge/Built%20by-SonnerStudio-orange?style=for-the-badge" alt="Built by SonnerStudio"></a>
+</p>
+
+<p align="center">
   <a href="README.de.md"><img src="https://img.shields.io/badge/Lang-Deutsch-red?style=for-the-badge" alt="Deutsch"></a>
   <a href="README.en.md"><img src="https://img.shields.io/badge/Lang-English-lightgrey?style=for-the-badge" alt="English"></a>
   <a href="README.fr.md"><img src="https://img.shields.io/badge/Lang-Fran%C3%A7ais-blue?style=for-the-badge" alt="Français"></a>
@@ -40,44 +54,32 @@
   <a href="README.za.md"><img src="https://img.shields.io/badge/Lang-English%20%28ZA%29-lightgrey?style=for-the-badge" alt="English (ZA)"></a>
   <a href="README.ur-pk.md"><img src="https://img.shields.io/badge/Lang-%D8%A7%D8%B1%D8%AF%D9%88-purple?style=for-the-badge" alt="اردو"></a>
   <a href="README.run.md"><img src="https://img.shields.io/badge/Lang-RUN-blue?style=for-the-badge" alt="RUN (Runic)"></a>
-
-
-<p align="center">
-  <a href="https://www.sonnerstudio.net">SonnerStudio</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Agent (Upstream)</a>
-* **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
-* **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
-* **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
-
-</p>
-<p align="center">
-  <a href="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://github.com/NousResearch/hermes-agent"><img src="https://img.shields.io/badge/Upstream-NousResearch/hermes--agent-blueviolet?style=for-the-badge" alt="Upstream"></a>
-  <a href="https://www.sonnerstudio.net"><img src="https://img.shields.io/badge/Built%20by-SonnerStudio-orange?style=for-the-badge" alt="Built by SonnerStudio"></a>
 </p>
 
+> **Languages:** This README is available in 32 languages — [Deutsch](README.de.md), [English](README.en.md), [Français](README.fr.md), [Español](README.es.md), [Italiano](README.it.md), [Nederlands](README.nl.md), [Polski](README.pl.md), [Português](README.pt.md), [Русский](README.ru.md), [Türkçe](README.tr.md), [Ελληνικά](README.el.md), [한국어](README.ko.md), [日本語](README.ja.md), [中文](README.zh-CN.md), [繁體中文](README.tw.md), [ไทย](README.th.md), [Tiếng Việt](README.vn.md), [Čeština](README.cz.md), [Slovenčina](README.sk.md), [Magyar](README.hu.md), [Română](README.ro.md), [Suomi](README.fi.md), [Dansk](README.dk.md), [Norsk](README.no.md), [Svenska](README.se.md), [עברית](README.il.md), [हिन्दी](README.in.md), [العربية](README.sa.md), [Українська](README.ua.md), plus English variants AU/CA/UK/US/ZA, [اردو](README.ur-pk.md), and [RUN (Runic / Elder Futhark)](README.run.md). The desktop app has a built-in language picker (🌐) with all of these.
 
-> **Idiomas:** Este README está disponível em [Deutsch](README.de.md), [Français](README.fr.md), [Español](README.es.md), [Nederlands](README.nl.md), [Português](README.pt.md). A aplicação de ambiente de trabalho tem um seletor de idioma incorporado (🌐) com estes e muitos mais.
+**A SonnerStudio fork of [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research** — the self-improving AI agent, extended with a voice-driven **Hermes Secretary** and a visual **Composer-Control-HUD** for orchestrating sub-agents.
 
-**Um fork SonnerStudio do Hermes Agent da Nous Research** — o agente de IA autoaperfeiçoável, ampliado com uma **Hermes Secretária** acionada por voz e um **Composer-Control-HUD** visual para orquestrar sub-agentes.
+This fork adds:
 
-Este fork adiciona:
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time (like Hermes Agent itself).
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks to the agents, and as communicator provides a speech mode for programming via voice input and voice output, with film-quality audio output (Kokoro `df_eva`, speed 0.9). She is also the **communication interface** between the multi-agent system and the human user. Switching her on auto-arms her crew (Button 1); switching her off keeps a **manually** armed crew running.
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her as an orchestrated whole.
+- **Orchestration HUD** — four blue-bordered live panels under the composer input: *Sub-Agent Team*, *Hermes Secretary load* (`Hermes-Sekretärin Auslastung`), *Kopierte Agenten (Cloned Agents)*, and *Harmonisierung & Agentenauslastung*. Panels only appear when a real task is running — no demo placeholders.
+- **Hermes Secretary** — a voice layer that lets you talk to the agent. German TTS via **Kokoro** (`df_eva`, female, filmreif speed 0.9), STT via Whisper, and a headless microphone-level monitor (no visible terminal popup). The agent can delegate sub-agents to carry out spoken requests.
+- **Last learning success** — a compact line under the composer shows the Secretary's most recent successful learning outcome (which agent improved, topology, clone factor, units, latency) plus a **live MLX badge** displaying the model currently served by the local runtime on `:1240`. Values are real, polled from `/secretary-learning` — without real activity the panel stays empty.
+- **System RAM status** — a live strip (polls `/health` on `:1240`) shows total / free RAM and usage percent, so you can see the 16 GB Mac mini's headroom while models load. Hidden until the first reading arrives.
+- **Full-width composer** — the composer input now spans the full window width (`--composer-width: 100%`), giving long prompts and the live HUD panels more room.
+- **Model picker** — the dropdown groups the Nous models, **OpenRouter** and the category **MLX-Runtime native** with the MLX models available locally on the system's drives. Switching is instant and safe: only one backend ever runs (RAM protection on the 16 GB Mac mini); on rapid switching the **last** selected entry always wins and superseded loads abort cleanly.
+- **MLX Runtime Proxy** — a local lazy proxy (`:1240`) that serves the Kokoro TTS, Whisper STT, and MLX chat models one at a time, so the 16 GB Mac mini stays within RAM limits.
 
-- **Botões de Controlo do Composer** — quatro botões de alternância no compositor de ambiente de trabalho com cores de estado em tempo real (vermelho = inativo, amarelo = provisionamento, verde = ativo) :
-  1. **Ativar os sub-agentes** — ativa os sub-agentes de IA especializados que assumem sub-tarefas autonomamente, cada um com suas próprias capacidades especializadas, e aprendem continuamente com as tarefas e ao longo do tempo. Quando a Secretária está **desativada**, a equipa trabalha de forma autónoma: obtém as tarefas por conta própria a partir do Hermes Agent (limiar de paralelismo mais baixo, orçamento de envio automático duplicado) e reporta diretamente a ele.
-  2. **Secretária** — a gestora dos agentes: planeia e atribui tarefas, e como comunicadora fornece um modo de voz (entrada/saída de voz) com áudio de qualidade cinematográfica (Kokoro `df_eva`, velocidade 0.9). Ela é também a **interface de comunicação** entre o sistema multi-agente e o utilizador humano. Ao ativá-la, arma automaticamente a sua equipa (Botão 1); ao desativá-la, mantém-se em execução uma equipa **armada manualmente**.
-  3. **Clonagem temporária** — permite que os agentes se multipliquem temporariamente pela duração de uma tarefa para processar tarefas semelhantes simultaneamente.
-  4. **Harmonização & orquestração** — harmoniza/sincroniza ou os agentes dentro das tarefas (sem a Secretária), ou, quando a Secretária está ativa, os agentes são dirigidos por ela e harmonizados/sincronizados juntos com ela.
-- **Orchestration HUD** — quatro painéis ao vivo com borda azul por baixo da entrada do compositor: *Equipa de sub-agentes*, *Hermes Secretária (Comunicação Áudio)*, *Agentes clonados*, e *Harmonização e carga de agentes*. Os painéis só aparecem quando uma tarefa real está em execução — sem marcadores de demonstração.
-- **Hermes Secretária** — uma camada de voz que permite falar com o agente. TTS alemão via **Kokoro** (`df_eva`, feminino, velocidade cinematográfica 0.9), STT via Whisper, e um monitor de nível do microfone sem janela (sem popup de terminal visível). O agente pode delegar sub-agentes para executar pedidos falados.
-- **Equipa de aprendizagem (pontuações em direto)** — uma barra sob o compositor mostra o progresso de aprendizagem : linha superior *Hermes Agent*, *Planeador* e *Secretária*, abaixo os especialistas (pesquisa, código, análise, imagem, áudio, planeamento) em **no máximo duas linhas compactas** — nunca uma linha por especialista. Cada especialista tem o seu próprio score, o seu próprio número de decisões e a sua própria tendência. Apenas são mostrados valores reais ; sem delegação real, a barra permanece vazia.
-- **Seletor de modelo** — o menu pendente agrupa os modelos Nous, **OpenRouter** e a categoria **MLX-Runtime nativo** com os modelos MLX disponíveis localmente nos discos do sistema. A troca é instantânea e segura : apenas um backend funciona de cada vez (proteção de RAM no Mac mini de 16 GB), e numa troca rápida, a **última** entrada selecionada ganha sempre ; os carregamentos ultrapassados abortam limpamente.
-- **MLX Runtime Proxy** — um proxy local preguiçoso (`:1240`) que serve o TTS Kokoro, o STT Whisper e os modelos de chat MLX um de cada vez, para que o Mac mini de 16 GB se mantenha dentro dos limites de RAM.
-
-> **Nota:** O runtime MLX, o TTS alemão Kokoro e o pipeline de voz da Hermes Secretária são otimizados para Apple Silicon (macOS). Veja `plugins/hermes-sekretaerin/` para configuração.
+> **Note:** The MLX runtime, Kokoro German TTS, and the Hermes Secretary voice pipeline are tuned for Apple Silicon (macOS). See `plugins/hermes-sekretaerin/` for setup.
 
 ---
 
-## Instalação Rápida
+## Quick Install
 
 ### Linux, macOS, WSL2, Termux
 
@@ -85,68 +87,68 @@ Este fork adiciona:
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 ```
 
-### Windows (nativo, PowerShell)
+### Windows (native, PowerShell)
 
-> **Atenção:** O Windows nativo executa o Hermes sem WSL — CLI, gateway, TUI e ferramentas funcionam nativamente. Se preferir usar WSL2, o comando de uma linha Linux/macOS acima também funciona lá. Encontrou um bug? Por favor [registre issues](https://github.com/NousResearch/hermes-agent/issues).
+> **Heads up:** Native Windows runs Hermes without WSL — CLI, gateway, TUI, and tools all work natively. If you'd rather use WSL2, the Linux/macOS one-liner above works there too. Found a bug? Please [file issues](https://github.com/NousResearch/hermes-agent/issues).
 
-Execute isto no PowerShell:
+Run this in PowerShell:
 
 ```powershell
 iex (irm https://hermes-agent.nousresearch.com/install.ps1)
 ```
 
-O instalador trata de tudo: uv, Python 3.11, Node.js, ripgrep, ffmpeg, **e um Git Bash portátil** (MinGit, extraído para `%LOCALAPPDATA%\hermes\git` — sem necessidade de admin, completamente isolado de qualquer instalação de Git do sistema). O Hermes usa este Git Bash integrado para executar comandos de shell.
+The installer handles everything: uv, Python 3.11, Node.js, ripgrep, ffmpeg, **and a portable Git Bash** (MinGit, unpacked to `%LOCALAPPDATA%\hermes\git` — no admin required, completely isolated from any system Git install). Hermes uses this bundled Git Bash to run shell commands.
 
-Se já tiver o Git instalado, o instalador deteta-o e usa esse em vez. Caso contrário, um download MinGit de ~45MB é tudo o que precisa — não toca nem interfere com qualquer Git do sistema.
+If you already have Git installed, the installer detects it and uses that instead. Otherwise a ~45MB MinGit download is all you need — it won't touch or interfere with any system Git.
 
-> **Android / Termux:** O caminho manual testado está documentado no [guia Termux](https://hermes-agent.nousresearch.com/docs/getting-started/termux). No Termux, o Hermes instala um extra curado `.[termux]` porque o extra completo `.[all]` atualmente puxa dependências de voz incompatíveis com Android.
+> **Android / Termux:** The tested manual path is documented in the [Termux guide](https://hermes-agent.nousresearch.com/docs/getting-started/termux). On Termux, Hermes installs a curated `.[termux]` extra because the full `.[all]` extra currently pulls Android-incompatible voice dependencies.
 >
-> **Windows:** O Windows nativo é totalmente suportado — o comando de uma linha PowerShell acima instala tudo. Se preferir usar WSL2, o comando Linux funciona lá também. A instalação nativa do Windows fica em `%LOCALAPPDATA%\hermes`; o WSL2 instala em `~/.hermes` tal como no Linux.
+> **Windows:** Native Windows is fully supported — the PowerShell one-liner above installs everything. If you'd rather use WSL2, the Linux command works there too. Native Windows install lives under `%LOCALAPPDATA%\hermes`; WSL2 installs under `~/.hermes` as on Linux.
 
 ---
 
-## Configuração da Hermes Secretária (extensão SonnerStudio)
+## Hermes Secretary Setup (SonnerStudio extension)
 
-A camada de voz encontra-se em `plugins/hermes-sekretaerin/`:
+The voice layer lives in `plugins/hermes-sekretaerin/`:
 
 ```bash
 bash plugins/hermes-sekretaerin/setup.sh
 ```
 
-Isto instala:
-- `mlx-proxy.py` como um daemon launchd (serve modelos TTS/STT/MLX em `:1240`)
-- `mic-level.py` como um LaunchAgent sem janela (monitor de nível do microfone, sem janela de terminal)
-- `kokoro-tts-server.py` (TTS alemão Kokoro, `df_eva`)
+This installs:
+- `mlx-proxy.py` as a launchd daemon (serves TTS/STT/MLX models on `:1240`)
+- `mic-level.py` as a headless LaunchAgent (microphone level monitor, no terminal window)
+- `kokoro-tts-server.py` (Kokoro German TTS, `df_eva`)
 
-**Compilar o Kokoro (uma vez):** veja `plugins/hermes-sekretaerin/BUILD_kokoro.md`. Requer cabeçalhos `cmake`, `espeak-ng`, e os submódulos `ggml`/`highway`.
+**Build Kokoro (one-time):** see `plugins/hermes-sekretaerin/BUILD_kokoro.md`. Requires `cmake`, `espeak-ng` headers, and the `ggml`/`highway` submodules.
 
-**Permissão do microfone:** conceda acesso do macOS *Configurações do Sistema → Privacidade e Segurança → Microfone* ao helper uma vez.
+**Microphone permission:** grant macOS *System Settings → Privacy & Security → Microphone* access to the helper once.
 
 ---
 
-Após a instalação:
+After installation:
 
 ```bash
-source ~/.bashrc    # recarregar o shell (ou: source ~/.zshrc)
-hermes              # começar a conversar!
+source ~/.bashrc    # reload shell (or: source ~/.zshrc)
+hermes              # start chatting!
 ```
 
-### Resolução de Problemas
+### Troubleshooting
 
-#### O Windows Defender ou antivírus assinala o `uv.exe` como malware
+#### Windows Defender or antivirus flags `uv.exe` as malware
 
-Se o seu antivírus (Bitdefender, Windows Defender, etc.) colocar em quarentena o `uv.exe` da pasta `bin` do Hermes (`%LOCALAPPDATA%\hermes\bin\uv.exe`), isto é um **falso positivo**. O ficheiro é o `uv` da Astral — o gestor de pacotes Python em Rust que o Hermes inclui para gerir o seu ambiente Python. Motores de antivírus baseados em ML comumente assinalam binários Rust não assinados que descarregam e instalam pacotes.
+If your antivirus (Bitdefender, Windows Defender, etc.) quarantines `uv.exe` from the Hermes `bin` folder (`%LOCALAPPDATA%\hermes\bin\uv.exe`), this is a **false positive**. The file is Astral's `uv` — the Rust Python package manager Hermes bundles to manage its Python environment. ML-based antivirus engines commonly flag unsigned Rust binaries that download and install packages.
 
-**Para verificar se a sua cópia é autêntica:**
+**To verify your copy is authentic:**
 
 ```powershell
-# Instalar GitHub CLI se necessário
+# Install GitHub CLI if needed
 winget install --id GitHub.cli
 
-# Login no GitHub
+# Login to GitHub
 gh auth login
 
-# Executar verificação
+# Run verification
 $uv = "$env:LOCALAPPDATA\hermes\bin\uv.exe"
 $ver = (& $uv --version).Split(' ')[1]
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -157,137 +159,137 @@ Expand-Archive $zip "$env:TEMP\uv_x" -Force
 (Get-FileHash "$env:TEMP\uv_x\uv.exe").Hash -eq (Get-FileHash $uv).Hash
 ```
 
-Se a atestação disser "Verification succeeded" e a última linha imprimir `True`, está tudo bem.
+If attestation says "Verification succeeded" and the last line prints `True`, you're good.
 
-**Para adicionar o Hermes à lista segura:**
-- **Windows Defender:** Executar PowerShell como Admin → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
-- **Bitdefender:** Adicionar uma exceção na consola Bitdefender (Protection > Antivirus > Settings > Manage Exceptions)
-- Adicione à lista segura a **pasta**, não o hash do ficheiro — o Hermes atualiza o `uv` e o hash muda a cada versão
+**To whitelist Hermes:**
+- **Windows Defender:** Run PowerShell as Admin → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
+- **Bitdefender:** Add an exception in the Bitdefender console (Protection > Antivirus > Settings > Manage Exceptions)
+- Whitelist the **folder**, not the file hash — Hermes updates `uv` and the hash changes every version
 
-Para mais contexto, veja os relatórios upstream da Astral: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
+For more context, see the upstream Astral reports: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
 
 ---
 
-## Para Começar
+## Getting Started
 
 ```bash
-hermes              # CLI interativa — iniciar uma conversa
-hermes model        # Escolher o seu fornecedor e modelo LLM
-hermes tools        # Configurar quais ferramentas estão ativas
-hermes config set   # Definir valores individuais de configuração
-hermes config get   # Imprimir valores individuais de configuração
-hermes gateway      # Iniciar o gateway de mensagens (Telegram, Discord, etc.)
-hermes setup        # Executar o assistente de configuração completo (configura tudo de uma vez)
-hermes claw migrate # Migrar do OpenClaw (se vier do OpenClaw)
-hermes update       # Atualizar para a versão mais recente
-hermes doctor       # Diagnosticar quaisquer problemas
+hermes              # Interactive CLI — start a conversation
+hermes model        # Choose your LLM provider and model
+hermes tools        # Configure which tools are enabled
+hermes config set   # Set individual config values
+hermes config get   # Print individual config values
+hermes gateway      # Start the messaging gateway (Telegram, Discord, etc.)
+hermes setup        # Run the full setup wizard (configures everything at once)
+hermes claw migrate # Migrate from OpenClaw (if coming from OpenClaw)
+hermes update       # Update to the latest version
+hermes doctor       # Diagnose any issues
 ```
 
-📖 **[Documentação completa →](https://hermes-agent.nousresearch.com/docs/)**
+📖 **[Full documentation →](https://hermes-agent.nousresearch.com/docs/)**
 
 ---
 
-## Evite colecionar chaves de API — Nous Portal
+## Skip the API-key collection — Nous Portal
 
-O Hermes funciona com qualquer fornecedor que quiser — isso não muda. Mas se preferir não colecionar cinco chaves de API separadas para o modelo, pesquisa web, geração de imagens, TTS e um navegador na nuvem, o **[Nous Portal](https://portal.nousresearch.com)** cobre todos sob uma subscrição:
+Hermes works with whatever provider you want — that's not changing. But if you'd rather not collect five separate API keys for the model, web search, image generation, TTS, and a cloud browser, **[Nous Portal](https://portal.nousresearch.com)** covers all of them under one subscription:
 
-- **300+ modelos** — escolha qualquer um com `/model <nome>`
-- **Tool Gateway** — pesquisa web (Firecrawl), geração de imagens (FAL), texto-para-voz (OpenAI), navegador na nuvem (Browser Use), todos encaminhados através da sua subscrição. Sem contas extra.
+- **300+ models** — pick any of them with `/model <name>`
+- **Tool Gateway** — web search (Firecrawl), image generation (FAL), text-to-speech (OpenAI), cloud browser (Browser Use), all routed through your sub. No extra accounts.
 
-Um comando a partir de uma instalação nova:
+One command from a fresh install:
 
 ```bash
 hermes setup --portal
 ```
 
-Isso faz login via OAuth, define a Nous como seu fornecedor e ativa o Tool Gateway. Verifique o que está ligado a qualquer momento com `hermes portal info`. Detalhes completos na [página de documentação do Tool Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway).
+That logs you in via OAuth, sets Nous as your provider, and turns on the Tool Gateway. Check what's wired up any time with `hermes portal info`. Full details on the [Tool Gateway docs page](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway).
 
-Pode ainda trazer as suas próprias chaves por ferramenta quando quiser — o gateway é por backend, não tudo-ou-nada.
-
----
-
-## Referência Rápida: CLI vs Mensagens
-
-O Hermes tem dois pontos de entrada: inicie a interface de terminal com `hermes`, ou execute o gateway e fale com ele a partir do Telegram, Discord, Slack, WhatsApp, Signal ou Email. Assim que estiver numa conversa, muitos comandos de barra são partilhados em ambas as interfaces.
-
-| Ação                               | CLI                                           | Plataformas de mensagens                                                          |
-| ---------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
-| Iniciar conversa                   | `hermes`                                      | Executar `hermes gateway setup` + `hermes gateway start`, depois envie uma mensagem ao bot |
-| Iniciar conversa nova              | `/new` ou `/reset`                            | `/new` ou `/reset`                                                               |
-| Mudar modelo                       | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
-| Definir uma personalidade          | `/personality [name]`                         | `/personality [name]`                                                            |
-| Repetir ou desfazer a última ronda | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
-| Comprimir contexto / ver uso       | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
-| Navegar skills                     | `/skills` ou `/<skill-name>`                  | `/<skill-name>`                                                                  |
-| Interromper trabalho atual         | `Ctrl+C` ou enviar uma nova mensagem          | `/stop` ou enviar uma nova mensagem                                              |
-| Estado específico da plataforma    | `/platforms`                                  | `/status`, `/sethome`                                                            |
-
-Para as listas completas de comandos, veja o [guia CLI](https://hermes-agent.nousresearch.com/docs/user-guide/cli) e o [guia do Messaging Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging).
+You can still bring your own keys per-tool whenever you want — the gateway is per-backend, not all-or-nothing.
 
 ---
 
-## Documentação
+## CLI vs Messaging Quick Reference
 
-Toda a documentação encontra-se em **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs)**:
+Hermes has two entry points: start the terminal UI with `hermes`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
 
-| Secção                                                                                              | O que é abordado                                           |
+| Action                         | CLI                                           | Messaging platforms                                                              |
+| ------------------------------ | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| Start chatting                 | `hermes`                                      | Run `hermes gateway setup` + `hermes gateway start`, then send the bot a message |
+| Start fresh conversation       | `/new` or `/reset`                            | `/new` or `/reset`                                                               |
+| Change model                   | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
+| Set a personality              | `/personality [name]`                         | `/personality [name]`                                                            |
+| Retry or undo the last turn    | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
+| Compress context / check usage | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
+| Browse skills                  | `/skills` or `/<skill-name>`                  | `/<skill-name>`                                                                  |
+| Interrupt current work         | `Ctrl+C` or send a new message                | `/stop` or send a new message                                                    |
+| Platform-specific status       | `/platforms`                                  | `/status`, `/sethome`                                                            |
+
+For the full command lists, see the [CLI guide](https://hermes-agent.nousresearch.com/docs/user-guide/cli) and the [Messaging Gateway guide](https://hermes-agent.nousresearch.com/docs/user-guide/messaging).
+
+---
+
+## Documentation
+
+All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
+
+| Section                                                                                             | What's Covered                                             |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| [Quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)                 | Instalar → configurar → primeira conversa em 2 minutos     |
-| [CLI Usage](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                              | Comandos, atalhos, personalidades, sessões                 |
-| [Configuration](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                | Ficheiro de configuração, fornecedores, modelos, opções    |
+| [Quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)                 | Install → setup → first conversation in 2 minutes          |
+| [CLI Usage](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                              | Commands, keybindings, personalities, sessions             |
+| [Configuration](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                | Config file, providers, models, all options                |
 | [Messaging Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging)                | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant |
-| [Security](https://hermes-agent.nousresearch.com/docs/user-guide/security)                          | Aprovação de comandos, emparelhamento DM, isolamento       |
-| [Tools & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ ferramentas, sistema de toolset, backends de terminal  |
-| [Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)              | Memória procedural, Skills Hub, criar skills               |
-| [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                     | Memória persistente, perfis de utilizador, boas práticas   |
-| [MCP Integration](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | Ligar qualquer servidor MCP para capacidades estendidas    |
-| [Cron Scheduling](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)              | Tarefas agendadas com entrega por plataforma               |
-| [Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)       | Contexto de projeto que molda cada conversa                |
-| [Architecture](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)             | Estrutura do projeto, ciclo do agente, classes-chave       |
-| [Contributing](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)             | Configuração de desenvolvimento, processo PR, estilo       |
-| [CLI Reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                  | Todos os comandos e flags                                  |
-| [Environment Variables](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) | Referência completa de variáveis de ambiente               |
+| [Security](https://hermes-agent.nousresearch.com/docs/user-guide/security)                          | Command approval, DM pairing, container isolation          |
+| [Tools & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ tools, toolset system, terminal backends               |
+| [Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)              | Procedural memory, Skills Hub, creating skills             |
+| [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                     | Persistent memory, user profiles, best practices           |
+| [MCP Integration](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | Connect any MCP server for extended capabilities           |
+| [Cron Scheduling](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)              | Scheduled tasks with platform delivery                     |
+| [Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)       | Project context that shapes every conversation             |
+| [Architecture](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)             | Project structure, agent loop, key classes                 |
+| [Contributing](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)             | Development setup, PR process, code style                  |
+| [CLI Reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                  | All commands and flags                                     |
+| [Environment Variables](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) | Complete env var reference                                 |
 
 ---
 
-## Migração do OpenClaw
+## Migrating from OpenClaw
 
-Se vem do OpenClaw, o Hermes pode importar automaticamente as suas definições, memórias, skills e chaves de API.
+If you're coming from OpenClaw, Hermes can automatically import your settings, memories, skills, and API keys.
 
-**Durante a configuração inicial:** O assistente de configuração (`hermes setup`) deteta automaticamente `~/.openclaw` e oferece migrar antes de a configuração começar.
+**During first-time setup:** The setup wizard (`hermes setup`) automatically detects `~/.openclaw` and offers to migrate before configuration begins.
 
-**A qualquer momento após a instalação:**
+**Anytime after install:**
 
 ```bash
-hermes claw migrate              # Migração interativa (preset completo)
-hermes claw migrate --dry-run    # Pré-visualizar o que seria migrado
-hermes claw migrate --preset user-data   # Migrar sem segredos
-hermes claw migrate --overwrite  # Sobrescrever conflitos existentes
+hermes claw migrate              # Interactive migration (full preset)
+hermes claw migrate --dry-run    # Preview what would be migrated
+hermes claw migrate --preset user-data   # Migrate without secrets
+hermes claw migrate --overwrite  # Overwrite existing conflicts
 ```
 
-O que é importado:
+What gets imported:
 
-- **SOUL.md** — ficheiro de persona
-- **Memories** — entradas MEMORY.md e USER.md
-- **Skills** — skills criadas pelo utilizador → `~/.hermes/skills/openclaw-imports/`
-- **Command allowlist** — padrões de aprovação
-- **Messaging settings** — configs de plataforma, utilizadores permitidos, diretório de trabalho
-- **API keys** — segredos na lista segura (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
-- **TTS assets** — ficheiros áudio do workspace
-- **Workspace instructions** — AGENTS.md (com `--workspace-target`)
+- **SOUL.md** — persona file
+- **Memories** — MEMORY.md and USER.md entries
+- **Skills** — user-created skills → `~/.hermes/skills/openclaw-imports/`
+- **Command allowlist** — approval patterns
+- **Messaging settings** — platform configs, allowed users, working directory
+- **API keys** — allowlisted secrets (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
+- **TTS assets** — workspace audio files
+- **Workspace instructions** — AGENTS.md (with `--workspace-target`)
 
-Veja `hermes claw migrate --help` para todas as opções, ou use a skill `openclaw-migration` para uma migração interativa guiada por agente com pré-visualizações dry-run.
+See `hermes claw migrate --help` for all options, or use the `openclaw-migration` skill for an interactive agent-guided migration with dry-run previews.
 
 ---
 
-## Contribuindo
+## Contributing
 
-Congratulamo-nos com contribuições! Veja o [Guia de Contribuição](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) para configuração de desenvolvimento, estilo de código e processo PR.
+We welcome contributions! See the [Contributing Guide](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) for development setup, code style, and PR process.
 
-Início rápido para contribuidores — use o instalador padrão, depois trabalhe a partir do
-checkout git completo que ele cria em `$HERMES_HOME/hermes-agent` (geralmente
-`~/.hermes/hermes-agent`). Isto corresponde à estrutura usada por `hermes update`, o
-venv gerido, dependências preguiçosas, gateway e ferramentas de docs.
+Quick start for contributors — use the standard installer, then work from the
+full git checkout it creates at `$HERMES_HOME/hermes-agent` (usually
+`~/.hermes/hermes-agent`). This matches the layout used by `hermes update`, the
+managed venv, lazy dependencies, gateway, and docs tooling.
 
 ```bash
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
@@ -296,12 +298,12 @@ uv pip install -e ".[all,dev]"
 scripts/run_tests.sh
 ```
 
-Fallback de clone manual (para clones descartáveis/CI onde intencionalmente não
-quer o layout de instalação gerido):
+Manual clone fallback (for throwaway clones/CI where you intentionally do not
+want the managed install layout):
 
-Crie o venv fora da árvore de código clonada — um venv dentro do diretório
-de onde o agente opera pode ser apagado por um comando de caminho relativo que o
-agente executa contra o seu próprio checkout, destruindo o runtime em execução a meio da sessão.
+Create the venv outside the cloned source tree — a venv inside the directory
+the agent operates from can be wiped by a relative-path command the agent runs
+against its own checkout, destroying the running runtime mid-session.
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -313,18 +315,18 @@ scripts/run_tests.sh
 
 ---
 
-## Comunidade
+## Community
 
 - 💬 [Discord](https://discord.gg/NousResearch)
 - 📚 [Skills Hub](https://agentskills.io)
 - 🐛 [Issues](https://github.com/NousResearch/hermes-agent/issues)
-- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — servidor MCP de controlo de ambiente de trabalho Linux para o Hermes e outros anfitriões MCP, com árvores de acessibilidade AT-SPI, entrada Wayland/X11, capturas de ecrã e direcionamento de janelas do compositor.
-- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Ponte comunitária WeChat: Execute o Hermes Agent e o OpenClaw na mesma conta WeChat.
+- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — Linux desktop-control MCP server for Hermes and other MCP hosts, with AT-SPI accessibility trees, Wayland/X11 input, screenshots, and compositor window targeting.
+- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Community WeChat bridge: Run Hermes Agent and OpenClaw on the same WeChat account.
 
 ---
 
-## Licença
+## License
 
-MIT — veja [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
 
-Construído por [Nous Research](https://nousresearch.com).
+Built by [Nous Research](https://nousresearch.com).

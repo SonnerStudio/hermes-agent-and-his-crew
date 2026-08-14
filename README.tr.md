@@ -2,8 +2,22 @@
   <img src="assets/banner.png" alt="SonnerStudio — Hermes Agent and his Crew" width="100%">
 </p>
 
-# Hermes Agent ve Ekibi (Sub-Agentler ile) ☤
+# Hermes Agent and his Crew (with Sub-Agents) ☤
 
+<p align="center">
+  <a href="https://www.sonnerstudio.net">SonnerStudio</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Agent (Upstream)</a>
+* **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
+* **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
+* **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
+
+</p>
+<p align="center">
+  <a href="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/NousResearch/hermes-agent"><img src="https://img.shields.io/badge/Upstream-NousResearch/hermes--agent-blueviolet?style=for-the-badge" alt="Upstream"></a>
+  <a href="https://www.sonnerstudio.net"><img src="https://img.shields.io/badge/Built%20by-SonnerStudio-orange?style=for-the-badge" alt="Built by SonnerStudio"></a>
+</p>
+
+<p align="center">
   <a href="README.de.md"><img src="https://img.shields.io/badge/Lang-Deutsch-red?style=for-the-badge" alt="Deutsch"></a>
   <a href="README.en.md"><img src="https://img.shields.io/badge/Lang-English-lightgrey?style=for-the-badge" alt="English"></a>
   <a href="README.fr.md"><img src="https://img.shields.io/badge/Lang-Fran%C3%A7ais-blue?style=for-the-badge" alt="Français"></a>
@@ -40,44 +54,32 @@
   <a href="README.za.md"><img src="https://img.shields.io/badge/Lang-English%20%28ZA%29-lightgrey?style=for-the-badge" alt="English (ZA)"></a>
   <a href="README.ur-pk.md"><img src="https://img.shields.io/badge/Lang-%D8%A7%D8%B1%D8%AF%D9%88-purple?style=for-the-badge" alt="اردو"></a>
   <a href="README.run.md"><img src="https://img.shields.io/badge/Lang-RUN-blue?style=for-the-badge" alt="RUN (Runic)"></a>
-
-
-<p align="center">
-  <a href="https://www.sonnerstudio.net">SonnerStudio</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Agent (Upstream)</a>
-* **Google AI Studio** (Gemini) — kostenlose Modelle (flash/pro) via API-Key
-* **Groq** — kostenlose Modelle (llama-3.3-70b, mixtral-8x7b, gemma2-9b) via API-Key
-* **Lokales Vision-Modell** (Qwen2-VL 2B, MLX) — der Bild-Spezialist analysiert Bilder vollständig lokal, ohne Cloud
-
-</p>
-<p align="center">
-  <a href="https://github.com/SonnerStudio/hermes-agent-and-his-crew/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://github.com/NousResearch/hermes-agent"><img src="https://img.shields.io/badge/Upstream-NousResearch/hermes--agent-blueviolet?style=for-the-badge" alt="Upstream"></a>
-  <a href="https://www.sonnerstudio.net"><img src="https://img.shields.io/badge/Built%20by-SonnerStudio-orange?style=for-the-badge" alt="Built by SonnerStudio"></a>
 </p>
 
+> **Languages:** This README is available in 32 languages — [Deutsch](README.de.md), [English](README.en.md), [Français](README.fr.md), [Español](README.es.md), [Italiano](README.it.md), [Nederlands](README.nl.md), [Polski](README.pl.md), [Português](README.pt.md), [Русский](README.ru.md), [Türkçe](README.tr.md), [Ελληνικά](README.el.md), [한국어](README.ko.md), [日本語](README.ja.md), [中文](README.zh-CN.md), [繁體中文](README.tw.md), [ไทย](README.th.md), [Tiếng Việt](README.vn.md), [Čeština](README.cz.md), [Slovenčina](README.sk.md), [Magyar](README.hu.md), [Română](README.ro.md), [Suomi](README.fi.md), [Dansk](README.dk.md), [Norsk](README.no.md), [Svenska](README.se.md), [עברית](README.il.md), [हिन्दी](README.in.md), [العربية](README.sa.md), [Українська](README.ua.md), plus English variants AU/CA/UK/US/ZA, [اردو](README.ur-pk.md), and [RUN (Runic / Elder Futhark)](README.run.md). The desktop app has a built-in language picker (🌐) with all of these.
 
-> **Diller:** Bu README [Türkçe](README.tr.md), [Deutsch](README.de.md), [Français](README.fr.md), [Español](README.es.md), [Nederlands](README.nl.md) dillerinde mevcuttur. Masaüstü uygulamasında bu ve daha fazla dil için yerleşik bir dil seçici (🌐) bulunur.
+**A SonnerStudio fork of [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research** — the self-improving AI agent, extended with a voice-driven **Hermes Secretary** and a visual **Composer-Control-HUD** for orchestrating sub-agents.
 
-**Nous Research Hermes Agent'ın SonnerStudio çatalı** — kendi kendine gelişen yapay zeka ajanı; sesli çalışan bir **Hermes Sekreteri** ve Sub-Agentleri düzenlemek için görsel bir **Composer-Control-HUD** ile genişletilmiştir.
+This fork adds:
 
-Bu çatal şunları ekler:
+- **Composer Control Buttons** — four toggle buttons in the desktop composer with live state colors (red = inactive, yellow = provisioning, green = active):
+  1. **Sub-Agenten aktivieren** — activates the specialized AI sub-agents that autonomously take on sub-tasks, each with its own specialist skills, and learn continuously from tasks and over time (like Hermes Agent itself).
+  2. **Secretary / Sekretärin** — the manager of the agents: plans and assigns tasks to the agents, and as communicator provides a speech mode for programming via voice input and voice output, with film-quality audio output (Kokoro `df_eva`, speed 0.9). She is also the **communication interface** between the multi-agent system and the human user. Switching her on auto-arms her crew (Button 1); switching her off keeps a **manually** armed crew running.
+  3. **Temporäres Klonen** — lets agents temporarily multiply for the duration of a task to process similar tasks simultaneously.
+  4. **Harmonisierung & Orchestrierung** — either harmonizes/synchronizes the agents within the tasks (without the Secretary), or, when the Secretary is on, the agents are steered by the Secretary and harmonized/synchronized together with her as an orchestrated whole.
+- **Orchestration HUD** — four blue-bordered live panels under the composer input: *Sub-Agent Team*, *Hermes Secretary load* (`Hermes-Sekretärin Auslastung`), *Kopierte Agenten (Cloned Agents)*, and *Harmonisierung & Agentenauslastung*. Panels only appear when a real task is running — no demo placeholders.
+- **Hermes Secretary** — a voice layer that lets you talk to the agent. German TTS via **Kokoro** (`df_eva`, female, filmreif speed 0.9), STT via Whisper, and a headless microphone-level monitor (no visible terminal popup). The agent can delegate sub-agents to carry out spoken requests.
+- **Last learning success** — a compact line under the composer shows the Secretary's most recent successful learning outcome (which agent improved, topology, clone factor, units, latency) plus a **live MLX badge** displaying the model currently served by the local runtime on `:1240`. Values are real, polled from `/secretary-learning` — without real activity the panel stays empty.
+- **System RAM status** — a live strip (polls `/health` on `:1240`) shows total / free RAM and usage percent, so you can see the 16 GB Mac mini's headroom while models load. Hidden until the first reading arrives.
+- **Full-width composer** — the composer input now spans the full window width (`--composer-width: 100%`), giving long prompts and the live HUD panels more room.
+- **Model picker** — the dropdown groups the Nous models, **OpenRouter** and the category **MLX-Runtime native** with the MLX models available locally on the system's drives. Switching is instant and safe: only one backend ever runs (RAM protection on the 16 GB Mac mini); on rapid switching the **last** selected entry always wins and superseded loads abort cleanly.
+- **MLX Runtime Proxy** — a local lazy proxy (`:1240`) that serves the Kokoro TTS, Whisper STT, and MLX chat models one at a time, so the 16 GB Mac mini stays within RAM limits.
 
-- **Composer Control Buttons** — masaüstü bestecide canlı durum renkleriyle (kırmızı = pasif, sarı = provisioning, yeşil = aktif) dört değiştirme düğmesi :
-  1. **Sub-agentları etkinleştir** — özel uzmanlaşmış AI sub-agentlarını etkinleştirir; her biri kendi uzman yetenekleriyle alt görevleri bağımsız olarak üstlenir ve görevlerden ve zamanla sürekli öğrenir. Sekreter **kapalıyken**, ekip özerk olarak çalışır: görevleri Hermes Agent'ten kendisi alır (daha düşük paralel eşik, iki katı kendi bütçesi) ve doğrudan ona rapor verir.
-  2. **Sekreter** — ajanların yöneticisi: görevleri planlar ve atar ve bir iletişimci olarak sinematik kalitede ses (ses girişi/çıkışı) sunar (Kokoro `df_eva`, hız 0.9). Aynı zamanda çoklu-ajan sistemi ile insan kullanıcı arasındaki **iletişim arayüzüdür**. Açıldığında ekibini (Düğme 1) otomatik olarak etkinleştirir; tekrar kapatıldığında **elle** etkinleştirilmiş bir ekip kalır.
-  3. **Geçici klonlama** — ajanların bir görev süresince geçici olarak çoğalmasını sağlar, böylece benzer görevleri eşzamanlı olarak işler.
-  4. **Uyumlaştırma & orkestrasyon** — ajanları ya görevler içinde (Sekreter olmadan) uyumlar/senkronize eder, ya da Sekreter açıksa ajanlar onun tarafından yönetilir ve onunla birlikte uyumlaştırılır/senkronize edilir.
-- **Orchestration HUD** — besteci giriş alanının altında dört mavi çerçeveli canlı panel: *Alt ajan ekibi*, *Hermes Sekreteri (Sesli İletişim)*, *Klonlanmış ajanlar (Cloned Agents)* ve *Uyum ve ajan yükü*. Paneller yalnızca gerçek bir görev çalışırken görünür — demo yer tutucu yok.
-- **Hermes Sekreteri** — ajanla konuşmanızı sağlayan bir ses katmanı. Almanca TTS **Kokoro** üzerinden (`df_eva`, kadın, sinematik hız 0.9), STT Whisper üzerinden ve başsız (headless) bir mikrofon seviye izleyicisi (görünür terminal penceresi yok). Ajan, sözlü istekleri yerine getirmek için sub-agentler görevlendirebilir.
-- **Öğrenen ekip (canlı skorlar)** — bestecinin altındaki çubuk öğrenme ilerlemesini gösterir: üst sıra *Hermes Agent*, *Planlayıcı* ve *Sekreter*, altında uzmanlar (Araştırma, Kod, Analiz, Görsel, Ses, Planlama) **en fazla iki kompakt satırda** — asla uzman başına bir satır değil. Her uzman kendi skorunu, kendi karar sayısını ve kendi trendini tutar. Yalnızca gerçek değerler gösterilir; gerçek bir delegasyon olmadan çubuk boş kalır.
-- **Model seçici** — açılır menü Nous modellerini, **OpenRouter**'ı ve sistem disklerinde yerel olarak bulunan MLX modelleriyle **MLX-Runtime nativ** kategorisini bir araya getirir. Geçiş anında ve güvenlidir: her zaman yalnızca bir backend çalışır (16 GB Mac mini'de RAM koruması) ve hızlı geçişte her zaman **en son** seçilen giriş kazanır; eski yüklemeler temiz şekilde sonlanır.
-- **MLX Runtime Proxy** — Kokoro TTS, Whisper STT ve MLX sohbet modellerini tek seferde bir tane sunan yerel bir tembel (lazy) vekil (`:1240`), böylece 16 GB Mac mini RAM sınırları içinde kalır.
-
-> **Not:** MLX çalışma zamanı, Kokoro Almanca TTS ve Hermes Sekreteri ses hattı Apple Silicon (macOS) için ayarlanmıştır. Kurulum için `plugins/hermes-sekretaerin/` bölümüne bakın.
+> **Note:** The MLX runtime, Kokoro German TTS, and the Hermes Secretary voice pipeline are tuned for Apple Silicon (macOS). See `plugins/hermes-sekretaerin/` for setup.
 
 ---
 
-## Hızlı Kurulum
+## Quick Install
 
 ### Linux, macOS, WSL2, Termux
 
@@ -85,59 +87,59 @@ Bu çatal şunları ekler:
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 ```
 
-### Windows (yerel, PowerShell)
+### Windows (native, PowerShell)
 
-> **Dikkat:** Yerel Windows üzerinde Hermes WSL olmadan çalışır — CLI, gateway, TUI ve araçların tümü yerel olarak çalışır. WSL2 kullanmayı tercih ederseniz, yukarıdaki Linux/macOS tek satırlık komutu orada da çalışır. Bir hata buldunuz mu? Lütfen [issue açın](https://github.com/NousResearch/hermes-agent/issues).
+> **Heads up:** Native Windows runs Hermes without WSL — CLI, gateway, TUI, and tools all work natively. If you'd rather use WSL2, the Linux/macOS one-liner above works there too. Found a bug? Please [file issues](https://github.com/NousResearch/hermes-agent/issues).
 
-PowerShell'de şunu çalıştırın:
+Run this in PowerShell:
 
 ```powershell
 iex (irm https://hermes-agent.nousresearch.com/install.ps1)
 ```
 
-Kurulum aracı her şeyi halleder: uv, Python 3.11, Node.js, ripgrep, ffmpeg ve **taşınabilir bir Git Bash** (MinGit, `%LOCALAPPDATA%\hermes\git` konumuna açılır — yönetici (admin) gerektirmez, sistemdeki hiçbir Git kurulumundan tamamen izole). Hermes, shell komutlarını çalıştırmak için bu paketlenmiş Git Bash'i kullanır.
+The installer handles everything: uv, Python 3.11, Node.js, ripgrep, ffmpeg, **and a portable Git Bash** (MinGit, unpacked to `%LOCALAPPDATA%\hermes\git` — no admin required, completely isolated from any system Git install). Hermes uses this bundled Git Bash to run shell commands.
 
-Git zaten kuruluysa, kurulum aracı bunu algılar ve bunun yerine onu kullanır. Aksi halde ihtiyacınız olan tek şey ~45 MB'lık bir MinGit indirmesidir — sistemdeki hiçbir Git'i değiştirmez veya etkilemez.
+If you already have Git installed, the installer detects it and uses that instead. Otherwise a ~45MB MinGit download is all you need — it won't touch or interfere with any system Git.
 
-> **Android / Termux:** Test edilmiş manuel yol [Termux rehberinde](https://hermes-agent.nousresearch.com/docs/getting-started/termux) belgelenmiştir. Termux üzerinde Hermes, eksiksiz `.[all]` extra'sı şu anda Android ile uyumsuz ses bağımlılıklarını da çektiği için özenle seçilmiş bir `.[termux]` extra'sı kurar.
+> **Android / Termux:** The tested manual path is documented in the [Termux guide](https://hermes-agent.nousresearch.com/docs/getting-started/termux). On Termux, Hermes installs a curated `.[termux]` extra because the full `.[all]` extra currently pulls Android-incompatible voice dependencies.
 >
-> **Windows:** Yerel Windows tam olarak desteklenir — yukarıdaki PowerShell tek satırlık komutu her şeyi kurar. WSL2 kullanmayı tercih ederseniz, Linux komutu orada da çalışır. Yerel Windows kurulumu `%LOCALAPPDATA%\hermes` altındadır; WSL2 ise Linux'ta olduğu gibi `~/.hermes` altına kurulur.
+> **Windows:** Native Windows is fully supported — the PowerShell one-liner above installs everything. If you'd rather use WSL2, the Linux command works there too. Native Windows install lives under `%LOCALAPPDATA%\hermes`; WSL2 installs under `~/.hermes` as on Linux.
 
 ---
 
-## Hermes Sekreteri Kurulumu (SonnerStudio uzantısı)
+## Hermes Secretary Setup (SonnerStudio extension)
 
-Ses katmanı `plugins/hermes-sekretaerin/` içinde bulunur:
+The voice layer lives in `plugins/hermes-sekretaerin/`:
 
 ```bash
 bash plugins/hermes-sekretaerin/setup.sh
 ```
 
-Bu şunları kurar:
-- `mlx-proxy.py` bir launchd daemon olarak (TTS/STT/MLX modellerini `:1240` üzerinde sunar)
-- `mic-level.py` başsız (headless) bir LaunchAgent olarak (mikrofon seviye izleyicisi, terminal penceresi yok)
-- `kokoro-tts-server.py` (Kokoro Almanca TTS, `df_eva`)
+This installs:
+- `mlx-proxy.py` as a launchd daemon (serves TTS/STT/MLX models on `:1240`)
+- `mic-level.py` as a headless LaunchAgent (microphone level monitor, no terminal window)
+- `kokoro-tts-server.py` (Kokoro German TTS, `df_eva`)
 
-**Kokoro'yu derleyin (bir kerelik):** `plugins/hermes-sekretaerin/BUILD_kokoro.md` bölümüne bakın. `cmake`, `espeak-ng` başlıkları ve `ggml`/`highway` alt modülleri gerekir.
+**Build Kokoro (one-time):** see `plugins/hermes-sekretaerin/BUILD_kokoro.md`. Requires `cmake`, `espeak-ng` headers, and the `ggml`/`highway` submodules.
 
-**Mikrofon izni:** macOS *Sistem Ayarları → Gizlilik ve Güvenlik → Mikrofon* erişimini yardımcıya bir kez verin.
+**Microphone permission:** grant macOS *System Settings → Privacy & Security → Microphone* access to the helper once.
 
 ---
 
-Kurulumdan sonra:
+After installation:
 
 ```bash
-source ~/.bashrc    # shell'i yeniden yükle (veya: source ~/.zshrc)
-hermes              # sohbet etmeye başlayın!
+source ~/.bashrc    # reload shell (or: source ~/.zshrc)
+hermes              # start chatting!
 ```
 
-### Sorun Giderme
+### Troubleshooting
 
-#### Windows Defender veya antivirüs `uv.exe`'yi kötü amaçlı yazılım olarak işaretliyor
+#### Windows Defender or antivirus flags `uv.exe` as malware
 
-Antivirüsünüz (Bitdefender, Windows Defender vb.) Hermes'in `bin` klasöründeki `uv.exe` dosyasını (`%LOCALAPPDATA%\hermes\bin\uv.exe`) karantinaya alırsa, bu bir **yanlış pozitiftir**. Dosya, Astral'ın `uv` aracıdır — Hermes'in Python ortamını yönetmek için paketlediği Rust tabanlı Python paket yöneticisi. Makine öğrenimi tabanlı antivirüs motorları, paket indirip kuran imzasız Rust ikili dosyalarını sık sık işaretler.
+If your antivirus (Bitdefender, Windows Defender, etc.) quarantines `uv.exe` from the Hermes `bin` folder (`%LOCALAPPDATA%\hermes\bin\uv.exe`), this is a **false positive**. The file is Astral's `uv` — the Rust Python package manager Hermes bundles to manage its Python environment. ML-based antivirus engines commonly flag unsigned Rust binaries that download and install packages.
 
-**Kopyanızın orijinal olduğunu doğrulamak için:**
+**To verify your copy is authentic:**
 
 ```powershell
 # Install GitHub CLI if needed
@@ -157,134 +159,137 @@ Expand-Archive $zip "$env:TEMP\uv_x" -Force
 (Get-FileHash "$env:TEMP\uv_x\uv.exe").Hash -eq (Get-FileHash $uv).Hash
 ```
 
-Attestation (kanıt) "Verification succeeded" derse ve son satır `True` yazdırırsa, sorun yoktur.
+If attestation says "Verification succeeded" and the last line prints `True`, you're good.
 
-**Hermes'i beyaz listeye (whitelist) eklemek için:**
-- **Windows Defender:** PowerShell'i Yönetici olarak çalıştırın → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
-- **Bitdefender:** Bitdefender konsolunda bir istisna ekleyin (Protection > Antivirus > Settings > Manage Exceptions)
-- **Klasörü** beyaz listeye ekleyin, dosya hash'ini değil — Hermes `uv`'yi günceller ve hash her sürümde değişir.
+**To whitelist Hermes:**
+- **Windows Defender:** Run PowerShell as Admin → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
+- **Bitdefender:** Add an exception in the Bitdefender console (Protection > Antivirus > Settings > Manage Exceptions)
+- Whitelist the **folder**, not the file hash — Hermes updates `uv` and the hash changes every version
 
-Daha fazla bağlam için upstream Astral raporlarına bakın: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
+For more context, see the upstream Astral reports: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
 
 ---
 
-## Başlarken
+## Getting Started
 
 ```bash
-hermes              # Etkileşimli CLI — bir sohbet başlatın
-hermes model        # LLM sağlayıcınızı ve modelinizi seçin
-hermes tools        # Hangi araçların etkin olduğunu yapılandırın
-hermes config set   # Ayrı yapılandırma değerlerini ayarlayın
-hermes config get   # Ayrı yapılandırma değerlerini yazdırın
-hermes gateway      # Mesajlaşma gateway'ini başlatın (Telegram, Discord vb.)
-hermes setup        # Tüm kurulum sihirbazını çalıştırın (her şeyi bir kerede yapılandırır)
-hermes claw migrate # OpenClaw'dan taşının (OpenClaw'dan geliyorsanız)
-hermes update       # En son sürüme güncelleyin
-hermes doctor       # Sorunları teşhis edin
+hermes              # Interactive CLI — start a conversation
+hermes model        # Choose your LLM provider and model
+hermes tools        # Configure which tools are enabled
+hermes config set   # Set individual config values
+hermes config get   # Print individual config values
+hermes gateway      # Start the messaging gateway (Telegram, Discord, etc.)
+hermes setup        # Run the full setup wizard (configures everything at once)
+hermes claw migrate # Migrate from OpenClaw (if coming from OpenClaw)
+hermes update       # Update to the latest version
+hermes doctor       # Diagnose any issues
 ```
 
-📖 **[Tam dokümantasyon →](https://hermes-agent.nousresearch.com/docs/)**
+📖 **[Full documentation →](https://hermes-agent.nousresearch.com/docs/)**
 
 ---
 
-## API Anahtarı Toplamaktan Kurtulun — Nous Portal
+## Skip the API-key collection — Nous Portal
 
-Hermes, istediğiniz sağlayıcıyla çalışır — bu değişmiyor. Ancak model, web araması, görsel üretimi, TTS ve bir bulut tarayıcısı için beş ayrı API anahtarı toplamak istemiyorsanız, **[Nous Portal](https://portal.nousresearch.com)** hepsini tek bir abonelik altında kapsar:
+Hermes works with whatever provider you want — that's not changing. But if you'd rather not collect five separate API keys for the model, web search, image generation, TTS, and a cloud browser, **[Nous Portal](https://portal.nousresearch.com)** covers all of them under one subscription:
 
-- **300+ model** — bunlardan herhangi birini `/model <name>` ile seçin
-- **Tool Gateway** — web araması (Firecrawl), görsel üretimi (FAL), metinden konuşmaya (OpenAI), bulut tarayıcı (Browser Use), tümü aboneliğiniz üzerinden yönlendirilir. Ekstra hesap yok.
+- **300+ models** — pick any of them with `/model <name>`
+- **Tool Gateway** — web search (Firecrawl), image generation (FAL), text-to-speech (OpenAI), cloud browser (Browser Use), all routed through your sub. No extra accounts.
 
-Sıfır kurulumdan tek bir komut:
+One command from a fresh install:
 
 ```bash
 hermes setup --portal
 ```
 
-Bu, OAuth ile giriş yapar, Nous'u sağlayıcınız olarak ayarlar ve Tool Gateway'i açar. Ne bağlandığını istediğiniz zaman `hermes portal info` ile kontrol edin. Ayrıntılar için [Tool Gateway dokümantasyon sayfasına](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway) bakın.
+That logs you in via OAuth, sets Nous as your provider, and turns on the Tool Gateway. Check what's wired up any time with `hermes portal info`. Full details on the [Tool Gateway docs page](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway).
 
-İstediğiniz zaman araç başına kendi anahtarlarınızı getirebilirsiniz — gateway backend başınadır, tümü veya hiçbiri değildir.
-
----
-
-## CLI ve Mesajlaşma Hızlı Referansı
-
-Hermes'in iki giriş noktası vardır: terminal UI'sini `hermes` ile başlatın ya da gateway'i çalıştırıp onunla Telegram, Discord, Slack, WhatsApp, Signal veya E-posta üzerinden konuşun. Bir sohbete girdikten sonra, birçok slash komutu her iki arayüz arasında ortaktır.
-
-| Eylem                                       | CLI                                           | Mesajlaşma platformları                                                          |
-| ------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
-| Sohbet etmeye başla                         | `hermes`                                      | `hermes gateway setup` + `hermes gateway start` çalıştırın, ardından bota bir mesaj gönderin |
-| Yeni sohbet başlat                          | `/new` veya `/reset`                          | `/new` veya `/reset`                                                             |
-| Modeli değiştir                             | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
-| Bir kişilik ayarla                          | `/personality [name]`                         | `/personality [name]`                                                            |
-| Son turu tekrar dene veya geri al           | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
-| Bağlamı sıkıştır / kullanımı kontrol et     | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
-| Skilllere göz at                            | `/skills` veya `/<skill-name>`                | `/<skill-name>`                                                                  |
-| Mevcut işi kesintiye uğrat                  | `Ctrl+C` veya yeni bir mesaj gönderin         | `/stop` veya yeni bir mesaj gönderin                                             |
-| Platforma özgü durum                        | `/platforms`                                  | `/status`, `/sethome`                                                            |
-
-Tam komut listeleri için [CLI rehberine](https://hermes-agent.nousresearch.com/docs/user-guide/cli) ve [Mesajlaşma Gateway rehberine](https://hermes-agent.nousresearch.com/docs/user-guide/messaging) bakın.
+You can still bring your own keys per-tool whenever you want — the gateway is per-backend, not all-or-nothing.
 
 ---
 
-## Dokümantasyon
+## CLI vs Messaging Quick Reference
 
-Tüm dokümantasyon **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs)** adresinde bulunur:
+Hermes has two entry points: start the terminal UI with `hermes`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
 
-| Bölüm                                                                                                 | Kapsananlar                                                   |
-| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Hızlı Başlangıç](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)              | Kurulum → yapılandırma → 2 dakikada ilk sohbet               |
-| [CLI Kullanımı](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                            | Komutlar, kısayollar, kişilikler, oturumlar                  |
-| [Yapılandırma](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                   | Yapılandırma dosyası, sağlayıcılar, modeller, tüm seçenekler |
-| [Mesajlaşma Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging)                 | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant   |
-| [Güvenlik](https://hermes-agent.nousresearch.com/docs/user-guide/security)                            | Komut onayı, DM eşleştirme, konteyner izolasyonu             |
-| [Araçlar & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ araç, toolset sistemi, terminal backend'leri             |
-| [Skills Sistemi](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)               | Prosedürel bellek, Skills Hub, skill oluşturma               |
-| [Bellek](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                       | Kalıcı bellek, kullanıcı profilleri, en iyi uygulamalar      |
-| [MCP Entegrasyonu](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | Genişletilmiş yetenekler için herhangi bir MCP sunucusuna bağlanın |
-| [Cron Zamanlama](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)                | Platform teslimatı ile zamanlanmış görevler                 |
-| [Bağlam Dosyaları](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)     | Her sohbeti şekillendiren proje bağlamı                      |
-| [Mimari](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)                     | Proje yapısı, ajan döngüsü, temel sınıflar                  |
-| [Katkıda Bulunma](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)            | Geliştirme kurulumu, PR süreci, kod tarzı                   |
-| [CLI Referansı](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                    | Tüm komutlar ve bayraklar                                    |
-| [Ortam Değişkenleri](https://hermes-agent.nousresearch.com/docs/reference/environment-variables)      | Eksiksiz ortam değişkeni referansı                           |
+| Action                         | CLI                                           | Messaging platforms                                                              |
+| ------------------------------ | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| Start chatting                 | `hermes`                                      | Run `hermes gateway setup` + `hermes gateway start`, then send the bot a message |
+| Start fresh conversation       | `/new` or `/reset`                            | `/new` or `/reset`                                                               |
+| Change model                   | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
+| Set a personality              | `/personality [name]`                         | `/personality [name]`                                                            |
+| Retry or undo the last turn    | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
+| Compress context / check usage | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
+| Browse skills                  | `/skills` or `/<skill-name>`                  | `/<skill-name>`                                                                  |
+| Interrupt current work         | `Ctrl+C` or send a new message                | `/stop` or send a new message                                                    |
+| Platform-specific status       | `/platforms`                                  | `/status`, `/sethome`                                                            |
+
+For the full command lists, see the [CLI guide](https://hermes-agent.nousresearch.com/docs/user-guide/cli) and the [Messaging Gateway guide](https://hermes-agent.nousresearch.com/docs/user-guide/messaging).
 
 ---
 
-## OpenClaw'dan Taşınıyor
+## Documentation
 
-OpenClaw'dan geliyorsanız, Hermes ayarlarınızı, belleklerinizi, skilllerinizi ve API anahtarlarınızı otomatik olarak içe aktarabilir.
+All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
 
-**İlk kurulum sırasında:** Kurulum sihirbazı (`hermes setup`) `~/.openclaw` dizinini otomatik olarak algılar ve yapılandırma başlamadan önce taşıma (migration) önermeyi teklif eder.
+| Section                                                                                             | What's Covered                                             |
+| --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)                 | Install → setup → first conversation in 2 minutes          |
+| [CLI Usage](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                              | Commands, keybindings, personalities, sessions             |
+| [Configuration](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                | Config file, providers, models, all options                |
+| [Messaging Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging)                | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant |
+| [Security](https://hermes-agent.nousresearch.com/docs/user-guide/security)                          | Command approval, DM pairing, container isolation          |
+| [Tools & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ tools, toolset system, terminal backends               |
+| [Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)              | Procedural memory, Skills Hub, creating skills             |
+| [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                     | Persistent memory, user profiles, best practices           |
+| [MCP Integration](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | Connect any MCP server for extended capabilities           |
+| [Cron Scheduling](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)              | Scheduled tasks with platform delivery                     |
+| [Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)       | Project context that shapes every conversation             |
+| [Architecture](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)             | Project structure, agent loop, key classes                 |
+| [Contributing](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)             | Development setup, PR process, code style                  |
+| [CLI Reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                  | All commands and flags                                     |
+| [Environment Variables](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) | Complete env var reference                                 |
 
-**Kurulumdan sonra herhangi bir zaman:**
+---
+
+## Migrating from OpenClaw
+
+If you're coming from OpenClaw, Hermes can automatically import your settings, memories, skills, and API keys.
+
+**During first-time setup:** The setup wizard (`hermes setup`) automatically detects `~/.openclaw` and offers to migrate before configuration begins.
+
+**Anytime after install:**
 
 ```bash
-hermes claw migrate              # Etkileşimli taşıma (tam preset)
-hermes claw migrate --dry-run    # Nelerin taşınacağının önizlemesi
-hermes claw migrate --preset user-data   # Sırlar olmadan taşı
-hermes claw migrate --overwrite  # Mevcut çakışmaların üzerine yaz
+hermes claw migrate              # Interactive migration (full preset)
+hermes claw migrate --dry-run    # Preview what would be migrated
+hermes claw migrate --preset user-data   # Migrate without secrets
+hermes claw migrate --overwrite  # Overwrite existing conflicts
 ```
 
-İçe aktarılanlar:
+What gets imported:
 
-- **SOUL.md** — kişilik (persona) dosyası
-- **Bellekler** — MEMORY.md ve USER.md girişleri
-- **Skilller** — kullanıcı tarafından oluşturulan skilller → `~/.hermes/skills/openclaw-imports/`
-- **Komut allowlist'i** — onay desenleri
-- **Mesajlaşma ayarları** — platform yapılandırmaları, izin verilen kullanıcılar, çalışma dizini
-- **API anahtarları** — allowlist'e alınmış sırlar (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
-- **TTS varlıkları** — çalışma alanı ses dosyaları
-- **Workspace talimatları** — AGENTS.md ( `--workspace-target` ile)
+- **SOUL.md** — persona file
+- **Memories** — MEMORY.md and USER.md entries
+- **Skills** — user-created skills → `~/.hermes/skills/openclaw-imports/`
+- **Command allowlist** — approval patterns
+- **Messaging settings** — platform configs, allowed users, working directory
+- **API keys** — allowlisted secrets (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
+- **TTS assets** — workspace audio files
+- **Workspace instructions** — AGENTS.md (with `--workspace-target`)
 
-Tüm seçenekler için `hermes claw migrate --help` bölümüne bakın veya dry-run önizlemeli, etkileşimli, ajan rehberliğindeki bir taşıma için `openclaw-migration` skillini kullanın.
+See `hermes claw migrate --help` for all options, or use the `openclaw-migration` skill for an interactive agent-guided migration with dry-run previews.
 
 ---
 
-## Katkıda Bulunma
+## Contributing
 
-Katkıları memnuniyetle karşılıyoruz! Geliştirme kurulumu, kod tarzı ve PR süreci için [Katkıda Bulunma Rehberine](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) bakın.
+We welcome contributions! See the [Contributing Guide](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) for development setup, code style, and PR process.
 
-Katkıda bulunanlar için hızlı başlangıç — standart kurulum aracını kullanın, ardından oluşturduğu tam git checkout'tan (`$HERMES_HOME/hermes-agent`, genellikle `~/.hermes/hermes-agent`) çalışın. Bu, `hermes update`, yönetilen (managed) venv, tembel bağımlılıklar, gateway ve docs araçları tarafından kullanılan düzenle eşleşir.
+Quick start for contributors — use the standard installer, then work from the
+full git checkout it creates at `$HERMES_HOME/hermes-agent` (usually
+`~/.hermes/hermes-agent`). This matches the layout used by `hermes update`, the
+managed venv, lazy dependencies, gateway, and docs tooling.
 
 ```bash
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
@@ -293,9 +298,12 @@ uv pip install -e ".[all,dev]"
 scripts/run_tests.sh
 ```
 
-Manuel clone yedek yolu (yönetilen kurulum düzenini bilinçli olarak istemediğiniz tek kullanımlık clone'lar/CI için):
+Manual clone fallback (for throwaway clones/CI where you intentionally do not
+want the managed install layout):
 
-Venv'i klonlanmış kaynak ağacının dışında oluşturun — ajanın üzerinde çalıştığı dizinin içindeki bir venv, ajanın kendi checkout'una karşı çalıştırdığı bir göreli-yol komutu tarafından silinebilir ve böylece oturumun ortasında çalışan runtime'ı yok edebilir.
+Create the venv outside the cloned source tree — a venv inside the directory
+the agent operates from can be wiped by a relative-path command the agent runs
+against its own checkout, destroying the running runtime mid-session.
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -307,18 +315,18 @@ scripts/run_tests.sh
 
 ---
 
-## Topluluk
+## Community
 
 - 💬 [Discord](https://discord.gg/NousResearch)
 - 📚 [Skills Hub](https://agentskills.io)
 - 🐛 [Issues](https://github.com/NousResearch/hermes-agent/issues)
-- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — Hermes ve diğer MCP sunucuları için Linux masaüstü kontrol MCP sunucusu; AT-SPI erişilebilirlik ağaçları, Wayland/X11 girişi, ekran görüntüleri ve compositor pencere hedeflemesi ile.
-- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Topluluk WeChat köprüsü: Hermes Agent ve OpenClaw'ı aynı WeChat hesabında çalıştırın.
+- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — Linux desktop-control MCP server for Hermes and other MCP hosts, with AT-SPI accessibility trees, Wayland/X11 input, screenshots, and compositor window targeting.
+- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Community WeChat bridge: Run Hermes Agent and OpenClaw on the same WeChat account.
 
 ---
 
-## Lisans
+## License
 
-MIT — bkz. [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
 
-[Nous Research](https://nousresearch.com) tarafından yapılmıştır.
+Built by [Nous Research](https://nousresearch.com).
