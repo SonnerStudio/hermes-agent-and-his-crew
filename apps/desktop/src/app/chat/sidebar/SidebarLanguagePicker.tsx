@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
-import { Codicon } from "@/components/ui/codicon"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
-import { useI18n } from "@/i18n"
-import type { Locale } from "@/i18n/types"
+import { Codicon } from '@/components/ui/codicon'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { useI18n } from '@/i18n'
+import type { Locale } from '@/i18n/types'
 
-import { getLang, type Lang, LANGS, setLang } from "../composer/i18n"
+import { getLang, type Lang, LANGS, setLang } from '../composer/i18n'
 
 // Sidebar language picker with national flags (SonnerStudio fork).
 // Lives at the TOP of the left sidebar, above "New Session". Stores the
@@ -32,7 +27,7 @@ export function SidebarLanguagePicker() {
   const choose = (next: Lang) => {
     setLang(next)
     setLocal(next)
-    window.dispatchEvent(new CustomEvent("sonnerstudio:lang", { detail: next }))
+    window.dispatchEvent(new CustomEvent('sonnerstudio:lang', { detail: next }))
     void setLocale(next as Locale)
   }
 
@@ -51,9 +46,7 @@ export function SidebarLanguagePicker() {
             <span aria-hidden className="text-[0.95rem] leading-none">
               {current.flag}
             </span>
-            <span className="min-w-0 truncate text-foreground">
-              {current.label}
-            </span>
+            <span className="min-w-0 truncate text-foreground">{current.label}</span>
           </div>
           <Codicon className="size-3 shrink-0 text-muted-foreground opacity-70" name="chevron-down" />
         </button>
@@ -67,13 +60,9 @@ export function SidebarLanguagePicker() {
           >
             <div className="flex items-center gap-2">
               <span className="text-[0.95rem] leading-none">{l.flag}</span>
-              <span className={l.code === lang ? "font-semibold text-sky-400" : "text-foreground"}>
-                {l.label}
-              </span>
+              <span className={l.code === lang ? 'font-semibold text-sky-400' : 'text-foreground'}>{l.label}</span>
             </div>
-            {l.code === lang && (
-              <Codicon className="size-3 text-sky-400" name="check" />
-            )}
+            {l.code === lang && <Codicon className="size-3 text-sky-400" name="check" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

@@ -1226,8 +1226,6 @@ export function ChatSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
 
-
-
         {showSessionSections && (
           <div className="shrink-0 px-2 pb-1 pt-1">
             <SearchField

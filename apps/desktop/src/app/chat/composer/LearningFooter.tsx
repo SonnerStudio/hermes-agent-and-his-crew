@@ -45,7 +45,13 @@ interface SecretaryLearning {
 
 const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)))
 
-function ScoreBar({ name, score, decisions, trend, lang }: {
+function ScoreBar({
+  name,
+  score,
+  decisions,
+  trend,
+  lang
+}: {
   name: string
   score: number
   decisions: number
@@ -54,11 +60,17 @@ function ScoreBar({ name, score, decisions, trend, lang }: {
 }) {
   const pct = clampPct(score)
   const tone = pct >= 70 ? 'bg-green-500' : pct >= 40 ? 'bg-sky-500' : 'bg-amber-500'
-  const trendGlyph = /steig|ris|styg|haus|aument|cresc|stijg|rosn|alta|раст|yüks|rost|rast|növek|creșt|nous|stig|ανοδ|상승|เพิ่ม|tăng|зрост|עלייה|बढ़|上升|上昇|ارتفاع/.test(trend)
-    ? '▲'
-    : /fall|dal|baiss|desc|calo|spad|qued|сниж|düş|kles|csökk|scăd|lask|fald|πτωτ|하락|ลด|giảm|спад|ירידה|घट|下降|انخفاض/.test(trend)
-      ? '▼'
-      : '▬'
+
+  const trendGlyph =
+    /steig|ris|styg|haus|aument|cresc|stijg|rosn|alta|раст|yüks|rost|rast|növek|creșt|nous|stig|ανοδ|상승|เพิ่ม|tăng|зрост|עלייה|बढ़|上升|上昇|ارتفاع/.test(
+      trend
+    )
+      ? '▲'
+      : /fall|dal|baiss|desc|calo|spad|qued|сниж|düş|kles|csökk|scăd|lask|fald|πτωτ|하락|ลด|giảm|спад|ירידה|घट|下降|انخفاض/.test(
+            trend
+          )
+        ? '▼'
+        : '▬'
 
   const localizedName = localizeSpecialist(name, lang)
   const decSuffix = t('secretary.decisions_abbr', lang) || 'dec.'
@@ -66,7 +78,9 @@ function ScoreBar({ name, score, decisions, trend, lang }: {
   return (
     <div className="flex min-w-[8.5rem] flex-1 flex-col gap-1">
       <div className="flex items-center justify-between">
-        <span className="truncate text-[0.75rem] font-semibold text-foreground" title={localizedName}>{localizedName}</span>
+        <span className="truncate text-[0.75rem] font-semibold text-foreground" title={localizedName}>
+          {localizedName}
+        </span>
         <span className="ml-1 shrink-0 font-mono text-[0.75rem] font-bold tabular-nums text-foreground/90">
           {pct} {trendGlyph}
         </span>
@@ -74,7 +88,9 @@ function ScoreBar({ name, score, decisions, trend, lang }: {
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
         <div className={cn('h-full rounded-full transition-[width] duration-500', tone)} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-[0.65rem] font-medium text-muted-foreground">{decisions} {decSuffix}</span>
+      <span className="text-[0.65rem] font-medium text-muted-foreground">
+        {decisions} {decSuffix}
+      </span>
     </div>
   )
 }
@@ -102,7 +118,9 @@ export const LearningFooter = () => {
       try {
         const res = await fetch(SECRETARY_URL)
 
-        if (!alive) {return}
+        if (!alive) {
+          return
+        }
 
         if (res.ok) {
           const json = (await res.json()) as SecretaryLearning
@@ -141,7 +159,7 @@ export const LearningFooter = () => {
         name: a.name ?? id,
         score: a.score,
         decisions: a.decisions,
-        trend: a.trend,
+        trend: a.trend
       }))
 
       if (all.length <= 4) {
@@ -160,26 +178,26 @@ export const LearningFooter = () => {
     return null
   }
 
-  const hermesScore = scores ? clampPct(
-    ((scores.subagent?.score ?? 0) +
-      (scores.planner?.score ?? 0) +
-      (scores.secretary?.score ?? 0)) / 3,
-  ) : 0
+  const hermesScore = scores
+    ? clampPct(((scores.subagent?.score ?? 0) + (scores.planner?.score ?? 0) + (scores.secretary?.score ?? 0)) / 3)
+    : 0
 
-  const hermesDecisions = scores ? Math.max(
-    1,
-    (scores.subagent?.decisions ?? 0) +
-      (scores.planner?.decisions ?? 0) +
-      (scores.secretary?.decisions ?? 0) +
-      agentList.reduce((s, [, a]) => s + (a.decisions ?? 0), 0),
-  ) : 0
+  const hermesDecisions = scores
+    ? Math.max(
+        1,
+        (scores.subagent?.decisions ?? 0) +
+          (scores.planner?.decisions ?? 0) +
+          (scores.secretary?.decisions ?? 0) +
+          agentList.reduce((s, [, a]) => s + (a.decisions ?? 0), 0)
+      )
+    : 0
 
   return (
     <div
       aria-label="Live learning scores"
       className={cn(
         'flex w-full flex-col gap-1.5 rounded-lg border border-sky-500/40 px-3 py-1.5',
-        'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]',
+        'bg-(--composer-fill) backdrop-blur-[0.75rem] [-webkit-backdrop-filter:blur(0.75rem)]'
       )}
       role="status"
     >
@@ -199,7 +217,9 @@ export const LearningFooter = () => {
         {(['planner', 'secretary'] as const).map(k => {
           const m = scores[k]
 
-          if (!m || m.decisions === 0) {return null}
+          if (!m || m.decisions === 0) {
+            return null
+          }
 
           return (
             <ScoreBar

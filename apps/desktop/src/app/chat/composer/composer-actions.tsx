@@ -59,9 +59,12 @@ const ICON_BUTTON = cn(
 )
 
 // Inactive = rot ("Aus"), Pending = gelb ("Bereitschaft herstellen"), Active = grün ("Bereit").
-const BTN_INACTIVE = 'border-red-500/70 bg-red-500/10 text-red-400 hover:border-red-500/90 hover:bg-red-500/20 hover:text-red-300'
-const BTN_PENDING = 'border-yellow-500/70 bg-yellow-500/20 text-yellow-300 hover:border-yellow-500/90 hover:bg-yellow-500/30 hover:text-yellow-200 animate-pulse'
-const BTN_ACTIVE = 'border-green-500/70 bg-green-500/20 text-green-400 hover:border-green-500/90 hover:bg-green-500/30 hover:text-green-300'
+const BTN_INACTIVE =
+  'border-red-500/70 bg-red-500/10 text-red-400 hover:border-red-500/90 hover:bg-red-500/20 hover:text-red-300'
+const BTN_PENDING =
+  'border-yellow-500/70 bg-yellow-500/20 text-yellow-300 hover:border-yellow-500/90 hover:bg-yellow-500/30 hover:text-yellow-200 animate-pulse'
+const BTN_ACTIVE =
+  'border-green-500/70 bg-green-500/20 text-green-400 hover:border-green-500/90 hover:bg-green-500/30 hover:text-green-300'
 
 // Pure decision: pending (yellow) > active (green) > inactive (red).
 // Exported for tests; the button color must follow the real function state.
@@ -118,7 +121,15 @@ const TOGGLES: ToggleSpec[] = [
   }
 ]
 
-function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (spec: ToggleSpec) => void; spec: ToggleSpec }) {
+function ComposerActionButton({
+  busy,
+  onRun,
+  spec
+}: {
+  busy: boolean
+  onRun: (spec: ToggleSpec) => void
+  spec: ToggleSpec
+}) {
   const active = useStore(spec.atom)
   const pending = useStore(spec.pendingAtom)
 
@@ -138,7 +149,12 @@ function ComposerActionButton({ busy, onRun, spec }: { busy: boolean; onRun: (sp
       title={spec.tip}
       type="button"
     >
-      <Codicon className="shrink-0" name={(busy || pending) ? 'loading' : spec.icon} size="0.85rem" spinning={busy || pending} />
+      <Codicon
+        className="shrink-0"
+        name={busy || pending ? 'loading' : spec.icon}
+        size="0.85rem"
+        spinning={busy || pending}
+      />
     </button>
   )
 }

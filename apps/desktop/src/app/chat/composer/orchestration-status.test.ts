@@ -7,7 +7,7 @@ const node = (purpose: string, specialist?: string) => ({
   progress: 0,
   purpose,
   specialist,
-  status: 'running',
+  status: 'running'
 })
 
 describe('sub-agent team labels', () => {

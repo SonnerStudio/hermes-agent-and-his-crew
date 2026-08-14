@@ -373,9 +373,25 @@ export function ModelMenuPanel({ gateway, onSelectModel, profile = 'default', re
         </DropdownMenuItem>
       ) : (
         <div className={cn('max-h-[max(150px,30dvh)] overflow-y-auto py-0.5', quietRows)} ref={listRef}>
-          {renderGroupedProviders(groups, search, (slug) =>
-            collapsedProviders.includes(slug) && !search
-          , (slug) => toggleCollapsedProvider(slug), optionsProvider, optionsModel, currentReasoningEffort, currentFastMode, defaultEffort, modelPresets, closeMenu, selectFamily, copy, kbRowProps, quietRows, switchTo, requestGateway)}
+          {renderGroupedProviders(
+            groups,
+            search,
+            slug => collapsedProviders.includes(slug) && !search,
+            slug => toggleCollapsedProvider(slug),
+            optionsProvider,
+            optionsModel,
+            currentReasoningEffort,
+            currentFastMode,
+            defaultEffort,
+            modelPresets,
+            closeMenu,
+            selectFamily,
+            copy,
+            kbRowProps,
+            quietRows,
+            switchTo,
+            requestGateway
+          )}
         </div>
       )}
 
@@ -522,7 +538,7 @@ function renderGroupedProviders(
   kbRowProps: (key: string) => Record<string, unknown>,
   quietRows: string | boolean,
   switchTo: (model: string, provider: string) => void,
-  requestGateway: <T>(method: string, params?: Record<string, unknown>) => Promise<T>,
+  requestGateway: <T>(method: string, params?: Record<string, unknown>) => Promise<T>
 ): React.ReactElement {
   // Order categories: NOUS Portal first, then MLX, then anything else.
   const CATEGORY_ORDER = ['NOUS Portal', 'MLX']
@@ -534,7 +550,9 @@ function renderGroupedProviders(
     const cat = g.provider.category
 
     if (cat) {
-      if (!byCategory.has(cat)) {byCategory.set(cat, [])}
+      if (!byCategory.has(cat)) {
+        byCategory.set(cat, [])
+      }
       byCategory.get(cat)!.push(g)
     } else {
       flat.push(g)
@@ -543,7 +561,7 @@ function renderGroupedProviders(
 
   const orderedCategories = [
     ...CATEGORY_ORDER.filter(c => byCategory.has(c)),
-    ...[...byCategory.keys()].filter(c => !CATEGORY_ORDER.includes(c)),
+    ...[...byCategory.keys()].filter(c => !CATEGORY_ORDER.includes(c))
   ]
 
   const out: React.ReactElement[] = []
@@ -574,8 +592,7 @@ function renderGroupedProviders(
         {!collapsed &&
           group.families.map(family => {
             const activeId =
-              group.provider.slug === optionsProvider &&
-              (optionsModel === family.id || optionsModel === family.fastId)
+              group.provider.slug === optionsProvider && (optionsModel === family.id || optionsModel === family.fastId)
                 ? optionsModel
                 : null
 
@@ -597,7 +614,7 @@ function renderGroupedProviders(
 
             const meta = [
               fastControl.kind !== 'none' && fastControl.on ? (copy as { fast: string }).fast : null,
-              (caps?.reasoning ?? true) ? reasoningEffortLabel(effEffort || defaultEffort) : null,
+              (caps?.reasoning ?? true) ? reasoningEffortLabel(effEffort || defaultEffort) : null
             ]
               .filter(Boolean)
               .join(' ')
@@ -631,9 +648,7 @@ function renderGroupedProviders(
                     ) : null}
                     {meta ? <span className="text-(--ui-text-tertiary)"> {meta}</span> : null}
                   </span>
-                  {isCurrent ? (
-                    <Codicon className="ml-auto text-foreground" name="check" size="0.75rem" />
-                  ) : null}
+                  {isCurrent ? <Codicon className="ml-auto text-foreground" name="check" size="0.75rem" /> : null}
                 </DropdownMenuSubTrigger>
                 <ModelEditSubmenu
                   effort={effEffort}

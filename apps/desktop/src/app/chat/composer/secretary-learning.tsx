@@ -64,15 +64,16 @@ function MlxBadge({ mlx, lang }: { mlx: MlxStatus; lang: Lang }) {
         'flex items-center gap-1.5 rounded-md px-2.5 py-1 font-mono text-[0.72rem] font-semibold',
         mlx.ready
           ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-          : 'bg-muted/40 text-muted-foreground border border-border/40',
+          : 'bg-muted/40 text-muted-foreground border border-border/40'
       )}
-      title={mlx.ready ? `MLX Server ${t('status.active', lang)}: ${mlx.current_model || t('status.ready', lang)}` : `MLX Server ${t('status.ready', lang)}`}
+      title={
+        mlx.ready
+          ? `MLX Server ${t('status.active', lang)}: ${mlx.current_model || t('status.ready', lang)}`
+          : `MLX Server ${t('status.ready', lang)}`
+      }
     >
       <span
-        className={cn(
-          'h-2 w-2 rounded-full',
-          mlx.ready ? 'bg-emerald-400 animate-pulse' : 'bg-muted-foreground',
-        )}
+        className={cn('h-2 w-2 rounded-full', mlx.ready ? 'bg-emerald-400 animate-pulse' : 'bg-muted-foreground')}
       />
       <span className="font-bold">MLX</span>
       <span className="opacity-90 truncate max-w-[14rem]">{state}</span>
@@ -92,9 +93,7 @@ function Box({ title, right, children }: BoxProps) {
   return (
     <div className={BOX}>
       <div className="flex items-center justify-between">
-        <span className="text-[0.78rem] font-bold uppercase tracking-wider text-sky-400">
-          {title}
-        </span>
+        <span className="text-[0.78rem] font-bold uppercase tracking-wider text-sky-400">{title}</span>
         {right}
       </div>
       {children}
@@ -159,17 +158,25 @@ export const SecretaryLearning = () => {
   const AGENT_LABELS: Record<string, string> = {
     subagent: t('agent.hermes', lang),
     planner: t('agent.hermes', lang),
-    secretary: t('secretary.title', lang),
+    secretary: t('secretary.title', lang)
   }
 
   function agentLabel(ev: NonNullable<typeof last>): string {
-    if (ev.agent_name) {return localizeSpecialist(ev.agent_name, lang)}
+    if (ev.agent_name) {
+      return localizeSpecialist(ev.agent_name, lang)
+    }
 
-    if (ev.agent_id && AGENT_LABELS[ev.agent_id]) {return AGENT_LABELS[ev.agent_id]}
+    if (ev.agent_id && AGENT_LABELS[ev.agent_id]) {
+      return AGENT_LABELS[ev.agent_id]
+    }
 
-    if (ev.stage && AGENT_LABELS[ev.stage]) {return AGENT_LABELS[ev.stage]}
+    if (ev.stage && AGENT_LABELS[ev.stage]) {
+      return AGENT_LABELS[ev.stage]
+    }
 
-    if (ev.agent_id) {return localizeSpecialist(ev.agent_id, lang)}
+    if (ev.agent_id) {
+      return localizeSpecialist(ev.agent_id, lang)
+    }
 
     return ev.stage ? localizeSpecialist(ev.stage, lang) : t('agent.hermes', lang)
   }
@@ -198,26 +205,28 @@ export const SecretaryLearning = () => {
     lastDetailParts.push(`${last.latency_s.toFixed(1)}s`)
   }
 
-  const lastDetail = lastDetailParts.length > 0
-    ? lastDetailParts.join(' · ')
-    : (t('secretary.last_detail', lang) || 'erfolgreich gelernt')
+  const lastDetail =
+    lastDetailParts.length > 0 ? lastDetailParts.join(' · ') : t('secretary.last_detail', lang) || 'erfolgreich gelernt'
+
   const lastSuccess = last?.success === true || last?.success === undefined
 
   return (
-    <div
-      aria-label="Secretary learning & MLX runtime"
-      className={cn('flex w-full flex-col gap-1.5')}
-      role="status"
-    >
+    <div aria-label="Secretary learning & MLX runtime" className={cn('flex w-full flex-col gap-1.5')} role="status">
       {/* ── Field 1: Letzter Lernerfolg (single compact horizontal line) ── */}
       <Box title={t('secretary.learned', lang)}>
         {lastAgent ? (
           <div className="flex min-w-0 items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2 truncate">
-              <span aria-hidden className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-sky-500/20 text-[0.75rem]">
+              <span
+                aria-hidden
+                className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-sky-500/20 text-[0.75rem]"
+              >
                 {lastSuccess ? '✅' : '⚠️'}
               </span>
-              <span className="shrink-0 text-[0.85rem] font-bold text-foreground" title={localizeSpecialist(lastAgent, lang)}>
+              <span
+                className="shrink-0 text-[0.85rem] font-bold text-foreground"
+                title={localizeSpecialist(lastAgent, lang)}
+              >
                 {localizeSpecialist(lastAgent, lang)}
               </span>
               <span className="text-muted-foreground/60 font-bold">·</span>

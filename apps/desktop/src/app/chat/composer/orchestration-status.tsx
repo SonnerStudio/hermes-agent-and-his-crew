@@ -52,7 +52,7 @@ export function specialistOf(a: AgentNode): string {
     [/recherch|research|such|search|web/, 'Recherche-Spezialist'],
     [/code|refactor|implement|patch|build/, 'Code-Spezialist'],
     [/plan|konzept|architekt/, 'Planungs-Spezialist'],
-    [/analys|review|prüf|pruef|test|verif/, 'Analyse-Spezialist'],
+    [/analys|review|prüf|pruef|test|verif/, 'Analyse-Spezialist']
   ]
 
   for (const [re, label] of table) {
@@ -66,7 +66,8 @@ export function specialistOf(a: AgentNode): string {
 
 const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)))
 
-const BOX = 'flex flex-col gap-1.5 rounded-md border border-sky-500/40 bg-(--composer-fill) px-2 py-1.5 min-w-[9rem] flex-1'
+const BOX =
+  'flex flex-col gap-1.5 rounded-md border border-sky-500/40 bg-(--composer-fill) px-2 py-1.5 min-w-[9rem] flex-1'
 
 interface BoxProps {
   title: string
@@ -77,9 +78,7 @@ interface BoxProps {
 function Box({ title, children, className }: BoxProps) {
   return (
     <div className={cn(BOX, 'flex-1 min-w-0', className)}>
-      <span className="text-[0.78rem] font-bold uppercase tracking-wider text-sky-400">
-        {title}
-      </span>
+      <span className="text-[0.78rem] font-bold uppercase tracking-wider text-sky-400">{title}</span>
       {children}
     </div>
   )
@@ -89,7 +88,9 @@ function MiniBar({ pct, label }: { pct: number; label: string }) {
   return (
     <div className="flex flex-col gap-0.5">
       <div className="flex items-center justify-between">
-        <span className="truncate text-[0.78rem] font-semibold text-foreground" title={label}>{label}</span>
+        <span className="truncate text-[0.78rem] font-semibold text-foreground" title={label}>
+          {label}
+        </span>
         <span className="ml-1 shrink-0 font-mono text-[0.78rem] font-bold tabular-nums text-foreground/90">{pct}%</span>
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-muted/40">
@@ -120,7 +121,11 @@ function BigBar({ pct, hint }: { pct: number; hint?: string }) {
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <span className="font-mono text-[0.88rem] font-bold tabular-nums text-foreground">{pct}%</span>
-        {hint && <span className="truncate text-[0.75rem] font-medium text-muted-foreground" title={hint}>{hint}</span>}
+        {hint && (
+          <span className="truncate text-[0.75rem] font-medium text-muted-foreground" title={hint}>
+            {hint}
+          </span>
+        )}
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-muted/40">
         <div className="h-full rounded-full bg-sky-500 transition-[width] duration-500" style={{ width: `${pct}%` }} />
@@ -142,7 +147,11 @@ export const OrchestrationStatus = () => {
   const [subagentActive, setSubagentActive] = useState(false)
   const [cloneActive, setCloneActive] = useState(false)
   const [harmonyActive, setHarmonyActive] = useState(false)
-  const [audio, setAudio] = useState<{ mic: number; speaker: number; mic_available: boolean }>({ mic: 0, speaker: 0, mic_available: false })
+  const [audio, setAudio] = useState<{ mic: number; speaker: number; mic_available: boolean }>({
+    mic: 0,
+    speaker: 0,
+    mic_available: false
+  })
   const [modelLoaded, setModelLoaded] = useState(false)
   const [currentModel, setCurrentModel] = useState<string | null>(null)
   const [lang, setLangState] = useState<Lang>(getLang())
@@ -159,25 +168,28 @@ export const OrchestrationStatus = () => {
 
     const sync = async () => {
       try {
-        const [orchRes, healthRes] = await Promise.all([
-          fetch(ORCH_URL),
-          fetch(HEALTH_URL),
-        ])
+        const [orchRes, healthRes] = await Promise.all([fetch(ORCH_URL), fetch(HEALTH_URL)])
 
-        if (!alive) {return}
+        if (!alive) {
+          return
+        }
 
         if (orchRes.ok) {
           const orch = await orchRes.json()
 
-          if (Array.isArray(orch?.agents)) {setAgents(orch.agents as AgentNode[])}
+          if (Array.isArray(orch?.agents)) {
+            setAgents(orch.agents as AgentNode[])
+          }
 
-          if (orch?.clones && typeof orch.clones === 'object') {setClones(orch.clones)}
+          if (orch?.clones && typeof orch.clones === 'object') {
+            setClones(orch.clones)
+          }
 
           if (orch?.audio && typeof orch.audio === 'object') {
             setAudio({
               mic: clampPct(Number(orch.audio.mic) || 0),
               speaker: clampPct(Number(orch.audio.speaker) || 0),
-              mic_available: Boolean(orch.audio.mic_available),
+              mic_available: Boolean(orch.audio.mic_available)
             })
           }
         }
@@ -214,9 +226,8 @@ export const OrchestrationStatus = () => {
 
     // Harmonization = mean progress of RUNNING agents only. Idle (none running)
     // => 0%, never a false 100% from already-finished agents.
-    const mean = running.length === 0
-      ? 0
-      : running.reduce((s, a) => s + clampPct(Number(a.progress) || 0), 0) / running.length
+    const mean =
+      running.length === 0 ? 0 : running.reduce((s, a) => s + clampPct(Number(a.progress) || 0), 0) / running.length
 
     return { utilization: util, harmony: clampPct(mean), runningAgents: running }
   }, [agents])
@@ -238,17 +249,17 @@ export const OrchestrationStatus = () => {
   }
 
   return (
-    <div
-      aria-label="Live orchestration status"
-      className={cn('flex w-full items-stretch gap-1.5')}
-      role="status"
-    >
+    <div aria-label="Live orchestration status" className={cn('flex w-full items-stretch gap-1.5')} role="status">
       {showTeam && (
         <Box title={t('panel.subagents', lang)}>
           <div className="flex flex-col gap-1">
             {runningAgents.length > 0 ? (
               runningAgents.map(a => (
-                <MiniBar key={a.id} label={localizeSpecialist(specialistOf(a), lang)} pct={clampPct(Number(a.progress) || 0)} />
+                <MiniBar
+                  key={a.id}
+                  label={localizeSpecialist(specialistOf(a), lang)}
+                  pct={clampPct(Number(a.progress) || 0)}
+                />
               ))
             ) : (
               <span className="text-[0.78rem] font-medium text-muted-foreground">
@@ -271,8 +282,16 @@ export const OrchestrationStatus = () => {
             </div>
           </div>
           <div className="mt-1 flex flex-col gap-1 border-t border-muted/20 pt-1">
-            <AudioBar label={t('audio.speaker', lang) || (lang === 'de' ? 'Sprecher-Auslastung' : 'Speaker Load')} pct={audio.speaker} tone="green" />
-            <AudioBar label={t('audio.mic', lang) || (lang === 'de' ? 'Mikrofon-Pegel' : 'Microphone Level')} pct={audio.mic} tone="blue" />
+            <AudioBar
+              label={t('audio.speaker', lang) || (lang === 'de' ? 'Sprecher-Auslastung' : 'Speaker Load')}
+              pct={audio.speaker}
+              tone="green"
+            />
+            <AudioBar
+              label={t('audio.mic', lang) || (lang === 'de' ? 'Mikrofon-Pegel' : 'Microphone Level')}
+              pct={audio.mic}
+              tone="blue"
+            />
             {!audio.mic_available && (
               <span className="text-[0.75rem] text-amber-500/80">{t('mic.unavailable', lang)}</span>
             )}
@@ -288,7 +307,9 @@ export const OrchestrationStatus = () => {
                 .filter(([, n]) => n > 1)
                 .map(([id, n]) => (
                   <div className="flex items-center justify-between text-[0.8rem]" key={id}>
-                    <span className="truncate font-medium text-foreground" title={id}>{id}</span>
+                    <span className="truncate font-medium text-foreground" title={id}>
+                      {id}
+                    </span>
                     <span className="ml-1 shrink-0 font-mono font-bold tabular-nums text-foreground/90">×{n}</span>
                   </div>
                 ))

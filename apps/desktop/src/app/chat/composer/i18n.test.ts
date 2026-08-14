@@ -14,18 +14,18 @@ describe('i18n', () => {
   })
 
   it('exposes the SonnerStudio languages (mirrors sonnerstudio.net picker)', () => {
-    const codes = LANGS.map((l) => l.code)
+    const codes = LANGS.map(l => l.code)
 
     for (const c of ['de', 'en', 'fr', 'es', 'it', 'nl', 'pl', 'cn', 'jp', 'ru', 'pt', 'tr', 'run']) {
       expect(codes).toContain(c)
     }
 
     // every entry carries a flag/emoji for the picker
-    expect(LANGS.every((l) => l.flag.length > 0)).toBe(true)
+    expect(LANGS.every(l => l.flag.length > 0)).toBe(true)
   })
 
   it('has a RUN (Elder Futhark) entry with the globe icon', () => {
-    const run = LANGS.find((l) => l.code === 'run')
+    const run = LANGS.find(l => l.code === 'run')
     expect(run).toBeDefined()
     expect(run?.flag).toBe('🌐')
     expect(run?.label).toBe('RUN')
